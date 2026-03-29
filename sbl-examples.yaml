@@ -1,0 +1,2569 @@
+# SBL Citation Examples - CSL YAML Bibliography
+# Converted from biblatex-sbl.bib (original source)
+#
+# Structure:
+# - Standard CSL fields for core metadata
+# - SBL-specific metadata in structured 'note' field under 'sbl:' key
+#
+# Note field schema (YAML format, parseable by Lua filter):
+#   sbl:
+#     shortseries: WUNT
+#     shortjournal: JBL
+#     shorthand: BDAG
+#     entrysubtype: classical|churchfather|COS|ANRW|inscription|chronicle
+#     seriesseries: "2"
+#     maintitle: "Main title"
+#     maineditor: "Editor Name"
+#     bookeditor: "Volume Editor"
+#     withtranslator: "Name"
+#     withtranslatortype: withpreface
+#     witheditor: "Name"
+#     witheditortype: withassistance
+#     origlanguage: "from the 3rd German ed."
+#     related:
+#       - id: entry-id
+#         type: translationof|reprintof|container
+#         options: [usevolume=false, skipbiblist]
+#     xref: parent-entry-id
+#     options: [skipbib, skipbiblist, useeditor=false]
+
+references:
+
+# =============================================================================
+# SECTION 6.2: GENERAL EXAMPLES - BOOKS
+# =============================================================================
+
+# 6.2.1 A Book by a Single Author
+- id: talbert:1992
+  type: book
+  author:
+  - family: Talbert
+    given: Charles H.
+  title: "Reading John: A Literary and Theological Commentary on the Fourth Gospel and the Johannine Epistles"
+  publisher: Crossroad
+  publisher-place: New York
+  issued:
+    date-parts:
+    - - 1992
+
+# 6.2.2 A Book by Two or Three Authors
+  title-short: Reading John
+- id: robinson+koester:1971
+  type: book
+  author:
+  - family: Robinson
+    given: James M.
+  - family: Koester
+    given: Helmut
+  title: Trajectories through Early Christianity
+  publisher: Fortress
+  publisher-place: Philadelphia
+  issued:
+    date-parts:
+    - - 1971
+
+# 6.2.3 A Book by More than Three Authors
+  title-short: Trajectories
+- id: scott+etal:1993
+  type: book
+  author:
+  - family: Scott
+    given: Bernard Brandon
+  - family: Dean
+    given: Margaret
+  - family: Sparks
+    given: Kristen
+  - family: LaZar
+    given: Frances
+  title: Reading New Testament Greek
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1993
+
+# 6.2.4 A Translated Volume
+- id: egger:1996
+  type: book
+  author:
+  - family: Egger
+    given: Wilhelm
+  title: "How to Read the New Testament: An Introduction to Linguistic and Historical-Critical Methodology"
+  title-short: How to Read
+  translator:
+  - family: Heinegg
+    given: Peter
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1996
+
+# 6.2.5 The Full History of a Translated Volume
+- id: wellhausen:1883
+  type: book
+  author:
+  - family: Wellhausen
+    given: Julius
+  title: Prolegomena zur Geschichte Israels
+  edition: "2"
+  publisher: Reimer
+  publisher-place: Berlin
+  issued:
+    date-parts:
+    - - 1883
+
+- id: wellhausen:1885
+  type: book
+  author:
+  - family: Wellhausen
+    given: Julius
+  title: Prolegomena to the History of Israel
+  translator:
+  - family: Black
+    given: J. Sutherland
+  - family: Enzies
+    given: A.
+  publisher: Black
+  publisher-place: Edinburgh
+  issued:
+    date-parts:
+    - - 1885
+  note: |
+    sbl:
+      withtranslator: "Smith, W. Robertson"
+      withtranslatortype: withpreface
+      related:
+        - id: wellhausen:1883
+          type: translationof
+
+- id: wellhausen:1957
+  type: book
+  author:
+  - family: Wellhausen
+    given: Julius
+  title: Prolegomena to the History of Ancient Israel
+  publisher: Meridian Books
+  publisher-place: New York
+  issued:
+    date-parts:
+    - - 1957
+  note: |
+    sbl:
+      related:
+        - id: wellhausen:1885
+          type: reprintof
+
+# 6.2.6 A Book with One Editor
+- id: tigay:1985
+  type: book
+  editor:
+  - family: Tigay
+    given: Jeffrey H.
+  title: Empirical Models for Biblical Criticism
+  title-short: Empirical Models
+  publisher: University of Pennsylvania Press
+  publisher-place: Philadelphia
+  issued:
+    date-parts:
+    - - 1985
+
+# 6.2.7 A Book with Two or Three Editors
+- id: kaltner+mckenzie:2002
+  type: book
+  editor:
+  - family: Kaltner
+    given: John
+  - family: McKenzie
+    given: Steven L.
+  title: "Beyond Babel: A Handbook for Biblical Hebrew and Related Languages"
+  collection-title: Resources for Biblical Study
+  collection-number: "42"
+  publisher: Society of Biblical Literature
+  publisher-place: Atlanta
+  issued:
+    date-parts:
+    - - 2002
+  note: |
+    sbl:
+      shortseries: RBS
+
+# 6.2.8 A Book with Four or More Editors
+  title-short: Beyond Babel
+  collection-title-short: RBS
+- id: oates+etal:2001
+  type: book
+  editor:
+  - family: Oates
+    given: John F.
+  - family: Willis
+    given: William H.
+  - family: Bagnall
+    given: Roger S.
+  - family: Worp
+    given: Klass A.
+  title: Checklist of Editions of Greek and Latin Papyri, Ostraca, and Tablets
+  edition: "5"
+  collection-title: Bulletin of the American Society of Papyrologists, Supplements
+  collection-number: "9"
+  publisher: American Society of Papyrologists
+  publisher-place: Oakville, CT
+  issued:
+    date-parts:
+    - - 2001
+  note: |
+    sbl:
+      shortseries: BASPSup
+
+# 6.2.9 A Book with Both Author and Editor
+  collection-title-short: BASPSup
+- id: schillebeeckx:1986
+  type: book
+  author:
+  - family: Schillebeeckx
+    given: Edward
+  editor:
+  - family: Schreiter
+    given: Robert J.
+  title: The Schillebeeckx Reader
+  publisher: T&T Clark
+  publisher-place: Edinburgh
+  issued:
+    date-parts:
+    - - 1986
+
+# 6.2.10 A Book with Author, Editor, and Translator
+- id: blass+debrunner:1982
+  type: book
+  author:
+  - family: Blass
+    given: Friedrich
+  - family: Debrunner
+    given: Albert
+  editor:
+  - family: Rehkopf
+    given: Friedrich
+  translator:
+  - family: Pisi
+    given: Giordana
+  title: Grammatica del greco del Nuovo Testamento
+  publisher: Paideia
+  publisher-place: Brescia
+  issued:
+    date-parts:
+    - - 1982
+
+# 6.2.11 A Title in a Modern Work Citing a Nonroman Alphabet
+- id: irvine:2014
+  type: article-journal
+  author:
+  - family: Irvine
+    given: Stuart A.
+  title: "Idols [*ktbwnm*]: A Note on Hosea 13:2a"
+  container-title: Journal of Biblical Literature
+  volume: "133"
+  page: 509-517
+  issued:
+    date-parts:
+    - - 2014
+  note: |
+    sbl:
+      shortjournal: JBL
+
+# 6.2.12 An Article in an Edited Volume
+  container-title-short: JBL
+- id: attridge:1986
+  type: chapter
+  author:
+  - family: Attridge
+    given: Harold W.
+  title: Jewish Historiography
+  container-title: Early Judaism and Its Modern Interpreters
+  editor:
+  - family: Kraft
+    given: Robert A.
+  - family: Nickelsburg
+    given: George W. E.
+  page: 311-343
+  publisher: Fortress and Scholars Press
+  publisher-place: Philadelphia and Atlanta
+  issued:
+    date-parts:
+    - - 1986
+
+# 6.2.13 An Article in a Festschrift
+- id: vanseters:1995
+  type: chapter
+  author:
+  - family: Van Seters
+    given: John
+  title: "The Theology of the Yahwist: A Preliminary Sketch"
+  title-short: Theology of the Yahwist
+  container-title: "\"Wer ist wie du, Herr, unter den Göttern?\": Studien zur Theologie und Religionsgeschichte Israels für
+    Otto Kaiser zum 70. Geburtstag"
+  editor:
+  - family: Kottsieper
+    given: Ingo
+  - literal: others
+  page: 219-228
+  publisher: Vandenhoeck & Ruprecht
+  publisher-place: Göttingen
+  issued:
+    date-parts:
+    - - 1995
+
+# 6.2.14 An Introduction, Preface, or Foreword Written by Someone Other Than the Author
+- id: boers:1996
+  type: chapter
+  author:
+  - family: Boers
+    given: Hendrikus
+  title: Introduction
+  container-title: "How to Read the New Testament: An Introduction to Linguistic and Historical-Critical Methodology"
+  container-author:
+  - family: Egger
+    given: Wilhelm
+  translator:
+  - family: Heinegg
+    given: Peter
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1996
+
+# 6.2.15 Multiple Publishers for a Single Book
+  annote: 'Hendrikus Boers, introduction to <i>How to Read the New Testament: An Introduction to Linguistic and Historical-Critical
+    Methodology</i>, by Wilhelm Egger, trans. Peter Heinegg (Peabody, MA: Hendrickson, 1996),'
+  note: |
+    sbl:
+      subsequent_annote: Boers, introduction,
+- id: gerhardsson:1961
+  type: book
+  author:
+  - family: Gerhardsson
+    given: Birger
+  title: "Memory and Manuscript: Oral Tradition and Written Transmission in Rabbinic Judaism and Early Christianity"
+  collection-title: Acta Seminarii Neotestamentici Upsaliensis
+  collection-number: "22"
+  publisher: Gleerup and Munksgaard
+  publisher-place: Lund and Copenhagen
+  issued:
+    date-parts:
+    - - 1961
+  note: |
+    sbl:
+      shortseries: ASNU
+
+# 6.2.16 A Revised Edition
+  collection-title-short: ASNU
+- id: pritchard:1969
+  type: book
+  editor:
+  - family: Pritchard
+    given: James B.
+  title: Ancient Near Eastern Texts Relating to the Old Testament
+  edition: "3"
+  publisher: Princeton University Press
+  publisher-place: Princeton
+  issued:
+    date-parts:
+    - - 1969
+
+- id: blenkinsopp:1996
+  type: book
+  author:
+  - family: Blenkinsopp
+    given: Joseph
+  title: A History of Prophecy in Israel
+  edition: rev. and enl. ed
+  publisher: Westminster John Knox
+  publisher-place: Louisville
+  issued:
+    date-parts:
+    - - 1996
+
+# 6.2.17 A Recent Reprint Title
+- id: vanseters:1997
+  type: book
+  author:
+  - family: Van Seters
+    given: John
+  title: "In Search of History: Historiography in the Ancient World and the Origins of Biblical History"
+  publisher: Eisenbrauns
+  publisher-place: Winona Lake, IN
+  issued:
+    date-parts:
+    - - 1997
+  original-publisher: Yale University Press
+  original-publisher-place: New Haven
+  original-date:
+    date-parts:
+    - - 1983
+
+# 6.2.18 A Reprint Title in the Public Domain
+- id: deissmann:1995
+  type: book
+  author:
+  - family: Deissmann
+    given: Gustav Adolf
+  title: "Light from the Ancient East: The New Testament Illustrated by Recently Discovered Texts of the Graeco-Roman World"
+  translator:
+  - family: Strachan
+    given: Lionel R. M.
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1995
+  original-date:
+    date-parts:
+    - - 1927
+
+# 6.2.19 A Forthcoming Book
+- id: harrison+welborn:forthcoming
+  type: book
+  editor:
+  - family: Harrison
+    given: James R.
+  - family: Welborn
+    given: L. L.
+  title: "The First Urban Churches 2: Roman Corinth"
+  title-short: Roman Corinth
+  collection-title: Writings from the Greco-Roman World Supplement Series
+  publisher: SBL Press
+  publisher-place: Atlanta
+  status: forthcoming
+  note: |
+    sbl:
+      shortseries: WGRWSup
+
+# 6.2.20 A Multivolume Work
+  collection-title-short: WGRWSup
+- id: harnack:1896-1905
+  type: book
+  author:
+  - family: Harnack
+    given: Adolf
+  title: History of Dogma
+  translator:
+  - family: Buchanan
+    given: Neil
+  number-of-volumes: "7"
+  publisher: Little, Brown
+  publisher-place: Boston
+  issued:
+    date-parts:
+    - - 1896
+    - - 1905
+  note: |
+    sbl:
+      origlanguage: "from the 3rd German ed."
+
+# 6.2.21 A Titled Volume in a Multivolume, Edited Work
+- id: winter+clarke:1993
+  type: book
+  editor:
+  - family: Winter
+    given: Bruce W.
+  - family: Clarke
+    given: Andrew D.
+  title: The Book of Acts in Its Ancient Literary Setting
+  title-short: Book of Acts
+  volume: "1"
+  collection-title: The Book of Acts in Its First Century Setting
+  publisher: Eerdmans
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 1993
+  note: |
+    sbl:
+      maintitle: "The Book of Acts in Its First Century Setting"
+      maineditor: "Winter, Bruce W."
+
+# 6.2.22 A Chapter within a Multivolume Work
+- id: mason:1996
+  type: chapter
+  author:
+  - family: Mason
+    given: Steve
+  title: Josephus on Canon and Scriptures
+  page: 217-235
+  volume: "1"
+  part: "1"
+  container-title: "Hebrew Bible/Old Testament: The History of Its Interpretation"
+  editor:
+  - family: Sæbø
+    given: Magne
+  publisher: Vandenhoeck & Ruprecht
+  publisher-place: Göttingen
+  issued:
+    date-parts:
+    - - 1996
+  note: |
+    sbl:
+      maintitle: "Hebrew Bible/Old Testament: The History of Its Interpretation"
+
+# 6.2.23 A Chapter within a Titled Volume in a Multivolume Work
+- id: peterson:1993
+  type: chapter
+  author:
+  - family: Peterson
+    given: David
+  title: The Motif of Fulfilment and the Purpose of Luke-Acts
+  title-short: Motif of Fulfilment
+  page: 83-104
+  container-title: The Book of Acts in Its Ancient Literary Setting
+  volume: "1"
+  collection-title: The Book of Acts in Its First Century Setting
+  publisher: Eerdmans
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 1993
+  note: |
+    sbl:
+      bookeditor: "Winter, Bruce W. and Clarke, Andrew D."
+      maintitle: "The Book of Acts in Its First Century Setting"
+      maineditor: "Winter, Bruce W."
+
+# 6.2.24 A Work in a Series
+- id: hofius:1989
+  type: book
+  author:
+  - family: Hofius
+    given: Otfried
+  title: Paulusstudien
+  collection-title: Wissenschaftliche Untersuchungen zum Neuen Testament
+  collection-number: "51"
+  publisher: Mohr Siebeck
+  publisher-place: Tübingen
+  issued:
+    date-parts:
+    - - 1989
+  note: |
+    sbl:
+      shortseries: WUNT
+
+  collection-title-short: WUNT
+- id: jeremias:1967
+  type: book
+  author:
+  - family: Jeremias
+    given: Joachim
+  title: The Prayers of Jesus
+  title-short: Prayers
+  collection-title: Studies in Biblical Theology
+  collection-number: "2/6"
+  publisher: Allenson
+  publisher-place: Naperville, IL
+  issued:
+    date-parts:
+    - - 1967
+  note: |
+    sbl:
+      shortseries: SBT
+      seriesseries: "2"
+
+# 6.2.25 Electronic Book
+  collection-title-short: SBT
+- id: reventlow:2009
+  type: book
+  author:
+  - family: Reventlow
+    given: Henning Graf
+  title: From the Old Testament to Origen
+  volume: "1"
+  translator:
+  - family: Perdue
+    given: Leo G.
+  publisher: Society of Biblical Literature
+  publisher-place: Atlanta
+  issued:
+    date-parts:
+    - - 2009
+  medium: Nook
+  note: |
+    sbl:
+      maintitle: "History of Biblical Interpretation"
+
+- id: wright:2014
+  type: book
+  author:
+  - family: Wright
+    given: Jacob L.
+  title: David, King of Israel, and Caleb in Biblical Memory
+  title-short: David, King of Israel
+  publisher: Cambridge University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 2014
+  medium: Kindle edition
+
+- id: killebrew+steiner:2014
+  type: book
+  editor:
+  - family: Killebrew
+    given: Ann E.
+  - family: Steiner
+    given: Margreet
+  title: "The Oxford Handbook of the Archaeology of the Levant: c. 8000–332 BCE"
+  title-short: Archaeology of the Levant
+  publisher: Oxford University Press
+  publisher-place: Oxford
+  issued:
+    date-parts:
+    - - 2014
+  DOI: 10.1093/oxfordhb/9780199212972.001.0001
+
+- id: kaufman:1974
+  type: book
+  author:
+  - family: Kaufman
+    given: Stephen
+  title: The Akkadian Influences on Aramaic
+  collection-title: Assyriological Studies
+  collection-number: "19"
+  publisher: The Oriental Institute of the University of Chicago
+  publisher-place: Chicago
+  issued:
+    date-parts:
+    - - 1974
+  URL: http://oi.uchicago.edu/pdf/as19.pdf
+  note: |
+    sbl:
+      shortseries: AS
+
+# =============================================================================
+# SECTION 6.3: JOURNAL ARTICLES, REVIEWS, AND DISSERTATIONS
+# =============================================================================
+
+# 6.3.1 A Journal Article
+  collection-title-short: AS
+- id: leyerle:1993
+  type: article-journal
+  author:
+  - family: Leyerle
+    given: Blake
+  title: John Chrysostom on the Gaze
+  title-short: Chrysostom
+  container-title: Journal of Early Christian Studies
+  volume: "1"
+  page: 159-174
+  issued:
+    date-parts:
+    - - 1993
+  note: |
+    sbl:
+      shortjournal: JECS
+
+# 6.3.2 A Journal Article with Multiple Page Locations and Volumes
+  container-title-short: JECS
+- id: wildberger:1965
+  type: article-journal
+  author:
+  - family: Wildberger
+    given: Hans
+  title: "Das Abbild Gottes: Gen 1:26–30"
+  container-title: Theologische Zeitschrift
+  volume: "21"
+  page: 245-259, 481-501
+  issued:
+    date-parts:
+    - - 1965
+  note: |
+    sbl:
+      shortjournal: TZ
+
+  container-title-short: TZ
+- id: wellhausen:1876-1877
+  type: article-journal
+  author:
+  - family: Wellhausen
+    given: Julius
+  title: Die Composition des Hexateuchs
+  container-title: Jahrbuch für deutsche Theologie
+  volume: "21"
+  page: "392–450; 22 (1877): 407–479"
+  issued:
+    date-parts:
+    - - 1876
+  note: |
+    sbl:
+      shortjournal: JDT
+
+# 6.3.3 A Journal Article Republished in a Collected Volume
+  container-title-short: JDT
+- id: freedman:1977
+  type: article-journal
+  author:
+  - family: Freedman
+    given: David Noel
+  title: "Pottery, Poetry, and Prophecy: An Essay on Biblical Poetry"
+  container-title: Journal of Biblical Literature
+  volume: "96"
+  page: 5-26
+  issued:
+    date-parts:
+    - - 1977
+  note: |
+    sbl:
+      subsequent_annote: David Noel Freedman, "Pottery, Poetry, and Prophecy: An Essay on Biblical Poetry," in <i>Pottery, Poetry, and Prophecy: Studies in Early Hebrew Poetry</i> (Winona Lake, IN: Eisenbrauns, 1980),
+
+  container-title-short: JBL
+- id: freedman:1980
+  type: chapter
+  author:
+  - family: Freedman
+    given: David Noel
+  title: "Pottery, Poetry, and Prophecy: An Essay on Biblical Poetry"
+  container-title: "Pottery, Poetry, and Prophecy: Studies in Early Hebrew Poetry"
+  page: 1-22
+  publisher: Eisenbrauns
+  publisher-place: Winona Lake, IN
+  issued:
+    date-parts:
+    - - 1980
+
+# 6.3.4 A Book Review
+  note: |
+    sbl:
+      subsequent_annote: David Noel Freedman, "Pottery, Poetry, and Prophecy: An Essay on Biblical Poetry," in <i>Pottery, Poetry, and Prophecy: Studies in Early Hebrew Poetry</i> (Winona Lake, IN: Eisenbrauns, 1980),
+- id: teeple:1966
+  type: review
+  author:
+  - family: Teeple
+    given: Howard M.
+  reviewed-author:
+  - family: Robert
+    given: André
+  - family: Feuillet
+    given: André
+  reviewed-title: Introduction to the New Testament
+  container-title: Journal of Bible and Religion
+  volume: "34"
+  page: 368-370
+  issued:
+    date-parts:
+    - - 1966
+  note: |
+    sbl:
+      subsequent_annote: Teeple, review of <i>Introduction to the New Testament</i> (by Robert and Feuillet),
+
+  container-title-short: JBR
+  annote: 'Howard M. Teeple, review of <i>Introduction to the New Testament</i>, by André Robert and André Feuillet, <i>JBR</i>
+    34 (1966): 368-70'
+- id: pelikan:1992
+  type: review
+  author:
+  - family: Pelikan
+    given: Jaroslav
+  title: The Things That You're Liable to Read in the Bible
+  reviewed-author:
+  - family: Freedman
+    given: David Noel
+  reviewed-title: The Anchor Bible Dictionary
+  container-title: New York Times Review of Books
+  page: "3"
+  issued:
+    date-parts:
+    - - 1992
+      - 12
+      - 20
+
+  annote: Jaroslav Pelikan, "The Things That You're Liable to Read in the Bible," review of <i>The Anchor Bible 
+    Dictionary</i>, ed. David Noel Freedman, <i>New York Times Review of Books</i>, 20 December 1992, 3
+- id: petersen:1988
+  type: review
+  author:
+  - family: Petersen
+    given: David L.
+  title: "Hebrew Bible Textbooks: A Review Article"
+  container-title: Critical Review of Books in Religion
+  volume: "1"
+  page: 1-18
+  issued:
+    date-parts:
+    - - 1988
+  note: |
+    sbl:
+      shortjournal: CRBR
+
+# 6.3.5 An Unpublished Dissertation or Thesis
+  container-title-short: CRBR
+  title-short: Hebrew Bible Textbooks
+- id: klosinski:1988
+  type: thesis
+  author:
+  - family: Klosinski
+    given: Lee E.
+  title: Meals in Mark
+  genre: PhD diss.
+  publisher: The Claremont Graduate School
+  issued:
+    date-parts:
+    - - 1988
+
+# 6.3.6 An Article in a Multivolume Encyclopaedia or Dictionary
+- id: IDB
+  type: book
+  editor:
+  - family: Buttrick
+    given: George A.
+  title: The Interpreter's Dictionary of the Bible
+  title-short: IDB
+  number-of-volumes: "4"
+  publisher: Abingdon
+  publisher-place: New York
+  issued:
+    date-parts:
+    - - 1962
+  note: |
+    sbl:
+      shorthand: IDB
+
+  annote: Krister Stendahl, "Biblical Theology, Contemporary," <i>IDB</i> 1:418–32
+- id: stendahl:1962
+  type: entry-encyclopedia
+  author:
+  - family: Stendahl
+    given: Krister
+  title: Biblical Theology, Contemporary
+  title-short: Biblical Theology
+  volume: "1"
+  page: 418-432
+  container-title: The Interpreter's Dictionary of the Bible
+  editor:
+  - family: Buttrick
+    given: George A.
+  publisher: Abingdon
+  publisher-place: New York
+  issued:
+    date-parts:
+    - - 1962
+  note: |
+    sbl:
+      xref: IDB
+
+# 6.3.7 An Article in a Single-Volume Encyclopaedia or Dictionary
+  annote: Krister Stendahl, "Biblical Theology, Contemporary," <i>IDB</i> 1:418–32
+  number-of-volumes: '4'
+- id: DOTP
+  type: book
+  editor:
+  - family: Alexander
+    given: T. Desmond
+  - family: Baker
+    given: David W.
+  title: "Dictionary of the Old Testament: Pentateuch"
+  title-short: DOTP
+  publisher: InterVarsity
+  publisher-place: Downers Grove, IL
+  issued:
+    date-parts:
+    - - 2003
+  note: |
+    sbl:
+      shorthand: DOTP
+
+  annote: Dennis T. Olson, "Numbers, Book of," <i>DOTP</i>, 611–18
+- id: olson:2003
+  type: entry-encyclopedia
+  author:
+  - family: Olson
+    given: Dennis T.
+  title: Numbers, Book of
+  title-short: Numbers
+  page: 611-618
+  container-title: "Dictionary of the Old Testament: Pentateuch"
+  editor:
+  - family: Alexander
+    given: T. Desmond
+  - family: Baker
+    given: David W.
+  publisher: InterVarsity
+  publisher-place: Downers Grove, IL
+  issued:
+    date-parts:
+    - - 2003
+  note: |
+    sbl:
+      xref: DOTP
+
+# 6.3.8 An Article in a Lexicon or Theological Dictionary
+  annote: Dennis T. Olson, "Numbers, Book of," <i>DOTP</i>, 611–18
+- id: NIDNTT
+  type: book
+  editor:
+  - family: Brown
+    given: Colin
+  title: New International Dictionary of New Testament Theology
+  title-short: NIDNTT
+  number-of-volumes: "4"
+  publisher: Zondervan
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 1975
+    - - 1985
+  note: |
+    sbl:
+      shorthand: NIDNTT
+
+  annote: Karl Dahn and Walter L. Liefeld, "See, Vision, Eye," <i>NIDNTT</i> 3:511–21
+- id: dahn+liefeld:see+vision+eye
+  type: entry-dictionary
+  author:
+  - family: Dahn
+    given: Karl
+  - family: Liefeld
+    given: Walter L.
+  title: See, Vision, Eye
+  volume: "3"
+  page: 511-521
+  container-title: New International Dictionary of New Testament Theology
+  editor:
+  - family: Brown
+    given: Colin
+  publisher: Zondervan
+  publisher-place: Grand Rapids
+  note: |
+    sbl:
+      xref: NIDNTT
+
+  annote: Karl Dahn and Walter L. Liefeld, "See, Vision, Eye," <i>NIDNTT</i> 3:511–21
+  number-of-volumes: '4'
+  issued:
+    date-parts:
+    - - 1975
+      - 
+    - - 1985
+      - 
+- id: TDNT
+  type: book
+  editor:
+  - family: Kittel
+    given: Gerhard
+  - family: Friedrich
+    given: Gerhard
+  title: Theological Dictionary of the New Testament
+  title-short: TDNT
+  translator:
+  - family: Bromiley
+    given: Geoffrey W.
+  number-of-volumes: "10"
+  publisher: Eerdmans
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 1964
+    - - 1976
+  note: |
+    sbl:
+      shorthand: TDNT
+
+  annote: Hermann W. Beyer, "διακονέω, διακονία, κτλ," <i>TDNT</i> 2:81–93
+- id: beyer:diakoneo+diakonia+ktl
+  type: entry-dictionary
+  author:
+  - family: Beyer
+    given: Hermann W.
+  title: διακονέω, διακονία, κτλ
+  volume: "2"
+  page: 81-93
+  container-title: Theological Dictionary of the New Testament
+  note: |
+    sbl:
+      xref: TDNT
+
+  title-short: TDNT
+  annote: Hermann W. Beyer, "διακονέω, διακονία, κτλ," <i>TDNT</i> 2:81–93
+  editor:
+  - family: Kittel
+    given: Gerhard
+  - family: Friedrich
+    given: Gerhard
+  number-of-volumes: '10'
+  publisher: Eerdmans
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 1964
+      - 
+    - - 1976
+      - 
+- id: TLNT
+  type: book
+  author:
+  - family: Spicq
+    given: Ceslas
+  title: Theological Lexicon of the New Testament
+  title-short: TLNT
+  editor:
+  - family: Ernest
+    given: James D.
+  translator:
+  - family: Ernest
+    given: James D.
+  number-of-volumes: "3"
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1994
+  note: |
+    sbl:
+      shorthand: TLNT
+
+  annote: Ceslas Spicq, "ἀτακτέω, ἄτακτος, ἀτάκτως," <i>TLNT</i> 1:223–24
+- id: spicq:atakteo+ataktos+ataktos
+  type: entry-dictionary
+  author:
+  - family: Spicq
+    given: Ceslas
+  title: ἀτακτέω, ἄτακτος, ἀτάκτως
+  volume: "1"
+  page: 223-224
+  container-title: Theological Lexicon of the New Testament
+  note: |
+    sbl:
+      xref: TLNT
+
+  annote: Ceslas Spicq, "ἀτακτέω, ἄτακτος, ἀτάκτως," <i>TLNT</i> 1:223–24
+  editor:
+  - family: Ernest
+    given: James D.
+  number-of-volumes: '3'
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1994
+- id: spicq:amoibe
+  type: entry-dictionary
+  author:
+  - family: Spicq
+    given: Ceslas
+  title: ἀμοιβή
+  volume: "1"
+  page: 95-96
+  container-title: Theological Lexicon of the New Testament
+  note: |
+    sbl:
+      xref: TLNT
+
+  annote: Ceslas Spicq, "ἀμοιβή," <i>TLNT</i> 1:95–96
+  editor:
+  - family: Ernest
+    given: James D.
+  number-of-volumes: '3'
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1994
+- id: beyer:diakoneo
+  type: entry-dictionary
+  author:
+  - family: Beyer
+    given: Hermann W.
+  title: διακονέω
+  volume: "2"
+  page: 81-87
+  container-title: Theological Dictionary of the New Testament
+  note: |
+    sbl:
+      xref: TDNT
+
+  title-short: TDNT
+  annote: Beyer, <i>TDNT</i> 2:83
+  editor:
+  - family: Kittel
+    given: Gerhard
+  - family: Friedrich
+    given: Gerhard
+  number-of-volumes: '10'
+  publisher: Eerdmans
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 1964
+      - 
+    - - 1976
+      - 
+- id: dahn:horao
+  type: entry-dictionary
+  author:
+  - family: Dahn
+    given: Karl
+  title: ὁράω
+  volume: "3"
+  page: 511-518
+  container-title: New International Dictionary of New Testament Theology
+  note: |
+    sbl:
+      xref: NIDNTT
+
+# 6.3.9 A Paper Presented at a Professional Society
+  annote: Karl Dahn, "ὁράω," <i>NIDNTT</i> 3:511–18
+  editor:
+  - family: Brown
+    given: Colin
+  number-of-volumes: '4'
+  publisher: Zondervan
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 1975
+      - 
+    - - 1985
+      - 
+- id: niditch:1994
+  type: speech
+  author:
+  - family: Niditch
+    given: Susan
+  title: Oral Culture and Written Documents
+  title-short: Oral Culture
+  event: Annual Meeting of the New England Region of the SBL
+  event-place: Worcester, MA
+  issued:
+    date-parts:
+    - - 1994
+      - 3
+      - 25
+
+# 6.3.10 An Article in a Magazine
+  genre: paper
+  event-title: Annual Meeting of the New England Region of the SBL
+  annote: Susan Niditch, "Oral Culture and Written Documents" (paper presented at the Annual Meeting of the New England 
+    Region of the SBL, Worcester, MA, March 25, 1994),
+- id: saldarini:1998
+  type: article-magazine
+  author:
+  - family: Saldarini
+    given: Anthony J.
+  title: Babatha's Story
+  container-title: Biblical Archaeology Review
+  volume: "24"
+  issue: "2"
+  page: 23-33, 36-37, 72-74
+  issued:
+    date-parts:
+    - - 1998
+  note: |
+    sbl:
+      shortjournal: BAR
+
+# 6.3.11 An Electronic Journal Article
+  container-title-short: BAR
+- id: springer:2014
+  type: article-journal
+  author:
+  - family: Springer
+    given: Carl P. E.
+  title: "Of Roosters and *Repetitio*: Ambrose's *Aeterne rerum conditor*"
+  container-title: Vigiliae Christianae
+  volume: "68"
+  page: 155-177
+  issued:
+    date-parts:
+    - - 2014
+  DOI: 10.1163/15700720-12341158
+  note: |
+    sbl:
+      shortjournal: VC
+
+  container-title-short: VC
+  title-short: Of Roosters and *Repetitio*
+- id: truehart:1996
+  type: article-magazine
+  author:
+  - family: Truehart
+    given: Charles
+  title: Welcome to the Next Church
+  title-short: Next Church
+  container-title: Atlantic Monthly
+  volume: "278"
+  page: 37-58
+  issued:
+    date-parts:
+    - - 1996
+      - 8
+  URL: http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm
+
+- id: kirk:2007
+  type: article-journal
+  author:
+  - family: Kirk
+    given: Alan
+  title: Karl Polanyi, Marshall Sahlins, and the Study of Ancient Social Relations
+  title-short: Karl Polanyi
+  container-title: Journal of Biblical Literature
+  volume: "126"
+  page: 182-191
+  issued:
+    date-parts:
+    - - 2007
+  DOI: 10.2307/27638428
+  URL: http://www.jstor.org/stable/27638428
+  note: |
+    sbl:
+      shortjournal: JBL
+
+# =============================================================================
+# SECTION 6.4: SPECIAL EXAMPLES
+# =============================================================================
+
+# 6.4.1 Texts from the Ancient Near East
+
+# COS
+  container-title-short: JBL
+- id: COS
+  type: book
+  editor:
+  - family: Hallo
+    given: William W.
+  title: The Context of Scripture
+  title-short: COS
+  number-of-volumes: "3"
+  publisher: Brill
+  publisher-place: Leiden
+  issued:
+    date-parts:
+    - - 1997
+    - - 2002
+  note: |
+    sbl:
+      shorthand: COS
+      options: [skipbib]
+          subsequent_annote: "Great Hymn to the Aten," <i>COS</i> 1.26:44–46
+
+  annote: '"The Great Hymn to the Aten," trans. Miriam Lichtheim (<i>COS</i> 1.26:44–46)'
+- id: hallo:1997
+  type: book
+  editor:
+  - family: Hallo
+    given: William W.
+  title: Canonical Compositions from the Biblical World
+  title-short: COS
+  volume: "1"
+  publisher: Brill
+  publisher-place: Leiden
+  issued:
+    date-parts:
+    - - 1997
+  note: |
+    sbl:
+      maintitle: "The Context of Scripture"
+      shorthand: COS
+      xref: COS
+      options: [skipbiblist]
+
+- id: greathymnaten
+  type: document
+  title: The Great Hymn to the Aten
+  title-short: Great Hymn to the Aten
+  translator:
+  - family: Lichtheim
+    given: Miriam
+  section: "26"
+  page: 44-46
+  note: |
+    sbl:
+      entrysubtype: COS
+      related:
+        - id: hallo:1997
+          type: container
+          options: [usevolume=false, skipbiblist]
+
+# ANET
+  annote: '"The Great Hymn to the Aten" (trans. Miriam Lichtheim; COS 1.26:44–46)'
+- id: ANET
+  type: book
+  editor:
+  - family: Pritchard
+    given: James B.
+  title: Ancient Near Eastern Texts Relating to the Old Testament
+  title-short: ANET
+  edition: "3"
+  publisher: Princeton University Press
+  publisher-place: Princeton
+  issued:
+    date-parts:
+    - - 1969
+  note: |
+    sbl:
+      shorthand: ANET
+
+  annote: '"Suppiluliumas and the Egyptian Queen," trans. Albrecht Goetz (<i>ANET</i>, 319)'
+- id: suppiluliumas
+  type: document
+  title: Suppiluliumas and the Egyptian Queen
+  translator:
+  - family: Goetze
+    given: Albrecht
+  note: |
+    sbl:
+      related:
+        - id: ANET
+          type: container
+
+# Other ANE Anthologies
+  annote: '"Suppiluliumas and the Egyptian Queen," trans. Albrecht Goetz (<i>ANET</i>, 319)'
+- id: dalley:1991
+  type: book
+  author:
+  - family: Dalley
+    given: Stephanie
+  title: Myths from Mesopotamia
+  publisher: Oxford University Press
+  publisher-place: Oxford
+  issued:
+    date-parts:
+    - - 1991
+
+  annote: '"Erra and Ishum" (Stephanie Dalley, <i>Myths from Mesopotamia</i> [Oxford: Oxford University Press, 1991], 282–315)'
+- id: erraandishum
+  type: document
+  title: Erra and Ishum
+  page: 282-315
+  note: |
+    sbl:
+      related:
+        - id: dalley:1991
+          type: container
+
+- id: foster:1993
+  type: book
+  author:
+  - family: Foster
+    given: Benjamin
+  title: "Before the Muses: An Anthology of Akkadian Literature"
+  title-short: Muses
+  publisher: CDL
+  publisher-place: Bethesda, MD
+  issued:
+    date-parts:
+    - - 1993
+
+  annote: '"Erra and Ishum" (Benjamin Foster, <i>Before the Muses: An Anthology of Akkadian Literature</i> [Bethesda, MD:
+    CDL, 1993], 1:771–805)'
+- id: erraandishum:foster
+  type: document
+  title: Erra and Ishum
+  page: 771-805
+  note: |
+    sbl:
+      related:
+        - id: foster:1993
+          type: container
+          options: [usevolume=false]
+
+# AEL
+- id: AEL
+  type: book
+  author:
+  - family: Lichtheim
+    given: Miriam
+  title: Ancient Egyptian Literature
+  title-short: AEL
+  number-of-volumes: "3"
+  publisher: University of California Press
+  publisher-place: Berkeley
+  issued:
+    date-parts:
+    - - 1971
+    - - 1980
+  note: |
+    sbl:
+      shorthand: AEL
+      options: [skipbib]
+
+  annote: '"The Doomed Prince" (<i>AEL</i> 2:200–203)'
+- id: lichtheim:1976
+  type: book
+  author:
+  - family: Lichtheim
+    given: Miriam
+  title: Ancient Egyptian Literature
+  title-short: AEL
+  publisher: University of California Press
+  publisher-place: Berkeley
+  issued:
+    date-parts:
+    - - 1976
+  note: |
+    sbl:
+      shorthand: AEL
+      xref: AEL
+      options: [skipbiblist]
+      subsequent_annote: "The Doomed Prince" (Miriam Lichtheim, <i>Ancient Egyptian Literature</i> [Berkeley: University of California Press, 1976], 2:200–203)
+
+  annote: '"The Great Hymn to the Aten," trans. Miriam Lichtheim (<i>COS</i> 1.26:44–46)'
+- id: doomedprince
+  type: document
+  title: The Doomed Prince
+  page: 200-203
+  note: |
+    sbl:
+      related:
+        - id: lichtheim:1976
+          type: container
+          options: [shorthand=short, usevolume=false, skipbiblist]
+
+- id: hoffner:1990
+  type: book
+  author:
+  - family: Hoffner
+    given: Harry A.
+    suffix: Jr.
+  editor:
+  - family: Beckman
+    given: Gary M.
+  title: Hittite Myths
+  collection-title: Writings from the Ancient World
+  collection-number: "2"
+  publisher: Scholars Press
+  publisher-place: Atlanta
+  issued:
+    date-parts:
+    - - 1990
+  note: |
+    sbl:
+      shortseries: WAW
+
+  collection-title-short: WAW
+  annote: '"The Disappearance of the Sun God," §3 (A I 11–17) (Harry A. Hoffner Jr., <i>Hittite Myths</i>, ed. Gary M. Beckman,
+    WAW 2 [Atlanta: Scholars Press, 1990], 26)'
+- id: disappearanceofsungod
+  type: document
+  title: The Disappearance of the Sun God
+  note: |
+    sbl:
+      related:
+        - id: hoffner:1990
+          type: container
+
+# Royal Inscriptions
+- id: RIMA
+  type: book
+  author:
+  - family: Grayson
+    given: Albert Kirk
+  title: Assyrian Rulers of the Early First Millennium BC (1114–859 BC)
+  collection-title: The Royal Inscriptions of Mesopotamia, Assyrian Periods
+  collection-number: "2"
+  publisher: University of Toronto Press
+  publisher-place: Toronto
+  issued:
+    date-parts:
+    - - 1991
+  note: |
+    sbl:
+      entrysubtype: RIMA
+      shortseries: RIMA
+      shorthand: RIMA
+      options: [skipbiblistshorthand]
+          subsequent_annote: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44)
+
+  collection-title-short: RIMA
+  annote: 'Ashur Inscription, obv. lines 10–17 (Albert Kirk Grayson, <i>Assyrian Rulers of the Early First Millennium BC [1114–859
+    BC]</i>, RIMA 2 [Toronto: University of Toronto Press, 1991], 143–44)'
+- id: ashurinscription
+  type: document
+  title: Ashur Inscription
+  page: 143-144
+  note: |
+    sbl:
+      entrysubtype: inscription
+      related:
+        - id: RIMA
+          type: container
+          options: [skipbiblistshorthand, shorthand=short]
+
+- id: ABC
+  type: book
+  author:
+  - family: Grayson
+    given: Albert Kirk
+  title: Assyrian and Babylonian Chronicles
+  title-short: ABC
+  collection-title: Texts from Cuneiform Sources
+  collection-number: "5"
+  publisher: Augustin
+  publisher-place: Locust Valley, NY
+  issued:
+    date-parts:
+    - - 1975
+  note: |
+    sbl:
+      shortseries: TCS
+      shorthand: ABC
+
+  collection-title-short: TCS
+  annote: Esarhaddon Chronicle, lines 3–4 (<i>ABC</i>, 125)
+- id: esarhaddonchronicle
+  type: document
+  title: Esarhaddon Chronicle
+  note: |
+    sbl:
+      entrysubtype: chronicle
+      related:
+        - id: ABC
+          type: container
+          options: [shorthand=short]
+
+# ARM
+- id: ARM1
+  type: book
+  author:
+  - family: Dossin
+    given: Georges
+  title: Lettres
+  collection-title: Archives royales de Mari
+  collection-number: "1"
+  publisher: Geuthner
+  publisher-place: Paris
+  issued:
+    date-parts:
+    - - 1967
+  original-date:
+    date-parts:
+    - - 1946
+  note: |
+    sbl:
+      shortseries: ARM
+      shorthand: ARM
+      options: [skipbiblistshorthand]
+
+  collection-title-short: ARM
+- id: ARMT1
+  type: book
+  author:
+  - family: Dossin
+    given: Georges
+  title: Correspondance de Šamši-Addu et de ses fils
+  collection-title: Archives royales de Mari, transcrite et traduite
+  collection-number: "1"
+  publisher: Imprimerie nationale
+  publisher-place: Paris
+  issued:
+    date-parts:
+    - - 1950
+  note: |
+    sbl:
+      shortseries: ARMT
+      shorthand: ARMT
+      options: [skipbiblistshorthand]
+
+# 6.4.2 Loeb Classical Library (Greek and Latin)
+  collection-title-short: ARMT
+- id: josephus
+  type: book
+  translator:
+  - family: Thackeray
+    given: Henry St. J.
+  - literal: others
+  number-of-volumes: "10"
+  collection-title: Loeb Classical Library
+  publisher: Harvard University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 1926
+    - - 1965
+  note: |
+    sbl:
+      shortseries: LCL
+      subsequent_annote: Josephus, <i>Ant</i>.
+      subsequent_suffix: Thackeray, LCL
+
+  title-short: Ant
+  collection-title-short: LCL
+  annote: Josephus, <i>Ant</i>.
+  author:
+  - literal: Josephus
+- id: josephus:ant
+  type: classic
+  author:
+  - literal: Josephus
+  title: Ant.
+  note: |
+    sbl:
+      entrysubtype: classical
+      xref: josephus
+          subsequent_suffix: Thackeray, LCL
+
+  annote: Josephus, <i>Ant</i>.
+  title-short: Ant
+- id: tacitus
+  type: book
+  author:
+  - literal: Tacitus
+  title: The Histories and The Annals
+  translator:
+  - family: Moore
+    given: Clifford H.
+  - family: Jackson
+    given: John
+  number-of-volumes: "4"
+  collection-title: Loeb Classical Library
+  publisher: Harvard University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 1937
+  note: |
+    sbl:
+      shortseries: LCL
+          subsequent_suffix: Jackson, LCL
+
+  title-short: Ann
+  collection-title-short: LCL
+  annote: Tacitus, <i>Ann</i>.
+- id: tacitus:ann
+  type: classic
+  author:
+  - literal: Tacitus
+  title: Ann.
+  note: |
+    sbl:
+      entrysubtype: classical
+      xref: tacitus
+          subsequent_suffix: Jackson, LCL
+
+  annote: Tacitus, <i>Ann</i>.
+  title-short: Ann
+- id: josephus:ant:thackery
+  type: classic
+  author:
+  - literal: Josephus
+  title: Ant.
+  translator:
+  - family: Thackeray
+    given: ""
+  collection-title: Loeb Classical Library
+  note: |
+    sbl:
+      entrysubtype: classical
+      shortseries: LCL
+      xref: josephus
+          subsequent_suffix: Thackeray, LCL
+
+  collection-title-short: LCL
+  annote: Josephus, <i>Ant</i>.
+  title-short: Ant
+- id: tacitus:ann:jackson
+  type: classic
+  author:
+  - literal: Tacitus
+  title: Ann.
+  translator:
+  - family: Jackson
+    given: ""
+  collection-title: Loeb Classical Library
+  note: |
+    sbl:
+      entrysubtype: classical
+      shortseries: LCL
+      xref: tacitus
+          subsequent_suffix: Jackson, LCL
+
+  collection-title-short: LCL
+  annote: Tacitus, <i>Ann</i>.
+  title-short: Ann
+- id: josephus:ant1-19
+  type: book
+  author:
+  - family: Josephus
+    given: Flavius
+  title: The Jewish Antiquities, Books 1–19
+  title-short: Ant
+  translator:
+  - family: Thackeray
+    given: Henry St. J.
+  - literal: others
+  collection-title: Loeb Classical Library
+  publisher: Harvard University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 1930
+    - - 1965
+  note: |
+    sbl:
+      shortseries: LCL
+      shortauthor: Josephus
+      xref: josephus
+      options: [skipbib]
+          subsequent_suffix: Thackeray, LCL
+
+# 6.4.3 Papyri, Ostraca, and Epigraphica
+  collection-title-short: LCL
+  annote: Josephus, <i>Ant</i>.
+- id: pcairzen
+  type: document
+  editor:
+  - family: Edgar
+    given: C. C.
+  title: Zenon Papyri, Catalogue général des antiquités égyptiennes du Musée du Caire
+  publisher-place: Cairo
+  note: |
+    sbl:
+      shorthand: P.Cair.Zen.
+      options: [skipbib, useeditor=false]
+      subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)
+
+  title-short: Select Papyri
+  annote: P. Cair. Zen.
+- id: hunt+edgar:1932
+  type: book
+  author:
+  - family: Hunt
+    given: Arthur S.
+  - family: Edgar
+    given: Campbell C.
+  title: Select Papyri
+  collection-title: Loeb Classical Library
+  publisher: Harvard University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 1932
+  note: |
+    sbl:
+      shortseries: LCL
+      subsequent_annote: P. Cair. Zen. 59003 (Hunt and Edgar §31)
+
+  collection-title-short: LCL
+  annote: 'P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University
+    Press, 1932], 1:96)'
+- id: pcairzen:hunt+edgar
+  type: document
+  editor:
+  - family: Edgar
+    given: C. C.
+  title: Zenon Papyri, Catalogue général des antiquités égyptiennes du Musée du Caire
+  publisher-place: Cairo
+  note: |
+    sbl:
+      shorthand: P.Cair.Zen.
+      options: [skipbib, useeditor=false]
+      subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)
+      related:
+        - id: hunt+edgar:1932
+          type: container
+          options: [useshorttitle=false]
+
+  title-short: Select Papyri
+  annote: P. Cair. Zen.
+- id: PGM
+  type: document
+  editor:
+  - family: Preisendanz
+    given: Karl
+  title: "Papyri Graecae Magicae: Die griechischen Zauberpapyri"
+  title-short: PGM
+  edition: "2"
+  publisher: Teubner
+  publisher-place: Stuttgart
+  issued:
+    date-parts:
+    - - 1973
+    - - 1974
+  note: |
+    sbl:
+      shorthand: PGM
+      options: [skipbib]
+      subsequent_annote: <i>PGM</i> III. 1–164 (Betz)
+
+  annote: <i>PGM</i>
+- id: betz:1996
+  type: book
+  author:
+  - family: Betz
+    given: Hans Dieter
+  title: The Greek Magical Papyri in Translation, Including the Demotic Spells
+  edition: "2"
+  publisher: University of Chicago Press
+  publisher-place: Chicago
+  issued:
+    date-parts:
+    - - 1996
+
+  annote: <i>PGM</i> III. 1–164 (Betz)
+- id: PGM:betz
+  type: document
+  editor:
+  - family: Preisendanz
+    given: Karl
+  title: "Papyri Graecae Magicae: Die griechischen Zauberpapyri"
+  title-short: PGM
+  edition: "2"
+  publisher: Teubner
+  publisher-place: Stuttgart
+  issued:
+    date-parts:
+    - - 1973
+    - - 1974
+  note: |
+    sbl:
+      shorthand: PGM
+      subsequent_annote: <i>PGM</i> III. 1–164 (Betz)
+      related:
+        - id: betz:1996
+          type: container
+          options: [usefullcite=false, useshorttitle=false]
+
+# 6.4.4 Ancient Epistles and Homilies
+  annote: <i>PGM</i>
+- id: heraclitus:epistle1
+  type: classic
+  author:
+  - literal: Heraclitus
+  title: Epistle 1
+
+  annote: Heraclitus, <i>Epistle 1</i>,
+  note: |
+    sbl:
+          subsequent_suffix: Worley
+- id: malherbe:1977
+  type: book
+  editor:
+  - family: Malherbe
+    given: Abraham J.
+  title: "The Cynic Epistles: A Study Edition"
+  collection-title: Sources for Biblical Study
+  collection-number: "12"
+  publisher: Scholars Press
+  publisher-place: Atlanta
+  issued:
+    date-parts:
+    - - 1977
+  note: |
+    sbl:
+      shortseries: SBS
+
+  collection-title-short: SBS
+- id: heraclitus:epistle1:worley
+  type: classic
+  author:
+  - literal: Heraclitus
+  title: Epistle 1
+  translator:
+  - family: Worley
+    given: David
+  page: "187"
+  note: |
+    sbl:
+      related:
+        - id: malherbe:1977
+          type: container
+      options: [skipbib=false, useseries=false]
+          subsequent_suffix: Worley
+
+# 6.4.5 ANF and NPNF, First and Second Series
+  annote: Heraclitus, <i>Epistle 1</i>,
+- id: ANF:abbreviation
+  type: book
+  title: The Ante-Nicene Fathers
+  title-short: ANF
+  note: |
+    sbl:
+      shorthand: ANF
+      options: [skipbib]
+
+  annote: The Clementine Homilies 1.3 (<i>ANF</i> 8:223)
+- id: ANF
+  type: book
+  editor:
+  - family: Roberts
+    given: Alexander
+  - family: Donaldson
+    given: James
+  title: The Ante-Nicene Fathers
+  title-short: ANF
+  number-of-volumes: "10"
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1994
+  original-date:
+    date-parts:
+    - - 1885
+    - - 1887
+  note: |
+    sbl:
+      shorthand: ANF
+      xref: ANF:abbreviation
+      options: [useeditor=false, skipbiblist]
+
+  annote: The Clementine Homilies 1.3 (<i>ANF</i> 8:223)
+- id: clementinehomilies
+  type: classic
+  title: The Clementine Homilies
+  note: |
+    sbl:
+      entrysubtype: churchfather
+      related:
+        - id: ANF
+          type: container
+          options: [useeditor=false, skipbiblist]
+
+- id: NPNF1:abbreviation
+  type: book
+  title: The Nicene and Post-Nicene Fathers, Series 1
+  title-short: NPNF¹
+  note: |
+    sbl:
+      shorthand: NPNF¹
+      options: [skipbib]
+
+  annote: Augustine, <i>Letters of St. Augustin</i> 28.3.5 (<i>NPNF¹</i> 1:252)
+- id: NPNF1
+  type: book
+  editor:
+  - family: Schaff
+    given: Philip
+  title: The Nicene and Post-Nicene Fathers, Series 1
+  title-short: NPNF¹
+  number-of-volumes: "14"
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1994
+  original-date:
+    date-parts:
+    - - 1886
+    - - 1889
+  note: |
+    sbl:
+      shorthand: NPNF¹
+      xref: NPNF1:abbreviation
+      options: [useeditor=false, skipbiblist]
+
+- id: augustine:letters
+  type: classic
+  author:
+  - literal: Augustine
+  title: The Letters of St. Augustin
+  title-short: Letters of St. Augustin
+  volume: "1"
+  note: |
+    sbl:
+      entrysubtype: churchfather
+      related:
+        - id: NPNF1
+          type: container
+          options: [useeditor=false, skipbiblist, skipbib]
+      options: [skipbib=false]
+
+# 6.4.6 J.-P. Migne's Patrologia Latina and Patrologia Graeca
+  annote: Augustine, <i>Letters of St. Augustin</i> 28.3.5 (NPNF¹ 1:252)
+- id: PL
+  type: book
+  editor:
+  - family: Migne
+    given: J.-P.
+  title: Patrologia Latina
+  number-of-volumes: "217"
+  publisher-place: Paris
+  issued:
+    date-parts:
+    - - 1844
+    - - 1855
+  note: |
+    sbl:
+      shorthand: PL
+
+- id: PG
+  type: book
+  editor:
+  - family: Migne
+    given: J.-P.
+  title: Patrologia Graeca
+  number-of-volumes: "162"
+  publisher-place: Paris
+  issued:
+    date-parts:
+    - - 1857
+    - - 1886
+  note: |
+    sbl:
+      shorthand: PG
+
+  annote: Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)
+- id: gregory:orationestheologicae
+  type: classic
+  author:
+  - literal: Gregory of Nazianzus
+  title: Orationes theologicae
+  volume: "36"
+  note: |
+    sbl:
+      entrysubtype: churchfather
+      related:
+        - id: PG
+          type: container
+          options: [useeditor=false]
+
+# 6.4.7 Strack-Billerbeck
+  annote: Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)
+- id: Str-B
+  type: book
+  author:
+  - family: Strack
+    given: Hermann L.
+  - family: Billerbeck
+    given: Paul
+  title: Kommentar zum Neuen Testament aus Talmud und Midrasch
+  number-of-volumes: "6"
+  publisher: Beck
+  publisher-place: Munich
+  issued:
+    date-parts:
+    - - 1922
+    - - 1961
+  note: |
+    sbl:
+      shorthand: Str-B
+
+# 6.4.8 ANRW
+  annote: See the discussion of ἐκρατοῦντο in Str-B 2:271
+- id: ANRW
+  type: book
+  editor:
+  - family: Temporini
+    given: Hildegard
+  - family: Haase
+    given: Wolfgang
+  title: "Aufstieg und Niedergang der römischen Welt: Geschichte und Kultur Roms im Spiegel der neueren Forschung"
+  title-short: ANRW
+  publisher: de Gruyter
+  publisher-place: Berlin
+  issued:
+    date-parts:
+    - - 1972
+  note: |
+    sbl:
+      shorthand: ANRW
+      titleaddon: "Part 2, Principat"
+          subsequent_annote: Anderson, "<i>Pepaideumenos</i>," <i>ANRW</i> 33.1:86
+
+  annote: 'Graham Anderson, "The <i>pepaideumenos</i> in Action: Sophists and Their Outlook in the Early Empire," <i>ANRW</i>
+    33.1:80–208'
+- id: anderson:pepaideumenos
+  type: chapter
+  author:
+  - family: Anderson
+    given: Graham
+  title: "The *pepaideumenos* in Action: Sophists and Their Outlook in the Early Empire"
+  title-short: "*Pepaideumenos*"
+  volume: "33"
+  part: "1"
+  page: 80-208
+  container-title: Aufstieg und Niedergang der römischen Welt
+  publisher: de Gruyter
+  publisher-place: New York
+  issued:
+    date-parts:
+    - - 1989
+  note: |
+    sbl:
+      entrysubtype: ANRW
+      related:
+        - id: ANRW
+          type: container
+          options: [skipbib]
+      options: [skipbib=false]
+          subsequent_annote: Anderson, "<i>Pepaideumenos</i>," <i>ANRW</i> 33.1:86
+
+# 6.4.9 Bible Commentaries
+  annote: 'Graham Anderson, "The <i>pepaideumenos</i> in Action: Sophists and Their Outlook in the Early Empire," ANRW 2.33.1:80–208'
+- id: hooker:1991
+  type: book
+  author:
+  - family: Hooker
+    given: Morna
+  title: The Gospel according to Saint Mark
+  collection-title: Black's New Testament Commentaries
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1991
+  note: |
+    sbl:
+      shortseries: BNTC
+
+  collection-title-short: BNTC
+  collection-number: '2'
+- id: petersen:2006
+  type: chapter
+  author:
+  - family: Petersen
+    given: David L.
+  title: Ezekiel
+  page: 1096-1167
+  container-title: "The HarperCollins Study Bible Fully Revised and Updated: New Revised Standard Version, with the Apocryphal/Deuterocanonical
+    Books"
+  editor:
+  - family: Attridge
+    given: Harold W.
+  - literal: others
+  publisher: HarperSanFrancisco
+  publisher-place: San Francisco
+  issued:
+    date-parts:
+    - - 2006
+
+- id: partain:1995
+  type: chapter
+  author:
+  - family: Partain
+    given: Jack G.
+  title: Numbers
+  page: 175-179
+  container-title: Mercer Commentary on the Bible
+  editor:
+  - family: Mills
+    given: Watson E.
+  - literal: others
+  publisher: Mercer University Press
+  publisher-place: Macon, GA
+  issued:
+    date-parts:
+    - - 1995
+
+# 6.4.10 Multivolume Commentaries
+- id: dahood:1965-1970
+  type: book
+  author:
+  - family: Dahood
+    given: Mitchell
+  title: Psalms
+  number-of-volumes: "3"
+  collection-title: Anchor Bible
+  collection-number: 16–17A
+  publisher: Doubleday
+  publisher-place: Garden City, NY
+  issued:
+    date-parts:
+    - - 1965
+    - - 1970
+  note: |
+    sbl:
+      shortseries: AB
+
+  collection-title-short: AB
+- id: dahood:1965
+  type: book
+  author:
+  - family: Dahood
+    given: Mitchell
+  title: "Psalms"
+  collection-title: Anchor Bible
+  collection-number: "16-17A"
+  publisher: Doubleday
+  publisher-place: Garden City, NY
+  issued:
+    date-parts:
+    - - 1965
+    - - 1970
+  note: |
+    sbl:
+      shortseries: AB
+      maintitle: Psalms
+
+  title-short: Psalms
+  collection-title-short: AB
+  number-of-volumes: '3'
+- id: dahood:1968
+  type: book
+  author:
+  - family: Dahood
+    given: Mitchell
+  title: "Psalms"
+  collection-title: Anchor Bible
+  collection-number: "16-17A"
+  publisher: Doubleday
+  publisher-place: Garden City, NY
+  issued:
+    date-parts:
+    - - 1965
+    - - 1970
+  note: |
+    sbl:
+      shortseries: AB
+      maintitle: Psalms
+
+  title-short: Psalms
+  collection-title-short: AB
+  number-of-volumes: '3'
+- id: NIB
+  type: book
+  editor:
+  - family: Keck
+    given: Leander E.
+  title: The New Interpreter's Bible
+  title-short: NIB
+  number-of-volumes: "12"
+  publisher: Abingdon
+  publisher-place: Nashville
+  issued:
+    date-parts:
+    - - 1994
+    - - 2004
+  note: |
+    sbl:
+      shorthand: NIB
+
+  annote: Patrick D. Miller, <i>NIB</i> 6:577
+- id: miller:2001
+  type: chapter
+  author:
+  - family: Miller
+    given: Patrick D.
+  title: "The Book of Jeremiah: Introduction, Commentary, and Reflections"
+  page: 553-926
+  container-title: Introduction to Prophetic Literature, Isaiah, Jeremiah, Baruch, Letter of Jeremiah, Lamentations, 
+    Ezekiel
+  volume: "6"
+  collection-title: The New Interpreter's Bible
+  editor:
+  - family: Keck
+    given: Leander E.
+  publisher: Abingdon
+  publisher-place: Nashville
+  issued:
+    date-parts:
+    - - 2001
+  note: |
+    sbl:
+      xref: NIB
+
+# 6.4.11 SBL Seminar Papers
+  annote: Patrick D. Miller, <i>NIB</i> 6:577
+- id: crenshaw:2001
+  type: paper-conference
+  author:
+  - family: Crenshaw
+    given: James L.
+  title: Theodicy in the Book of the Twelve
+  container-title: Society of Biblical Literature 2001 Seminar Papers
+  collection-title: Society of Biblical Literature Seminar Papers
+  collection-number: "40"
+  page: 1-18
+  publisher: Society of Biblical Literature
+  publisher-place: Atlanta
+  issued:
+    date-parts:
+    - - 2001
+  note: |
+    sbl:
+      shortseries: SBLSP
+
+# 6.4.13 Text Editions Published Online with No Print Counterpart
+  collection-title-short: SBLSP
+- id: wilhelm:2013
+  type: webpage
+  editor:
+  - family: Wilhelm
+    given: Gernot
+  title: Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I)
+  title-short: Der Vertrag Šuppiluliumas I
+  issued:
+    date-parts:
+    - - 2013
+      - 2
+      - 24
+  note: |
+    sbl:
+      eprint: CTH 51.I
+      eprintclass: INTR 2013-02-24
+      eprinttype: hethiter
+
+# 6.4.14 Online Database
+- id: cobb:figurines
+  type: webpage
+  author:
+  - literal: Cobb Institute of Archaeology
+  title: The Figurines of Maresha, the Persian Era
+  URL: http://www.cobb.msstate.edu/dignew/Maresha/index.html
+  note: |
+    sbl:
+      eprinttype: DigMaster
+      options: [indexing=false]
+
+  container-title: DigMaster
+- id: caraher:2013
+  type: webpage
+  editor:
+  - family: Caraher
+    given: William R.
+  title: "Pyla-Koutsopetria Archaeological Project: (Overview)"
+  URL: http://opencontext.org/projects/3F6DCD13-A476-488E-ED10-47D25513FCB2
+  DOI: 10.6078/M7B56GNS
+  issued:
+    date-parts:
+    - - 2013
+      - 11
+      - 5
+  note: |
+    sbl:
+      eprinttype: Open Context
+
+# 6.4.15 Websites and Blogs
+  title-short: Pyla-Koutsopetria Archaeological Project
+- id: 100cuneiform
+  type: webpage
+  title: The One Hundred Most Important Cuneiform Objects
+  URL: http://cdli.ox.ac.uk/wiki/doku.php?id=the_one_hundred_most_important_cuneiform_objects
+  note: |
+    sbl:
+      eprinttype: cdli:wiki
+
+- id: goodacre:2014
+  type: post-weblog
+  author:
+  - family: Goodacre
+    given: Mark
+  title: "Jesus' Wife Fragment: Another Round-Up"
+  container-title: NT Blog
+  URL: http://ntweblog.blogspot.com
+  issued:
+    date-parts:
+    - - 2014
+      - 5
+      - 9
+
+# =============================================================================
+# SECTION 7: OTHER EXAMPLES - REFERENCE WORKS
+# =============================================================================
+
+# 7.1 BDAG, BDB, BDF
+- id: BDAG
+  type: book
+  author:
+  - family: Danker
+    given: Frederick W.
+  - family: Bauer
+    given: Walter
+  - family: Arndt
+    given: William F.
+  - family: Gingrich
+    given: F. Wilbur
+  title: Greek-English Lexicon of the New Testament and Other Early Christian Literature
+  edition: "3"
+  publisher: University of Chicago Press
+  publisher-place: Chicago
+  issued:
+    date-parts:
+    - - 2000
+  note: |
+    sbl:
+      shorthand: BDAG
+
+  annote: BDAG,
+- id: BDB:abbreviation
+  type: book
+  author:
+  - family: Brown
+    given: Francis
+  - family: Driver
+    given: S. R.
+  - family: Briggs
+    given: Charles A.
+  title: A Hebrew and English Lexicon of the Old Testament
+  note: |
+    sbl:
+      shorthand: BDB
+      options: [skipbib]
+
+  annote: BDB,
+- id: BDB
+  type: book
+  author:
+  - family: Brown
+    given: Francis
+  - family: Driver
+    given: S. R.
+  - family: Briggs
+    given: Charles A.
+  title: A Hebrew and English Lexicon of the Old Testament
+  publisher: Oxford University Press
+  publisher-place: Oxford
+  issued:
+    date-parts:
+    - - 1906
+  note: |
+    sbl:
+      shorthand: BDB
+      xref: BDB:abbreviation
+      options: [skipbiblist]
+
+  annote: BDB,
+- id: BDF
+  type: book
+  author:
+  - family: Blass
+    given: Friedrich
+  - family: Debrunner
+    given: Albert
+  - family: Funk
+    given: Robert W.
+  title: A Greek Grammar of the New Testament and Other Early Christian Literature
+  publisher: University of Chicago Press
+  publisher-place: Chicago
+  issued:
+    date-parts:
+    - - 1961
+  note: |
+    sbl:
+      shorthand: BDF
+
+# 7.2 HALOT, TLOT
+  annote: BDF
+- id: HALOT
+  type: book
+  author:
+  - family: Koehler
+    given: Ludwig
+  - family: Baumgartner
+    given: Walter
+  - family: Stamm
+    given: Johann J.
+  title: The Hebrew and Aramaic Lexicon of the Old Testament
+  title-short: HALOT
+  editor:
+  - family: Richardson
+    given: Mervyn E. J.
+  number-of-volumes: "4"
+  publisher: Brill
+  publisher-place: Leiden
+  issued:
+    date-parts:
+    - - 1994
+    - - 1999
+  note: |
+    sbl:
+      shorthand: HALOT
+      editortype: "translated and edited under the supervision of"
+
+  annote: <i>HALOT</i>
+- id: TLOT
+  type: book
+  title: Theological Lexicon of the Old Testament
+  title-short: TLOT
+  editor:
+  - family: Jenni
+    given: Ernst
+  translator:
+  - family: Biddle
+    given: Mark E.
+  number-of-volumes: "3"
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 1997
+  note: |
+    sbl:
+      shorthand: TLOT
+      witheditor: "Westermann, Claus"
+      witheditortype: withassistance
+
+# 7.3 SBLHS
+  annote: <i>TLOT</i>
+- id: SBL
+  type: book
+  title: Society of Biblical Literature
+  note: |
+    sbl:
+      shorthand: SBL
+      options: [skipbib]
+
+- id: SBLHS
+  type: book
+  title: The SBL Handbook of Style
+  title-short: SBLHS
+  edition: "2"
+  publisher: SBL Press
+  publisher-place: Atlanta, GA
+  issued:
+    date-parts:
+    - - 2014
+  note: |
+    sbl:
+      shorthand: SBLHS
+
+  annote: <i>SBLHS</i>
+- id: SBLHS:studentsupp
+  type: document
+  author:
+  - family: Nogalski
+    given: Melanie Greer
+  - family: Nogalski
+    given: James D.
+  - family: Steibel
+    given: Sophia G.
+  - family: West
+    given: Danny M.
+  editor:
+  - family: LeMon
+    given: Joel M.
+  - family: Breed
+    given: Brennan W.
+  title: Student Supplement for the SBL Handbook of Style, Second Edition
+  publisher: SBL Press
+  publisher-place: Atlanta, GA
+  issued:
+    date-parts:
+    - - 2015
+      - 2
+  URL: https://www.sbl-site.org/assets/pdfs/pubs/SBLHSsupp2015-02.pdf
+  note: |
+    sbl:
+      authortype: "compiled by"
+      options: [useauthor=false, useeditor=false]
+
+- id: sblhs2-com
+  type: webpage
+  title: SBL Handbook of Style
+  URL: https://sblhs2.com
+  note: |
+    sbl:
+      subtitle: "Explanations, Clarifications, and Expansions"
+
+# Additional reference works
+- id: sasson:2000
+  type: book
+  editor:
+  - family: Sasson
+    given: Jack M.
+  title: Civilizations of the Ancient Near East
+  number-of-volumes: "4"
+  publisher: Scribner's Sons
+  publisher-place: New York
+  issued:
+    date-parts:
+    - - 1995
+  note: |
+    sbl:
+      related:
+        - id: sasson:repr
+          type: reprint
+
+- id: sasson:repr
+  type: book
+  number-of-volumes: 4 vols. in 2
+  publisher: Hendrickson
+  publisher-place: Peabody, MA
+  issued:
+    date-parts:
+    - - 2000

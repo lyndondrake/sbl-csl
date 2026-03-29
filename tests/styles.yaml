@@ -1,0 +1,25 @@
+# CSL Style Configuration
+#
+# Defines the citation styles available for testing and their characteristics.
+
+styles:
+  sbl-fullnote:
+    description: "Society of Biblical Literature Full Note with Bibliography"
+    file: "../society-of-biblical-literature-fullnote-bibliography.csl"
+    lua_filter: "../sbl-filter.lua"
+    type: "note"  # footnote/endnote style
+    citation_forms:
+      - first_note       # First occurrence in notes
+      - subsequent_note  # Subsequent occurrences
+      - bibliography     # Bibliography entry
+    # SBL-specific features
+    features:
+      - short_titles       # Uses short titles in subsequent notes
+      - series_abbreviations  # Supports series abbreviations
+      - journal_abbreviations  # Supports journal abbreviations in notes
+
+# Default settings for tests
+defaults:
+  primary_style: "sbl-fullnote"
+  comparison_mode: "normalised"  # exact, normalised, or semantic
+  skip_missing_expectations: true  # Skip tests without expectations for a style

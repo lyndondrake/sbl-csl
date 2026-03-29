@@ -1,0 +1,4 @@
+pytest
+pyyaml
+beautifulsoup4
+ruamel.yaml
