@@ -104,7 +104,7 @@ The `ld-author-index.lua` filter generates an author index from citations. Place
 | Typst | in-dexter `#index[]` — real page numbers |
 | HTML | Static definition list with footnote numbers |
 
-This filter is also available standalone at [pandoc-filters](https://github.com/ldrake/pandoc-filters).
+This filter is also available standalone at [pandoc-filters](https://github.com/lyndondrake/pandoc-filters).
 
 ## Quarto
 
