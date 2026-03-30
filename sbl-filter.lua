@@ -701,24 +701,72 @@ return {
         return a.shorthand:lower() < b.shorthand:lower()
       end)
 
-      -- Generate definition list
-      local items = pandoc.List{}
-      for _, abbr in ipairs(abbrevs) do
-        -- Italic abbreviation for journals, roman for everything else
-        local term
-        if abbr.is_journal then
-          term = pandoc.Inlines{pandoc.Emph{pandoc.Str(abbr.shorthand)}}
-        else
-          term = pandoc.Inlines{pandoc.Str(abbr.shorthand)}
+      -- Render inline content to a string for raw output
+      local function inlines_to_typst(inlines)
+        local parts = {}
+        for _, el in ipairs(inlines) do
+          if el.t == "Str" then
+            -- Escape typst special characters
+            local s = el.text
+            s = s:gsub("[#$]", "\\%0")
+            table.insert(parts, s)
+          elseif el.t == "Space" then
+            table.insert(parts, " ")
+          elseif el.t == "Emph" then
+            table.insert(parts, "_" .. inlines_to_typst(el.content) .. "_")
+          elseif el.t == "Strong" then
+            table.insert(parts, "*" .. inlines_to_typst(el.content) .. "*")
+          elseif el.t == "Quoted" then
+            if el.quotetype == "DoubleQuote" then
+              table.insert(parts, '\u{201c}' .. inlines_to_typst(el.content) .. '\u{201d}')
+            else
+              table.insert(parts, '\u{2018}' .. inlines_to_typst(el.content) .. '\u{2019}')
+            end
+          elseif el.t == "SoftBreak" or el.t == "LineBreak" then
+            table.insert(parts, " ")
+          else
+            -- Fallback: use pandoc to render
+            table.insert(parts, utils.stringify(el))
+          end
         end
-        local def = pandoc.Blocks{pandoc.Para(abbr.content)}
-        items:insert({term, {def}})
+        return table.concat(parts)
       end
 
-      local def_list = pandoc.DefinitionList(items)
+      -- Detect output format
+      local is_typst = FORMAT:match("typst")
 
-      -- Insert after the abbreviation heading
-      table.insert(doc.blocks, abbrev_idx + 1, def_list)
+      if is_typst then
+        -- Typst: emit a two-column grid matching biblatex-sbl layout
+        local lines = {}
+        table.insert(lines, "#set terms(separator: h(1.5em), hanging-indent: 2.5cm, indent: 0pt)")
+        for _, abbr in ipairs(abbrevs) do
+          local term_str
+          if abbr.is_journal then
+            term_str = "_" .. abbr.shorthand .. "_"
+          else
+            term_str = abbr.shorthand
+          end
+          local def_str = inlines_to_typst(abbr.content)
+          table.insert(lines, "/ " .. term_str .. ": " .. def_str)
+        end
+        local raw_block = pandoc.RawBlock("typst", table.concat(lines, "\n"))
+        table.insert(doc.blocks, abbrev_idx + 1, raw_block)
+      else
+        -- Other formats: definition list
+        local items = pandoc.List{}
+        for _, abbr in ipairs(abbrevs) do
+          local term
+          if abbr.is_journal then
+            term = pandoc.Inlines{pandoc.Emph{pandoc.Str(abbr.shorthand)}}
+          else
+            term = pandoc.Inlines{pandoc.Str(abbr.shorthand)}
+          end
+          local def = pandoc.Blocks{pandoc.Plain(abbr.content)}
+          items:insert({term, {def}})
+        end
+        local def_list = pandoc.DefinitionList(items)
+        table.insert(doc.blocks, abbrev_idx + 1, def_list)
+      end
 
       -- Remove shorthand entries from bibliography — they now live in the
       -- abbreviation list only, per SBL convention. This includes:
