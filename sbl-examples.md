@@ -8,7 +8,9 @@ reference-section-title: "Bibliography"
 nocite: |
   @TDNT, @NIDNTT, @TLNT, @IDB, @DOTP, @josephus, @tacitus,
   @hunt+edgar:1932, @betz:1996, @malherbe:1977, @ANF, @NPNF1,
-  @PG, @PL, @Str-B, @ANRW, @dahood:1965-1970, @NIB
+  @PG, @PL, @Str-B, @ANRW, @dahood:1965-1970, @NIB,
+  @COS, @ANET, @AEL, @ABC, @RIMA,
+  @ARM1, @ARMT1, @gerhardsson:1961, @hoffner:1990
 ---
 
 # Introduction

@@ -129,7 +129,15 @@ local function load_bibliography(path)
       sbl_entries[current_id].entry_title = title
     end
 
-    -- Detect collection-title and collection-title-short (for maintitle italic)
+    -- Parse entry type
+    local entry_type = line:match("^%s+type:%s*(.+)%s*$")
+    if entry_type and current_id then
+      entry_type = entry_type:gsub("^['\"](.+)['\"]$", "%1")
+      if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+      sbl_entries[current_id].entry_type = entry_type
+    end
+
+    -- Detect collection-title and collection-title-short (for maintitle italic and abbreviation list)
     local ct = line:match("^%s+collection%-title:%s*(.+)%s*$")
     if ct and current_id then
       ct = ct:gsub("^['\"](.+)['\"]$", "%1")
@@ -145,6 +153,20 @@ local function load_bibliography(path)
         sbl_entries[current_id] = {}
       end
       sbl_entries[current_id].collection_title_short = cts
+    end
+
+    -- Detect container-title and container-title-short (for abbreviation list)
+    local cnt = line:match("^%s+container%-title:%s*(.+)%s*$")
+    if cnt and current_id then
+      cnt = cnt:gsub("^['\"](.+)['\"]$", "%1")
+      if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+      sbl_entries[current_id].container_title = cnt
+    end
+    local cnts = line:match("^%s+container%-title%-short:%s*(.+)%s*$")
+    if cnts and current_id then
+      cnts = cnts:gsub("^['\"](.+)['\"]$", "%1")
+      if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+      sbl_entries[current_id].container_title_short = cnts
     end
 
     -- Note field start
@@ -567,12 +589,16 @@ return {
 
       if not refs_div then return nil end
 
-      -- Collect shorthand entries that were cited (deduplicate by shorthand)
+      -- Collect all abbreviation entries (two types):
+      -- 1. Shorthand entries: abbreviation → full bibliography text
+      -- 2. Journal/series abbreviations: abbreviation → full title
       local abbrevs = {}
-      local seen_shorthands = {}
+      local seen_abbrevs = {}
+
+      -- Type 1: Shorthand entries (bibliography-style)
       for ref_id, entry in pairs(sbl_entries) do
-        if entry.shorthand and not entry.skipbiblist and not seen_shorthands[entry.shorthand] then
-          -- Check if this entry was cited (exists in seen_ids or in bibliography)
+        if entry.shorthand and not entry.skipbiblist and not seen_abbrevs[entry.shorthand] then
+          -- Check if this entry was cited (exists in bibliography)
           local bib_entry = nil
           for _, block in ipairs(refs_div.content) do
             if block.t == "Div" and block.identifier == "ref-" .. ref_id then
@@ -615,7 +641,55 @@ return {
               shorthand = entry.shorthand,
               content = content,
             })
-            seen_shorthands[entry.shorthand] = true
+            seen_abbrevs[entry.shorthand] = true
+          end
+        end
+      end
+
+      -- Type 2: Journal and series abbreviations (simple title)
+      -- Build set of all cited/referenced entry IDs (refs div + seen_ids)
+      -- to catch entries removed from refs div by skipbib
+      local cited_ids = {}
+      for id, _ in pairs(seen_ids) do
+        cited_ids[id] = true
+      end
+      for _, block in ipairs(refs_div.content) do
+        if block.t == "Div" then
+          local ref_id = block.identifier:match("^ref%-(.+)$")
+          if ref_id then cited_ids[ref_id] = true end
+        end
+      end
+
+      -- Collect from all cited entries (including skipbib ones)
+      for ref_id, entry in pairs(sbl_entries) do
+        if cited_ids[ref_id] then
+          -- Container-title-short → container-title (journals/magazines: italic)
+          if entry.container_title_short and entry.container_title
+              and not seen_abbrevs[entry.container_title_short] then
+            local is_journal = entry.entry_type == "article-journal"
+                or entry.entry_type == "article-magazine"
+                or entry.entry_type == "review"
+            local title_inlines = pandoc.Inlines{}
+            if is_journal then
+              title_inlines:insert(pandoc.Emph{pandoc.Str(entry.container_title)})
+            else
+              title_inlines:insert(pandoc.Str(entry.container_title))
+            end
+            table.insert(abbrevs, {
+              shorthand = entry.container_title_short,
+              content = title_inlines,
+              is_journal = is_journal,
+            })
+            seen_abbrevs[entry.container_title_short] = true
+          end
+          -- Collection-title-short → collection-title (series: roman)
+          if entry.collection_title_short and entry.collection_title
+              and not seen_abbrevs[entry.collection_title_short] then
+            table.insert(abbrevs, {
+              shorthand = entry.collection_title_short,
+              content = pandoc.Inlines{pandoc.Str(entry.collection_title)},
+            })
+            seen_abbrevs[entry.collection_title_short] = true
           end
         end
       end
@@ -630,7 +704,13 @@ return {
       -- Generate definition list
       local items = pandoc.List{}
       for _, abbr in ipairs(abbrevs) do
-        local term = pandoc.Inlines{pandoc.Str(abbr.shorthand)}
+        -- Italic abbreviation for journals, roman for everything else
+        local term
+        if abbr.is_journal then
+          term = pandoc.Inlines{pandoc.Emph{pandoc.Str(abbr.shorthand)}}
+        else
+          term = pandoc.Inlines{pandoc.Str(abbr.shorthand)}
+        end
         local def = pandoc.Blocks{pandoc.Para(abbr.content)}
         items:insert({term, {def}})
       end
