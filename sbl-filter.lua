@@ -738,7 +738,17 @@ return {
       if is_typst then
         -- Typst: emit a two-column grid matching biblatex-sbl layout
         local lines = {}
-        table.insert(lines, "#set terms(separator: h(1.5em), hanging-indent: 2.5cm, indent: 0pt)")
+        -- Override the default template's #show terms.item: rule
+        -- to get a two-column layout with aligned definitions
+        table.insert(lines, '#show terms.item: it => {')
+        table.insert(lines, '  let abbr-width = 2cm')
+        table.insert(lines, '  grid(')
+        table.insert(lines, '    columns: (abbr-width, 1fr),')
+        table.insert(lines, '    column-gutter: 1em,')
+        table.insert(lines, '    text(weight: "bold")[#it.term],')
+        table.insert(lines, '    it.description,')
+        table.insert(lines, '  )')
+        table.insert(lines, '}')
         for _, abbr in ipairs(abbrevs) do
           local term_str
           if abbr.is_journal then
