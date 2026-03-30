@@ -1722,7 +1722,7 @@
     ],
     "section": "26",
     "page": "44-46",
-    "note": "sbl:\n  entrysubtype: COS\n  related:\n    - id: hallo:1997\n      type: container\n      options: [usevolume=false, skipbiblist]\n",
+    "note": "sbl:\n  skipbib: true\n  entrysubtype: COS\n  related:\n    - id: hallo:1997\n      type: container\n      options: [usevolume=false, skipbiblist]\n",
     "annote": "\"The Great Hymn to the Aten\" (trans. Miriam Lichtheim; COS 1.26:44–46)"
   },
   {
@@ -1759,7 +1759,7 @@
         "given": "Albrecht"
       }
     ],
-    "note": "sbl:\n  related:\n    - id: ANET\n      type: container\n",
+    "note": "sbl:\n  related:\n    - id: ANET\n      type: container\n  skipbib: true\n",
     "annote": "\"Suppiluliumas and the Egyptian Queen,\" trans. Albrecht Goetz (<i>ANET</i>, 319)"
   },
   {
@@ -1788,7 +1788,8 @@
     "type": "document",
     "title": "Erra and Ishum",
     "page": "282-315",
-    "note": "sbl:\n  related:\n    - id: dalley:1991\n      type: container\n"
+    "note": "sbl:\n  related:\n    - id: dalley:1991\n      type: container\n  skipbib: true\n",
+    "annote": "\"Erra and Ishum\""
   },
   {
     "id": "foster:1993",
@@ -1817,7 +1818,7 @@
     "type": "document",
     "title": "Erra and Ishum",
     "page": "771-805",
-    "note": "sbl:\n  related:\n    - id: foster:1993\n      type: container\n      options: [usevolume=false]\n"
+    "note": "sbl:\n  related:\n    - id: foster:1993\n      type: container\n      options: [usevolume=false]\n  skipbib: true\n"
   },
   {
     "id": "AEL",
@@ -1866,7 +1867,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: AEL\n  xref: AEL\n  options: [skipbiblist]\n  subsequent_annote: \"The Doomed Prince\" (Miriam Lichtheim, <i>Ancient Egyptian Literature</i> [Berkeley: University of California Press, 1976], 2:200–203)\n",
+    "note": "sbl:\n  skipbib: true\n  shorthand: AEL\n  xref: AEL\n  options: [skipbiblist]\n  subsequent_annote: \"The Doomed Prince\" (Miriam Lichtheim, <i>Ancient Egyptian Literature</i> [Berkeley: University of California Press, 1976], 2:200–203)\n",
     "annote": "\"The Great Hymn to the Aten,\" trans. Miriam Lichtheim (<i>COS</i> 1.26:44–46)"
   },
   {
@@ -1874,7 +1875,8 @@
     "type": "document",
     "title": "The Doomed Prince",
     "page": "200-203",
-    "note": "sbl:\n  related:\n    - id: lichtheim:1976\n      type: container\n      options: [shorthand=short, usevolume=false, skipbiblist]\n"
+    "note": "sbl:\n  subsequent_annote: \"The Doomed Prince\" (<i>AEL</i> 2:200-203)\n  skipbib: true\n  related:\n    - id: lichtheim:1976\n      type: container\n      options: [shorthand=short, usevolume=false, skipbiblist]\n",
+    "annote": "\"The Doomed Prince\""
   },
   {
     "id": "hoffner:1990",
@@ -1912,7 +1914,8 @@
     "id": "disappearanceofsungod",
     "type": "document",
     "title": "The Disappearance of the Sun God",
-    "note": "sbl:\n  related:\n    - id: hoffner:1990\n      type: container\n"
+    "note": "sbl:\n  related:\n    - id: hoffner:1990\n      type: container\n  skipbib: true\n",
+    "annote": "\"The Disappearance of the Sun God\""
   },
   {
     "id": "RIMA",
@@ -1944,7 +1947,8 @@
     "type": "document",
     "title": "Ashur Inscription",
     "page": "143-144",
-    "note": "sbl:\n  entrysubtype: inscription\n  related:\n    - id: RIMA\n      type: container\n      options: [skipbiblistshorthand, shorthand=short]\n"
+    "note": "sbl:\n  subsequent_annote: Ashur Inscription (RIMA 2:143-44)\n  skipbib: true\n  entrysubtype: inscription\n  related:\n    - id: RIMA\n      type: container\n      options: [skipbiblistshorthand, shorthand=short]\n",
+    "annote": "Ashur Inscription"
   },
   {
     "id": "ABC",
@@ -1976,7 +1980,8 @@
     "id": "esarhaddonchronicle",
     "type": "document",
     "title": "Esarhaddon Chronicle",
-    "note": "sbl:\n  entrysubtype: chronicle\n  related:\n    - id: ABC\n      type: container\n      options: [shorthand=short]\n"
+    "note": "sbl:\n  subsequent_annote: Esarhaddon Chronicle (<i>ABC</i>, 125)\n  entrysubtype: chronicle\n  related:\n    - id: ABC\n      type: container\n      options: [shorthand=short]\n  skipbib: true\n",
+    "annote": "Esarhaddon Chronicle"
   },
   {
     "id": "ARM1",
@@ -2078,7 +2083,7 @@
       }
     ],
     "title": "Ant.",
-    "note": "sbl:\n  entrysubtype: classical\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n",
+    "note": "sbl:\n  entrysubtype: classical\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n  skipbib: true\n",
     "annote": "Josephus, <i>Ant</i>.",
     "title-short": "Ant"
   },
@@ -2126,7 +2131,7 @@
       }
     ],
     "title": "Ann.",
-    "note": "sbl:\n  entrysubtype: classical\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n",
+    "note": "sbl:\n  entrysubtype: classical\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n  skipbib: true\n",
     "annote": "Tacitus, <i>Ann</i>.",
     "title-short": "Ann"
   },
@@ -2146,7 +2151,7 @@
       }
     ],
     "collection-title": "Loeb Classical Library",
-    "note": "sbl:\n  entrysubtype: classical\n  shortseries: LCL\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n",
+    "note": "sbl:\n  entrysubtype: classical\n  shortseries: LCL\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n  skipbib: true\n",
     "collection-title-short": "LCL",
     "annote": "Josephus, <i>Ant</i>.",
     "title-short": "Ant"
@@ -2167,7 +2172,7 @@
       }
     ],
     "collection-title": "Loeb Classical Library",
-    "note": "sbl:\n  entrysubtype: classical\n  shortseries: LCL\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n",
+    "note": "sbl:\n  entrysubtype: classical\n  shortseries: LCL\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n  skipbib: true\n",
     "collection-title-short": "LCL",
     "annote": "Tacitus, <i>Ann</i>.",
     "title-short": "Ann"
@@ -2353,7 +2358,7 @@
     ],
     "title": "Epistle 1",
     "annote": "Heraclitus, <i>Epistle 1</i>,",
-    "note": "sbl:\n      subsequent_suffix: Worley\n"
+    "note": "sbl:\n      subsequent_suffix: Worley\n  skipbib: true\n"
   },
   {
     "id": "malherbe:1977",
@@ -2395,7 +2400,7 @@
       }
     ],
     "page": "187",
-    "note": "sbl:\n  related:\n    - id: malherbe:1977\n      type: container\n  options: [skipbib=false, useseries=false]\n      subsequent_suffix: Worley\n",
+    "note": "sbl:\n  skipbib: true\n  related:\n    - id: malherbe:1977\n      type: container\n  options: [skipbib=false, useseries=false]\n      subsequent_suffix: Worley\n",
     "annote": "Heraclitus, <i>Epistle 1</i>,"
   },
   {
@@ -2448,7 +2453,8 @@
     "id": "clementinehomilies",
     "type": "classic",
     "title": "The Clementine Homilies",
-    "note": "sbl:\n  entrysubtype: churchfather\n  related:\n    - id: ANF\n      type: container\n      options: [useeditor=false, skipbiblist]\n"
+    "note": "sbl:\n  skipbib: true\n  entrysubtype: churchfather\n  related:\n    - id: ANF\n      type: container\n      options: [useeditor=false, skipbiblist]\n",
+    "annote": "<i>Clementine Homilies</i>"
   },
   {
     "id": "NPNF1:abbreviation",
@@ -2502,7 +2508,7 @@
     "title": "The Letters of St. Augustin",
     "title-short": "Letters of St. Augustin",
     "volume": "1",
-    "note": "sbl:\n  entrysubtype: churchfather\n  related:\n    - id: NPNF1\n      type: container\n      options: [useeditor=false, skipbiblist, skipbib]\n  options: [skipbib=false]\n",
+    "note": "sbl:\n  skipbib: true\n  entrysubtype: churchfather\n  related:\n    - id: NPNF1\n      type: container\n      options: [useeditor=false, skipbiblist, skipbib]\n  options: [skipbib=false]\n",
     "annote": "Augustine, <i>Letters of St. Augustin</i> 28.3.5 (NPNF¹ 1:252)"
   },
   {
@@ -2564,7 +2570,7 @@
     ],
     "title": "Orationes theologicae",
     "volume": "36",
-    "note": "sbl:\n  entrysubtype: churchfather\n  related:\n    - id: PG\n      type: container\n      options: [useeditor=false]\n",
+    "note": "sbl:\n  entrysubtype: churchfather\n  related:\n    - id: PG\n      type: container\n      options: [useeditor=false]\n  skipbib: true\n",
     "annote": "Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)"
   },
   {

@@ -1273,6 +1273,7 @@ references:
   page: 44-46
   note: |
     sbl:
+      skipbib: true
       entrysubtype: COS
       related:
         - id: hallo:1997
@@ -1310,6 +1311,7 @@ references:
       related:
         - id: ANET
           type: container
+      skipbib: true
 
 # Other ANE Anthologies
   annote: '"Suppiluliumas and the Egyptian Queen," trans. Albrecht Goetz (<i>ANET</i>, 319)'
@@ -1335,7 +1337,9 @@ references:
       related:
         - id: dalley:1991
           type: container
+      skipbib: true
 
+  annote: '"Erra and Ishum"'
 - id: foster:1993
   type: book
   author:
@@ -1361,6 +1365,7 @@ references:
         - id: foster:1993
           type: container
           options: [usevolume=false]
+      skipbib: true
 
 # AEL
 - id: AEL
@@ -1397,6 +1402,7 @@ references:
     - - 1976
   note: |
     sbl:
+      skipbib: true
       shorthand: AEL
       xref: AEL
       options: [skipbiblist]
@@ -1409,11 +1415,14 @@ references:
   page: 200-203
   note: |
     sbl:
+      subsequent_annote: "The Doomed Prince" (<i>AEL</i> 2:200-203)
+      skipbib: true
       related:
         - id: lichtheim:1976
           type: container
           options: [shorthand=short, usevolume=false, skipbiblist]
 
+  annote: '"The Doomed Prince"'
 - id: hoffner:1990
   type: book
   author:
@@ -1446,8 +1455,10 @@ references:
       related:
         - id: hoffner:1990
           type: container
+      skipbib: true
 
 # Royal Inscriptions
+  annote: '"The Disappearance of the Sun God"'
 - id: RIMA
   type: book
   author:
@@ -1478,12 +1489,15 @@ references:
   page: 143-144
   note: |
     sbl:
+      subsequent_annote: Ashur Inscription (RIMA 2:143-44)
+      skipbib: true
       entrysubtype: inscription
       related:
         - id: RIMA
           type: container
           options: [skipbiblistshorthand, shorthand=short]
 
+  annote: Ashur Inscription
 - id: ABC
   type: book
   author:
@@ -1510,13 +1524,16 @@ references:
   title: Esarhaddon Chronicle
   note: |
     sbl:
+      subsequent_annote: Esarhaddon Chronicle (<i>ABC</i>, 125)
       entrysubtype: chronicle
       related:
         - id: ABC
           type: container
           options: [shorthand=short]
+      skipbib: true
 
 # ARM
+  annote: Esarhaddon Chronicle
 - id: ARM1
   type: book
   author:
@@ -1596,6 +1613,7 @@ references:
       entrysubtype: classical
       xref: josephus
           subsequent_suffix: Thackeray, LCL
+      skipbib: true
 
   annote: Josephus, <i>Ant</i>.
   title-short: Ant
@@ -1634,6 +1652,7 @@ references:
       entrysubtype: classical
       xref: tacitus
           subsequent_suffix: Jackson, LCL
+      skipbib: true
 
   annote: Tacitus, <i>Ann</i>.
   title-short: Ann
@@ -1652,6 +1671,7 @@ references:
       shortseries: LCL
       xref: josephus
           subsequent_suffix: Thackeray, LCL
+      skipbib: true
 
   collection-title-short: LCL
   annote: Josephus, <i>Ant</i>.
@@ -1671,6 +1691,7 @@ references:
       shortseries: LCL
       xref: tacitus
           subsequent_suffix: Jackson, LCL
+      skipbib: true
 
   collection-title-short: LCL
   annote: Tacitus, <i>Ann</i>.
@@ -1830,6 +1851,7 @@ references:
   note: |
     sbl:
           subsequent_suffix: Worley
+      skipbib: true
 - id: malherbe:1977
   type: book
   editor:
@@ -1859,6 +1881,7 @@ references:
   page: "187"
   note: |
     sbl:
+      skipbib: true
       related:
         - id: malherbe:1977
           type: container
@@ -1908,12 +1931,14 @@ references:
   title: The Clementine Homilies
   note: |
     sbl:
+      skipbib: true
       entrysubtype: churchfather
       related:
         - id: ANF
           type: container
           options: [useeditor=false, skipbiblist]
 
+  annote: <i>Clementine Homilies</i>
 - id: NPNF1:abbreviation
   type: book
   title: The Nicene and Post-Nicene Fathers, Series 1
@@ -1956,6 +1981,7 @@ references:
   volume: "1"
   note: |
     sbl:
+      skipbib: true
       entrysubtype: churchfather
       related:
         - id: NPNF1
@@ -2011,6 +2037,7 @@ references:
         - id: PG
           type: container
           options: [useeditor=false]
+      skipbib: true
 
 # 6.4.7 Strack-Billerbeck
   annote: Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)
