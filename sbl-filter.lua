@@ -498,10 +498,19 @@ return {
             local entry = sbl_entries[ref_id]
             if entry then
               -- Remove entries with skipbib from bibliography
-              if entry.skipbib then
+              -- BUT keep shorthand entries that should appear in the abbreviation list
+              -- (they'll be moved to the abbreviation list in pass 3)
+              local dominated_by_abbrev_list = entry.shorthand and not entry.skipbiblist
+              if entry.skipbib and not dominated_by_abbrev_list then
                 table.insert(to_remove, i)
                 changed = true
-              else
+              elseif entry.skipbib and dominated_by_abbrev_list then
+                -- Kept for abbreviation list — prepend shorthand label
+                if entry.shorthand then
+                  prepend_shorthand_to_bib(block, entry.shorthand)
+                  changed = true
+                end
+              elseif not entry.skipbib then
                 -- Prepend shorthand to bibliography entries
                 if entry.shorthand and not entry.entrysubtype then
                   prepend_shorthand_to_bib(block, entry.shorthand)
@@ -558,10 +567,11 @@ return {
 
       if not refs_div then return nil end
 
-      -- Collect shorthand entries that were cited
+      -- Collect shorthand entries that were cited (deduplicate by shorthand)
       local abbrevs = {}
+      local seen_shorthands = {}
       for ref_id, entry in pairs(sbl_entries) do
-        if entry.shorthand and not entry.skipbiblist then
+        if entry.shorthand and not entry.skipbiblist and not seen_shorthands[entry.shorthand] then
           -- Check if this entry was cited (exists in seen_ids or in bibliography)
           local bib_entry = nil
           for _, block in ipairs(refs_div.content) do
@@ -605,6 +615,7 @@ return {
               shorthand = entry.shorthand,
               content = content,
             })
+            seen_shorthands[entry.shorthand] = true
           end
         end
       end
@@ -628,6 +639,26 @@ return {
 
       -- Insert after the abbreviation heading
       table.insert(doc.blocks, abbrev_idx + 1, def_list)
+
+      -- Remove shorthand entries from bibliography — they now live in the
+      -- abbreviation list only, per SBL convention. This includes:
+      -- 1. Normal shorthand entries (moved from bib to abbrev list)
+      -- 2. skipbib+shorthand entries (kept in pass 2 for extraction, now removed)
+      local bib_remove = {}
+      for i, block in ipairs(refs_div.content) do
+        if block.t == "Div" then
+          local ref_id = block.identifier:match("^ref%-(.+)$")
+          if ref_id then
+            local entry = sbl_entries[ref_id]
+            if entry and entry.shorthand and not entry.skipbiblist and not entry.entrysubtype then
+              table.insert(bib_remove, i)
+            end
+          end
+        end
+      end
+      for j = #bib_remove, 1, -1 do
+        table.remove(refs_div.content, bib_remove[j])
+      end
 
       return doc
     end,

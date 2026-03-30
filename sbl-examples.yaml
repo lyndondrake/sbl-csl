@@ -2432,7 +2432,6 @@ references:
     sbl:
       shorthand: BDB
       xref: BDB:abbreviation
-      options: [skipbiblist]
 
   annote: BDB,
 - id: BDF
