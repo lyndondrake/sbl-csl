@@ -379,19 +379,48 @@ These map abbreviations to full titles for `container-title` fields. Your app co
 
 ## Abbreviation List vs Bibliography
 
-The Lua filter automatically manages where shorthand entries appear:
+The Lua filter generates an abbreviation list matching the format used by biblatex-sbl. The list contains **two types** of entry, mixed together alphabetically:
 
-| Entry has… | Appears in abbreviation list | Appears in bibliography |
-|-----------|------------------------------|------------------------|
-| `shorthand` only | Yes | No (moved to abbreviation list) |
-| `shorthand` + `skipbib: true` | Yes | No |
-| `shorthand` + `skipbiblist` option | No | Yes (stays in bibliography) |
-| `shorthand` + `entrysubtype` | No | Yes (entrysubtype entries are special) |
-| No `shorthand` | No | Yes |
+1. **Full bibliography entries** — reference works with `shorthand` (e.g., BDAG → Danker, Frederick W., ... *Greek-English Lexicon*... 3rd ed. Chicago: University of Chicago Press, 2000)
+2. **Simple abbreviations** — journal and series titles from cited entries (e.g., *JBL* → *Journal of Biblical Literature*, AB → Anchor Bible)
 
-To populate the abbreviation list, place `# Abbreviations {#sbl-abbreviations}` in the document. The filter extracts the formatted bibliography text for each shorthand entry, builds a definition list (shorthand → full reference), and removes those entries from the bibliography.
+### How entries reach the abbreviation list
 
-Without the Lua filter, shorthand entries remain in the bibliography as normal entries.
+| Source | What appears | Example |
+|--------|-------------|---------|
+| Entry with `shorthand` (no `skipbiblist`) | Full formatted bibliography text | BDAG, TDNT, HALOT |
+| `container-title-short` on a cited entry | Full journal/magazine title (italic for journals) | *JBL*, *JECS*, *BAR* |
+| `collection-title-short` on a cited entry | Full series name (roman) | AB, WUNT, LCL |
+
+### Where entries appear
+
+| Entry has… | Abbreviation list | Bibliography |
+|-----------|-------------------|-------------|
+| `shorthand` only | Yes (full bib text) | No (moved to abbreviation list) |
+| `shorthand` + `skipbib: true` | Yes (full bib text) | No |
+| `shorthand` + `skipbiblist` option | No | Yes |
+| `shorthand` + `entrysubtype` | No | Yes |
+| `container-title-short` or `collection-title-short` | Yes (simple title) | Entry stays in bibliography |
+| No shorthand and no short titles | No | Yes |
+
+### Populating the abbreviation list
+
+Place `# Abbreviations {#sbl-abbreviations}` in the document. The filter collects abbreviations from all cited entries (including those brought in by `nocite` and those removed by `skipbib`), builds the list, and removes shorthand entries from the bibliography.
+
+**Important**: parent entries with `shorthand` that are not directly cited must be included via `nocite` in the document front matter for their abbreviation to appear. For example, if child entries cite COS volumes but the parent COS entry is not directly cited:
+
+```yaml
+nocite: |
+  @COS, @ANET, @AEL
+```
+
+Similarly, entries whose `collection-title-short` or `container-title-short` should appear in the abbreviation list must either be cited or included via `nocite`.
+
+### Output format
+
+For typst output, the filter emits a two-column grid layout (abbreviation column + definition column) matching the biblatex-sbl tabular format. For other output formats (HTML, docx), it uses a pandoc definition list.
+
+Without the Lua filter, shorthand entries remain in the bibliography as normal entries and no abbreviation list is generated.
 
 ## Validation Checklist
 
@@ -402,8 +431,10 @@ Before producing CSL JSON, verify:
 - [ ] Dates use `date-parts` array format (not string dates)
 - [ ] Date ranges use two arrays in `date-parts` (not a single array)
 - [ ] `title-short` is set for entries that will be cited more than once
-- [ ] `container-title-short` is set for journal articles (abbreviation for notes)
-- [ ] `collection-title-short` is set for series entries (abbreviation)
+- [ ] `container-title-short` is set for journal articles (abbreviation for notes and abbreviation list)
+- [ ] `collection-title-short` is set for series entries (abbreviation for notes and abbreviation list)
+- [ ] Both `container-title` (full) and `container-title-short` are set — the filter needs both to generate abbreviation list entries
+- [ ] Both `collection-title` (full) and `collection-title-short` are set — same reason
 - [ ] `annote` uses HTML `<i>` tags for italic (not markdown `*`)
 - [ ] The `note` field contains valid YAML under the `sbl:` key
 - [ ] `sbl:` YAML uses block scalar format (`note: |`) not quoted strings with `\n`
