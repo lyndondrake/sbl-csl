@@ -95,18 +95,18 @@ The `sbl_metadata` column stores a JSON object:
     "shortauthor": "Josephus",
     "entrysubtype": "classical",
     "skipbib": true,
-    "skipbiblist": true,
     "subsequent_annote": "Josephus, <i>Ant</i>.",
     "subsequent_suffix": "Thackeray, LCL",
     "xref": "josephus",
     "maintitle": "The Book of Acts in Its First Century Setting",
     "maineditor": "Winter, Bruce W.",
     "origlanguage": "from the 3rd German ed.",
-    "seriesseries": "2"
+    "seriesseries": "2",
+    "options": ["skipbiblist"]
 }
 ```
 
-Not all fields are needed for every entry. Most entries have only 1-3 SBL metadata fields.
+Not all fields are needed for every entry. Most entries have only 1–3 SBL metadata fields. The `skipbib` boolean and `options` array are separate concerns: `skipbib` suppresses the entry from the bibliography, while `options` carries flags like `skipbiblist` (keep in bibliography instead of abbreviation list).
 
 ## Generating CSL JSON from SQLite
 
@@ -211,16 +211,13 @@ def build_sbl_note(sbl_metadata_json, entry_id, db):
         if key in meta and meta[key]:
             lines.append(f"  {key}: {meta[key]}")
 
-    # Boolean flags
+    # Boolean flags (standalone keys — the filter reads both this form
+    # and the options array form, but use one or the other, not both)
     if meta.get("skipbib"):
         lines.append("  skipbib: true")
-    if meta.get("skipbiblist"):
-        lines.append("  skipbiblist: true")
 
-    # Options array
+    # Options array — for skipbiblist and other per-entry/per-relation flags
     options = []
-    if meta.get("skipbib"):
-        options.append("skipbib")
     if meta.get("skipbiblist"):
         options.append("skipbiblist")
     # Add any extra options from metadata
@@ -350,11 +347,15 @@ Is it a lexicon/dictionary article?
   → Embed parent data (editor, publisher, etc.) in the entry for bibliography
 
 Should it appear in bibliography?
-  → If NO: set skipbib in options
+  → If NO: set skipbib: true
   → If bibliography should show parent instead: set skipbib + xref
 
-Should it appear in abbreviation list?
-  → If NO: set skipbiblist in options
+Where does it appear — abbreviation list or bibliography?
+  → Entries with shorthand are automatically moved from bibliography
+    to the abbreviation list by the Lua filter. No extra flag needed.
+  → To KEEP a shorthand entry in the bibliography instead of the
+    abbreviation list: set skipbiblist in options.
+  → Entries without shorthand always remain in the bibliography.
 
 Does the subsequent note need different text from the first note?
   → Set subsequent_annote for complete replacement
@@ -376,6 +377,22 @@ These map abbreviations to full titles for `container-title` fields. Your app co
 2. Validate that journal/series abbreviations are SBLHS-standard
 3. Offer abbreviation lookup in the UI
 
+## Abbreviation List vs Bibliography
+
+The Lua filter automatically manages where shorthand entries appear:
+
+| Entry has… | Appears in abbreviation list | Appears in bibliography |
+|-----------|------------------------------|------------------------|
+| `shorthand` only | Yes | No (moved to abbreviation list) |
+| `shorthand` + `skipbib: true` | Yes | No |
+| `shorthand` + `skipbiblist` option | No | Yes (stays in bibliography) |
+| `shorthand` + `entrysubtype` | No | Yes (entrysubtype entries are special) |
+| No `shorthand` | No | Yes |
+
+To populate the abbreviation list, place `# Abbreviations {#sbl-abbreviations}` in the document. The filter extracts the formatted bibliography text for each shorthand entry, builds a definition list (shorthand → full reference), and removes those entries from the bibliography.
+
+Without the Lua filter, shorthand entries remain in the bibliography as normal entries.
+
 ## Validation Checklist
 
 Before producing CSL JSON, verify:
@@ -390,7 +407,8 @@ Before producing CSL JSON, verify:
 - [ ] `annote` uses HTML `<i>` tags for italic (not markdown `*`)
 - [ ] The `note` field contains valid YAML under the `sbl:` key
 - [ ] `sbl:` YAML uses block scalar format (`note: |`) not quoted strings with `\n`
-- [ ] Entries with `shorthand` that shouldn't appear in bibliography have `skipbib` option
+- [ ] Entries with `shorthand` go to abbreviation list by default; set `skipbiblist` if they should stay in bibliography
+- [ ] Entries that should not appear in bibliography at all have `skipbib: true`
 - [ ] Entries with `xref` have parent data embedded (editor, publisher, etc.) for bibliography
 - [ ] `collection-number` is a string (not integer) — may contain "2/6" for series-in-series
 
