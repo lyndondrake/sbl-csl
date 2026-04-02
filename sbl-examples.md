@@ -10,7 +10,9 @@ nocite: |
   @hunt+edgar:1932, @betz:1996, @malherbe:1977, @ANF, @NPNF1,
   @PG, @PL, @Str-B, @ANRW, @dahood:1965-1970, @NIB,
   @COS, @ANET, @AEL, @ABC, @RIMA,
-  @ARM1, @ARMT1, @gerhardsson:1961, @hoffner:1990
+  @ARM1, @ARMT1, @gerhardsson:1961, @hoffner:1990,
+  @plutarch:moralia5, @philo:cherubim,
+  @series-RIMA, @series-ABC, @series-ARM1, @series-ARMT1
 ---
 
 # Introduction
@@ -390,6 +392,18 @@ First note: [@josephus:ant:thackery, 2.233-235]
 
 First note: [@tacitus:ann:jackson, 15.18-19]
 
+Plutarch's *Moralia* cited by abbreviated work title with section numbers. The bibliography entry lists the LCL volume; subsequent notes add the translator and series.
+
+First note: [@plutarch:isos, 351C-352A]
+
+Subsequent: [@plutarch:isos, 354D]
+
+Philo's treatises follow the same pattern. The abbreviated work title (*Cher.*) appears in the note; the bibliography lists the collected LCL volume.
+
+First note: [@philo:cher, 27-30]
+
+Subsequent: [@philo:cher, 42]
+
 ### Papyri, Ostraca, and Epigraphica
 
 Papyrological citations use standard sigla from the Checklist of Editions. The designation number is part of the name, not a page locator. Subsequent notes may include modern edition references.
@@ -496,6 +510,18 @@ Blog posts cite the author, post title, blog name, date, and URL.
 
 First note: [@goodacre:2014]
 
+### Video and Film
+
+Video citations include the director or presenter, title, medium (DVD where applicable), publisher, and date. Films omit the medium designation.
+
+First note: [@wright:kingdom]
+
+Subsequent: [@wright:kingdom]
+
+First note: [@gibson:passion]
+
+Subsequent: [@gibson:passion]
+
 ## Privileged Reference Works
 
 ### BDAG, BDB, BDF
@@ -521,5 +547,17 @@ TLOT: [@TLOT, 1:24]
 The Handbook itself is cited by shorthand with section reference.
 
 SBLHS: [@SBLHS, §6.2.1]
+
+### GKC, IBHS
+
+Hebrew grammars cited by shorthand. GKC (*Gesenius' Hebrew Grammar*) uses section references; IBHS (*An Introduction to Biblical Hebrew Syntax*) uses page or section locators.
+
+GKC: [@GKC, §154a]
+
+GKC: [@GKC, §111b]
+
+IBHS: [@IBHS, 71]
+
+IBHS: [@IBHS, §16.3.2]
 
 # References
