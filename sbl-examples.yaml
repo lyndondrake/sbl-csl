@@ -1703,9 +1703,90 @@ references:
       options: [skipbib]
           subsequent_suffix: Thackeray, LCL
 
-# 6.4.3 Papyri, Ostraca, and Epigraphica
   collection-title-short: LCL
   annote: Josephus, <i>Ant</i>.
+
+# 6.4.2b Additional Classical Texts — Plutarch
+- id: plutarch:moralia5
+  type: book
+  author:
+  - literal: Plutarch
+  title: "Isis and Osiris; The E at Delphi; The Oracles at Delphi No Longer Given in Verse; The Obsolescence of Oracles"
+  translator:
+  - family: Babbitt
+    given: Frank Cole
+  collection-title: Loeb Classical Library
+  publisher: Harvard University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 1936
+  note: |
+    sbl:
+      shortseries: LCL
+      subsequent_annote: Plutarch, <i>Is. Os</i>.
+      subsequent_suffix: Babbitt, LCL
+
+  title-short: Is. Os
+  collection-title-short: LCL
+  annote: Plutarch, <i>Is. Os</i>.
+
+- id: plutarch:isos
+  type: classic
+  author:
+  - literal: Plutarch
+  title: Is. Os.
+  note: |
+    sbl:
+      xref: plutarch:moralia5
+          subsequent_suffix: Babbitt, LCL
+      skipbib: true
+
+  annote: Plutarch, <i>Is. Os</i>.
+  title-short: Is. Os
+
+# 6.4.2c Additional Classical Texts — Philo
+- id: philo:cherubim
+  type: book
+  author:
+  - literal: Philo
+  title: "On the Cherubim; The Sacrifices of Abel and Cain; The Worse Attacks the Better; On the Posterity and Exile of Cain; On the Giants"
+  translator:
+  - family: Colson
+    given: F. H.
+  - family: Whitaker
+    given: G. H.
+  collection-title: Loeb Classical Library
+  publisher: Harvard University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 1929
+  note: |
+    sbl:
+      shortseries: LCL
+      subsequent_annote: Philo, <i>Cher</i>.
+      subsequent_suffix: Colson, LCL
+
+  title-short: Cher
+  collection-title-short: LCL
+  annote: Philo, <i>Cher</i>.
+
+- id: philo:cher
+  type: classic
+  author:
+  - literal: Philo
+  title: Cher.
+  note: |
+    sbl:
+      xref: philo:cherubim
+          subsequent_suffix: Colson, LCL
+      skipbib: true
+
+  annote: Philo, <i>Cher</i>.
+  title-short: Cher
+
+# 6.4.3 Papyri, Ostraca, and Epigraphica
 - id: pcairzen
   type: document
   editor:
@@ -2344,6 +2425,38 @@ references:
       - 9
 
 # =============================================================================
+# SECTION 6.5: VIDEO/FILM
+# =============================================================================
+
+# Video entry — a biblical documentary (DVD)
+- id: wright:kingdom
+  type: motion_picture
+  author:
+  - family: Wright
+    given: N. T.
+  title: "N. T. Wright on the Kingdom of God"
+  title-short: Kingdom of God
+  medium: DVD
+  publisher: Acton Institute
+  publisher-place: Grand Rapids
+  issued:
+    date-parts:
+    - - 2012
+
+# Video entry — a film (theatrical release)
+- id: gibson:passion
+  type: motion_picture
+  author:
+  - family: Gibson
+    given: Mel
+  title: The Passion of the Christ
+  title-short: Passion of the Christ
+  publisher: Icon Productions
+  issued:
+    date-parts:
+    - - 2004
+
+# =============================================================================
 # SECTION 7: OTHER EXAMPLES - REFERENCE WORKS
 # =============================================================================
 
@@ -2427,8 +2540,51 @@ references:
     sbl:
       shorthand: BDF
 
-# 7.2 HALOT, TLOT
+# 7.1b GKC, IBHS (Grammar Reference Works)
   annote: BDF
+- id: GKC
+  type: book
+  author:
+  - family: Gesenius
+    given: Wilhelm
+  title: "Gesenius' Hebrew Grammar"
+  editor:
+  - family: Kautzsch
+    given: Emil
+  translator:
+  - family: Cowley
+    given: Arthur E.
+  edition: "2"
+  publisher: Clarendon
+  publisher-place: Oxford
+  issued:
+    date-parts:
+    - - 1910
+  note: |
+    sbl:
+      shorthand: GKC
+
+  annote: GKC
+- id: IBHS
+  type: book
+  author:
+  - family: Waltke
+    given: Bruce K.
+  - family: O'Connor
+    given: Michael
+  title: An Introduction to Biblical Hebrew Syntax
+  publisher: Eisenbrauns
+  publisher-place: Winona Lake, IN
+  issued:
+    date-parts:
+    - - 1990
+  note: |
+    sbl:
+      shorthand: IBHS
+
+  annote: IBHS
+
+# 7.2 HALOT, TLOT
 - id: HALOT
   type: book
   author:
