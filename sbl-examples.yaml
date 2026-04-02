@@ -1568,8 +1568,42 @@ references:
       shorthand: ARMT
       options: [skipbiblistshorthand]
 
-# 6.4.2 Loeb Classical Library (Greek and Latin)
   collection-title-short: ARMT
+
+# Series abbreviation entries (§6.2.36 abbreviation list)
+- id: series-RIMA
+  type: book
+  title: The Royal Inscriptions of Mesopotamia, Assyrian Periods
+  note: |
+    sbl:
+      shorthand: RIMA
+      options: [skipbib]
+
+- id: series-ABC
+  type: book
+  title: Texts from Cuneiform Sources
+  note: |
+    sbl:
+      shorthand: TCS
+      options: [skipbib]
+
+- id: series-ARM1
+  type: book
+  title: Archives royales de Mari
+  note: |
+    sbl:
+      shorthand: ARM
+      options: [skipbib]
+
+- id: series-ARMT1
+  type: book
+  title: Archives royales de Mari, transcrite et traduite
+  note: |
+    sbl:
+      shorthand: ARMT
+      options: [skipbib]
+
+# 6.4.2 Loeb Classical Library (Greek and Latin)
 - id: josephus
   type: book
   translator:

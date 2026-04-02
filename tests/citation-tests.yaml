@@ -905,12 +905,14 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected:
-      bibliography:
-        expected:
+        expected: 'SBL.'
       subsequent_note:
-        expected:
-  notes: SBL shorthand entry not yet supported — requires special handling for organisation entries.
+        expected: 'SBL.'
+      bibliography:
+        expected: 'SBL<br/>
+
+          <em>Society of Biblical Literature</em>, n.d.'
+  notes: SBL shorthand entry — abbreviation list entry for organisation name.
 - id: 6.2.34-an-article-in-a-magazine
   description: An Article in a Magazine
   sblhs_section: 6.2.34
@@ -1265,29 +1267,61 @@ tests:
   sblhs_section: 6.2.36
   entry_id: series-RIMA
   expectations:
-    sbl-fullnote: {}
-  notes: Entry series-RIMA does not exist in bibliography — series-level entries require custom handling.
+    sbl-fullnote:
+      first_note:
+        expected: 'RIMA.'
+      subsequent_note:
+        expected: 'RIMA.'
+      bibliography:
+        expected: 'RIMA<br/>
+
+          <em>The Royal Inscriptions of Mesopotamia, Assyrian Periods</em>, n.d.'
+  notes: Series abbreviation entry — abbreviation list entry for RIMA series.
 - id: 6.2.36-texts-from-the-ancient-near-22
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
   entry_id: series-ABC
   expectations:
-    sbl-fullnote: {}
-  notes: Entry series-ABC does not exist in bibliography — series-level entries require custom handling.
+    sbl-fullnote:
+      first_note:
+        expected: 'TCS.'
+      subsequent_note:
+        expected: 'TCS.'
+      bibliography:
+        expected: 'TCS<br/>
+
+          <em>Texts from Cuneiform Sources</em>, n.d.'
+  notes: Series abbreviation entry — abbreviation list entry for TCS series.
 - id: 6.2.36-texts-from-the-ancient-near-23
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
   entry_id: series-ARM1
   expectations:
-    sbl-fullnote: {}
-  notes: Entry series-ARM1 does not exist in bibliography — series-level entries require custom handling.
+    sbl-fullnote:
+      first_note:
+        expected: 'ARM.'
+      subsequent_note:
+        expected: 'ARM.'
+      bibliography:
+        expected: 'ARM<br/>
+
+          <em>Archives royales de Mari</em>, n.d.'
+  notes: Series abbreviation entry — abbreviation list entry for ARM series.
 - id: 6.2.36-texts-from-the-ancient-near-24
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
   entry_id: series-ARMT1
   expectations:
-    sbl-fullnote: {}
-  notes: Entry series-ARMT1 does not exist in bibliography — series-level entries require custom handling.
+    sbl-fullnote:
+      first_note:
+        expected: 'ARMT.'
+      subsequent_note:
+        expected: 'ARMT.'
+      bibliography:
+        expected: 'ARMT<br/>
+
+          <em>Archives royales de Mari, transcrite et traduite</em>, n.d.'
+  notes: Series abbreviation entry — abbreviation list entry for ARMT series.
 - id: 6.2.37-loeb-classical-library-greek-1
   description: Loeb Classical Library (Greek and Latin)
   sblhs_section: 6.2.37
@@ -2099,6 +2133,10 @@ tests:
   entry_id: plutarch:moralia5
   expectations:
     sbl-fullnote:
+      first_note:
+        expected: 'Plutarch, *Is. Os*.'
+      subsequent_note:
+        expected: 'Plutarch, *Is. Os*. (Babbitt, LCL).'
       bibliography:
         expected: 'Plutarch. *Isis and Osiris; The E at Delphi; The Oracles at Delphi No Longer Given in Verse; The Obsolescence
           of Oracles*. Translated by Frank Cole Babbitt. LCL. Harvard University Press, 1936.'
@@ -2127,6 +2165,10 @@ tests:
   entry_id: philo:cherubim
   expectations:
     sbl-fullnote:
+      first_note:
+        expected: 'Philo, *Cher*.'
+      subsequent_note:
+        expected: 'Philo, *Cher*. (Colson, LCL).'
       bibliography:
         expected: 'Philo. *On the Cherubim; The Sacrifices of Abel and Cain; The Worse Attacks the Better; On the Posterity
           and Exile of Cain; On the Giants*. Translated by F. H. Colson and G. H. Whitaker. LCL. Harvard University Press,
