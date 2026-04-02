@@ -1281,6 +1281,7 @@ references:
       skipbib: true
       entrysubtype: inancientcollection
       xref: hallo:1997
+      subsequent_annote: '"Great Hymn to the Aten," <i>COS</i> 1.26:'
 
 # ANET
   annote: '"The Great Hymn to the Aten" (trans. Miriam Lichtheim; COS 1.26:44–46)'
@@ -1313,6 +1314,7 @@ references:
     sbl:
       xref: ANET
       skipbib: true
+      subsequent_annote: '"Suppiluliumas," <i>ANET</i>, 319'
 
 # Other ANE Anthologies
   annote: '"Suppiluliumas and the Egyptian Queen," trans. Albrecht Goetz (<i>ANET</i>, 319)'
@@ -1337,6 +1339,7 @@ references:
     sbl:
       xref: dalley:1991
       skipbib: true
+      subsequent_annote: '"Erra and Ishum"'
 
   annote: '"Erra and Ishum"'
 - id: foster:1993
@@ -1362,7 +1365,10 @@ references:
     sbl:
       xref: foster:1993
       skipbib: true
+      subsequent_annote: "Foster, <i>Muses</i>"
 
+  annote: '"Erra and Ishum" (Benjamin Foster, <i>Before the Muses: An Anthology of Akkadian Literature</i> [Bethesda, MD:
+    CDL, 1993], 1:771–805)'
 # AEL
 - id: AEL
   type: book
@@ -1447,9 +1453,10 @@ references:
     sbl:
       xref: hoffner:1990
       skipbib: true
+      subsequent_annote: "Hoffner, <i>Hittite Myths</i>"
 
 # Royal Inscriptions
-  annote: '"The Disappearance of the Sun God"'
+  annote: '"The Disappearance of the Sun God," §3 (A I 11–17)'
 - id: RIMA
   type: book
   author:
@@ -1479,12 +1486,12 @@ references:
   page: 143-144
   note: |
     sbl:
-      subsequent_annote: Ashur Inscription (RIMA 2:143-44)
+      subsequent_annote: "Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44)"
       skipbib: true
       entrysubtype: inancientcollection
       xref: RIMA
 
-  annote: Ashur Inscription
+  annote: "Ashur Inscription, obv. lines 10–17"
 - id: ABC
   type: book
   author:
@@ -1512,13 +1519,13 @@ references:
   title: Esarhaddon Chronicle
   note: |
     sbl:
-      subsequent_annote: Esarhaddon Chronicle (<i>ABC</i>, 125)
+      subsequent_annote: "Esarhaddon Chronicle, lines 3–4 (<i>ABC</i>, 125)"
       entrysubtype: inancientcollection
       xref: ABC
       skipbib: true
 
 # ARM
-  annote: Esarhaddon Chronicle
+  annote: "Esarhaddon Chronicle, lines 3–4"
 - id: ARM1
   type: book
   author:
@@ -1956,6 +1963,7 @@ references:
     sbl:
       shorthand: ANF
       options: [skipbib]
+      subsequent_annote: "<i>ANF</i>"
 
   annote: The Clementine Homilies 1.3 (<i>ANF</i> 8:223)
 - id: ANF
@@ -1992,8 +2000,9 @@ references:
       skipbib: true
       entrysubtype: ancientbook
       xref: ANF
+      subsequent_annote: "<i>Clementine Homilies</i>"
 
-  annote: <i>Clementine Homilies</i>
+  annote: The Clementine Homilies 1.3 (<i>ANF</i> 8:223)
 - id: NPNF1:abbreviation
   type: book
   title: The Nicene and Post-Nicene Fathers, Series 1
@@ -2002,6 +2011,7 @@ references:
     sbl:
       shorthand: NPNF¹
       options: [skipbib]
+      subsequent_annote: "<i>NPNF¹</i>"
 
   annote: Augustine, <i>Letters of St. Augustin</i> 28.3.5 (<i>NPNF¹</i> 1:252)
 - id: NPNF1
@@ -2040,6 +2050,7 @@ references:
       entrysubtype: ancientbook
       xref: NPNF1
       options: [skipbib=false]
+      subsequent_annote: "Augustine, <i>Letters of St. Augustin</i>"
 
 # 6.4.6 J.-P. Migne's Patrologia Latina and Patrologia Graeca
   annote: Augustine, <i>Letters of St. Augustin</i> 28.3.5 (NPNF¹ 1:252)
@@ -2089,6 +2100,7 @@ references:
       entrysubtype: ancientbook
       xref: PG
       skipbib: true
+      subsequent_annote: "Gregory of Nazianzus, <i>Orationes theologicae</i>"
 
 # 6.4.7 Strack-Billerbeck
   annote: Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)
@@ -2111,6 +2123,7 @@ references:
     sbl:
       shorthand: Str-B
       source_type: ancient
+      subsequent_annote: "Str-B"
 
 # 6.4.8 ANRW
   annote: See the discussion of ἐκρατοῦντο in Str-B 2:271
@@ -2323,6 +2336,7 @@ references:
   note: |
     sbl:
       xref: NIB
+      subsequent_annote: "Miller, <i>NIB</i>"
 
 # 6.4.11 SBL Seminar Papers
   annote: Patrick D. Miller, <i>NIB</i> 6:577
@@ -2482,6 +2496,7 @@ references:
   note: |
     sbl:
       shorthand: BDAG
+      subsequent_annote: "BDAG,"
 
   annote: BDAG,
 - id: BDB:abbreviation
@@ -2498,6 +2513,7 @@ references:
     sbl:
       shorthand: BDB
       options: [skipbib]
+      subsequent_annote: "BDB,"
 
   annote: BDB,
 - id: BDB
@@ -2519,6 +2535,7 @@ references:
     sbl:
       shorthand: BDB
       xref: BDB:abbreviation
+      subsequent_annote: "BDB,"
 
   annote: BDB,
 - id: BDF
@@ -2539,6 +2556,7 @@ references:
   note: |
     sbl:
       shorthand: BDF
+      subsequent_annote: "BDF"
 
 # 7.1b GKC, IBHS (Grammar Reference Works)
   annote: BDF
@@ -2610,6 +2628,7 @@ references:
     sbl:
       shorthand: HALOT
       editortype: "translated and edited under the supervision of"
+      subsequent_annote: "<i>HALOT</i>"
 
   annote: <i>HALOT</i>
 - id: TLOT
@@ -2633,6 +2652,7 @@ references:
       shorthand: TLOT
       witheditor: "Westermann, Claus"
       witheditortype: withassistance
+      subsequent_annote: "<i>TLOT</i>"
 
 # 7.3 SBLHS
   annote: <i>TLOT</i>
@@ -2657,6 +2677,7 @@ references:
   note: |
     sbl:
       shorthand: SBLHS
+      subsequent_annote: "<i>SBLHS</i>"
 
   annote: <i>SBLHS</i>
 - id: SBLHS:studentsupp

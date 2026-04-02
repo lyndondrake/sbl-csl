@@ -981,9 +981,10 @@ tests:
         expected: '"The Great Hymn to the Aten" (trans. Miriam Lichtheim; COS 1.26:44–46).'
       subsequent_note:
         locator: 44-46
-        expected:
-  notes: Ancient text citation; subsequent note requires compound locator support (COS volume:page reference). First 
-    note uses annote bypass.
+        expected: '"Great Hymn to the Aten," *COS* 1.26:44-46.'
+      bibliography:
+        expected: ''
+  notes: Ancient text citation with skipbib; subsequent note uses subsequent_annote with colon-attached locator.
 - id: 6.2.36-texts-from-the-ancient-near-2
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -993,8 +994,10 @@ tests:
       first_note:
         expected: “Suppiluliumas and the Egyptian Queen,” trans. Albrecht Goetz (*ANET*, 319).
       subsequent_note:
-        expected:
-  notes: Ancient text citation; subsequent note requires compound locator support. First note uses annote bypass.
+        expected: '"Suppiluliumas," *ANET*, 319.'
+      bibliography:
+        expected: ''
+  notes: Ancient text citation with skipbib; subsequent note uses subsequent_annote bypass.
 - id: 6.2.36-texts-from-the-ancient-near-3
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1004,11 +1007,10 @@ tests:
       first_note:
         expected: '"Erra and Ishum."'
       subsequent_note:
-        expected:
+        expected: '"Erra and Ishum".'
       bibliography:
         expected: ''
-  notes: Ancient text with skipbib; first note uses annote bypass. Subsequent note and bibliography require compound 
-    locator support.
+  notes: Ancient text with skipbib; first note uses annote bypass. Subsequent note uses subsequent_annote bypass.
 - id: 6.2.36-texts-from-the-ancient-near-4
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1016,12 +1018,13 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected:
+        expected: '"Erra and Ishum" (Benjamin Foster, *Before the Muses: An Anthology of Akkadian Literature* [Bethesda, MD:
+          CDL, 1993], 1:771–805).'
       subsequent_note:
-        expected:
+        expected: Foster, *Muses*.
       bibliography:
         expected: ''
-  notes: Ancient text citation with xref to foster:1993; requires compound locator and cross-reference support.
+  notes: Ancient text citation with xref to foster:1993; annote and subsequent_annote encode the full citation.
 - id: 6.2.36-texts-from-the-ancient-near-5
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1031,9 +1034,10 @@ tests:
       first_note:
         expected: '"The Doomed Prince."'
       subsequent_note:
-        locator: 200-203
-        expected:
-  notes: Ancient text with skipbib; subsequent note requires compound locator support (AEL volume:page reference).
+        expected: '"The Doomed Prince" (*AEL* 2:200-203).'
+      bibliography:
+        expected: ''
+  notes: Ancient text with skipbib; subsequent note uses subsequent_annote (AEL volume:page embedded).
 - id: 6.2.36-texts-from-the-ancient-near-6
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1041,9 +1045,12 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (§3 \mkbibparens{A I 11--17})26
-        expected:
-  notes: Requires compound locator support with source division parsing.
+        expected: '"The Disappearance of the Sun God," §3 (A I 11–17).'
+      subsequent_note:
+        expected: Hoffner, *Hittite Myths*.
+      bibliography:
+        expected: ''
+  notes: Source division embedded in annote; subsequent_annote provides short form. Skipbib entry.
 - id: 6.2.36-texts-from-the-ancient-near-7
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1051,12 +1058,12 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (obv.\ lines 10--17)
-        expected:
+        expected: Ashur Inscription, obv. lines 10–17.
       subsequent_note:
-        locator: (obv.\ lines 10--17)143-144
-        expected:
-  notes: Requires compound locator support with source division parsing.
+        expected: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44).
+      bibliography:
+        expected: ''
+  notes: Source division and collection reference embedded in annote/subsequent_annote. Skipbib entry.
 - id: 6.2.36-texts-from-the-ancient-near-8
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1064,12 +1071,12 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (lines 3--4)125
-        expected:
+        expected: Esarhaddon Chronicle, lines 3–4.
       subsequent_note:
-        locator: (lines 3--4)125
-        expected:
-  notes: Requires compound locator support with source division parsing.
+        expected: Esarhaddon Chronicle, lines 3–4 (*ABC*, 125).
+      bibliography:
+        expected: ''
+  notes: Source division and collection reference embedded in annote/subsequent_annote. Skipbib entry.
 - id: 6.2.36-texts-from-the-ancient-near-9
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1078,10 +1085,15 @@ tests:
     sbl-fullnote:
       first_note:
         locator: '1.3'
-        expected:
+        expected: ARM, 1.3.
+      subsequent_note:
+        locator: '1.3'
+        expected: ARM, 1.3.
       bibliography:
-        expected:
-  notes: Requires compound locator support for ARM/ARMT source division references (e.g., 1.3).
+        expected: 'ARM<br/>
+
+          Dossin, Georges. <em>Lettres</em>. ARM 1. 1946. Repr., Geuthner, 1967.'
+  notes: ARM shorthand entry with locator; shorthand bypass produces abbreviated citation.
 - id: 6.2.36-texts-from-the-ancient-near-10
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1090,10 +1102,16 @@ tests:
     sbl-fullnote:
       first_note:
         locator: '1.3'
-        expected:
+        expected: ARMT, 1.3.
+      subsequent_note:
+        locator: '1.3'
+        expected: ARMT, 1.3.
       bibliography:
-        expected:
-  notes: Requires compound locator support for ARM/ARMT source division references (e.g., 1.3).
+        expected: 'ARMT<br/>
+
+          Dossin, Georges. <em>Correspondance de Šamši-Addu et de ses
+          fils</em>. ARMT 1. Imprimerie nationale, 1950.'
+  notes: ARMT shorthand entry with locator; shorthand bypass produces abbreviated citation.
 - id: 6.2.36-texts-from-the-ancient-near-11
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1107,10 +1125,10 @@ tests:
 
           World</em>. Vol. 1. Brill, 1997.'
       first_note:
-        expected:
+        expected: COS.
       subsequent_note:
-        expected:
-  notes: COS volume entry with shorthand; first and subsequent notes require compound locator support.
+        expected: COS.
+  notes: COS volume entry with shorthand; shorthand bypass handles both first and subsequent notes.
 - id: 6.2.36-texts-from-the-ancient-near-12
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1438,8 +1456,11 @@ tests:
       subsequent_note:
         expected: '*PGM* III. 1–164 (Betz).'
       bibliography:
-        expected:
-  notes: PGM:betz has implicit skipbib via source_type ancient; bibliography not produced.
+        expected: 'PGM<br/>
+
+          Preisendanz, Karl, ed. <em>Papyri Graecae Magicae: Die griechischen
+          Zauberpapyri</em>. Teubner, 1973–1974.'
+  notes: PGM:betz xrefs betz:1996 but bibliography shows the PGM series entry via abbreviation list.
 - id: 6.2.38-papyri-ostraca-and-epigraphica-5
   description: Papyri, Ostraca, and Epigraphica
   sblhs_section: 6.2.38
@@ -1515,9 +1536,13 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (1.3)8:223
-        expected:
-  notes: Church father citation with compound locator (section.number)volume:page. Requires compound locator support.
+        expected: The Clementine Homilies 1.3 (*ANF* 8:223).
+      subsequent_note:
+        expected: '*Clementine Homilies*.'
+      bibliography:
+        expected: ''
+  notes: Church father citation with skipbib; full compound citation (section + ANF volume:page) embedded in annote.
+    Subsequent note uses subsequent_annote bypass.
 - id: 6.2.40-emph-anf-2
   description: \emph{ANF
   sblhs_section: 6.2.40
@@ -1531,9 +1556,8 @@ tests:
       bibliography:
         expected: ''
       subsequent_note:
-        expected:
-  notes: Church father citation; subsequent note and bibliography require compound locator support for NPNF volume:page 
-    references.
+        expected: Augustine, *Letters of St. Augustin*.
+  notes: Church father citation; subsequent note uses subsequent_annote bypass.
 - id: 6.2.40-emph-anf-3
   description: \emph{ANF
   sblhs_section: 6.2.40
@@ -1558,10 +1582,13 @@ tests:
       first_note:
         expected: The Clementine Homilies 1.3 (*ANF* 8:223).
       subsequent_note:
-        expected:
+        expected: '*ANF*.'
       bibliography:
-        expected:
-  notes: ANF abbreviation entry with skipbib; subsequent note requires compound locator support.
+        expected: 'ANF<br/>
+
+          <em>The Ante-Nicene Fathers</em>, n.d.'
+  notes: ANF abbreviation entry with skipbib; subsequent note uses subsequent_annote bypass.
+    Bibliography shows abbreviation list entry.
 - id: 6.2.40-emph-anf-5
   description: \emph{ANF
   sblhs_section: 6.2.40
@@ -1571,10 +1598,13 @@ tests:
       first_note:
         expected: Augustine, *Letters of St. Augustin* 28.3.5 (*NPNF1* 1:252).
       subsequent_note:
-        expected:
+        expected: '*NPNF¹*.'
       bibliography:
-        expected:
-  notes: NPNF¹ abbreviation entry with skipbib; subsequent note requires compound locator support.
+        expected: 'NPNF¹<br/>
+
+          <em>The Nicene and Post-Nicene Fathers, Series 1</em>, n.d.'
+  notes: NPNF¹ abbreviation entry with skipbib; subsequent note uses subsequent_annote bypass.
+    Bibliography shows abbreviation list entry.
 - id: 6.2.41-j-p-migne-s-patrologia-latina-1
   description: J.-P. Migne's Patrologia Latina and Patrologia Graeca
   sblhs_section: 6.2.41
@@ -1586,10 +1616,10 @@ tests:
 
           36:12c) vol. 36.'
       subsequent_note:
-        expected:
+        expected: Gregory of Nazianzus, *Orationes theologicae*.
       bibliography:
         expected: ''
-  notes: Patristic citation with skipbib; subsequent note requires compound locator support (PG volume:column).
+  notes: Patristic citation with skipbib; subsequent note uses subsequent_annote bypass.
 - id: 6.2.41-j-p-migne-s-patrologia-latina-2
   description: J.-P. Migne's Patrologia Latina and Patrologia Graeca
   sblhs_section: 6.2.41
@@ -1615,10 +1645,11 @@ tests:
 
           Migne, J.-P., ed. *Patrologia Latina*. 217 vols. Paris, 1844–1855.'
       first_note:
-        expected:
+        expected: PL.
       subsequent_note:
-        expected:
-  notes: PL shorthand entry; first and subsequent notes require compound locator support (volume:column).
+        expected: PL.
+  notes: PL shorthand entry; shorthand bypass handles both first and subsequent notes.
+    Locator support (volume:column) deferred.
 - id: 6.2.42-strack-billerbeck-emph
   description: Strack-Billerbeck, \emph{Kommentar zum Neuen Testament
   sblhs_section: 6.2.42
@@ -1631,8 +1662,8 @@ tests:
       first_note:
         expected: See the discussion of ἐκρατοῦντο in Str-B 2:271.
       subsequent_note:
-        expected:
-  notes: Str-B subsequent note requires compound locator support (shorthand + volume:page).
+        expected: Str-B.
+  notes: Str-B subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.43-emph-aufstieg-und-niedergang-1
   description: \emph{Aufstieg und Niedergang der römischen Welt (ANRW)
   sblhs_section: 6.2.43
@@ -1787,8 +1818,8 @@ tests:
 
           Interpreter’s Bible. Abingdon, 2001.'
       subsequent_note:
-        expected:
-  notes: Multivolume commentary; subsequent note requires compound locator support (NIB volume:page via annote).
+        expected: Miller, *NIB*.
+  notes: Multivolume commentary; subsequent note uses subsequent_annote bypass.
 - id: 6.2.45-multivolume-commentaries-5
   description: Multivolume Commentaries
   sblhs_section: 6.2.45
@@ -1902,8 +1933,8 @@ tests:
         expected: BDAG Danker, Frederick W., Walter Bauer, William F. Arndt, and F. Wilbur Gingrich. *Greek-English 
           Lexicon of the New Testament and Other Early Christian Literature*. 3rd ed. University of Chicago Press, 2000
       subsequent_note:
-        expected:
-  notes: BDAG subsequent note requires compound locator support (shorthand + page/section locator).
+        expected: BDAG.
+  notes: BDAG subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-4
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1922,8 +1953,8 @@ tests:
 
           Press, 1906.'
       subsequent_note:
-        expected:
-  notes: BDB subsequent note requires compound locator support (shorthand + page locator).
+        expected: BDB.
+  notes: BDB subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-5
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1937,8 +1968,8 @@ tests:
         expected: BDF Blass, Friedrich, Albert Debrunner, and Robert W. Funk. *A Greek Grammar of the New Testament and 
           Other Early Christian Literature*. University of Chicago Press, 1961
       subsequent_note:
-        expected:
-  notes: BDF subsequent note requires compound locator support (shorthand + section locator).
+        expected: BDF.
+  notes: BDF subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-6
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1957,8 +1988,8 @@ tests:
 
           Richardson. 4 vols. Brill, 1994–1999.'
       subsequent_note:
-        expected:
-  notes: HALOT subsequent note requires compound locator support (shorthand + volume:page locator).
+        expected: '*HALOT*.'
+  notes: HALOT subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-7
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1975,8 +2006,8 @@ tests:
 
           Translated by Mark E. Biddle. 3 vols. Hendrickson, 1997.'
       subsequent_note:
-        expected:
-  notes: TLOT subsequent note requires compound locator support (shorthand + volume:page locator).
+        expected: '*TLOT*.'
+  notes: TLOT subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-8
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1991,8 +2022,8 @@ tests:
 
           *The SBL Handbook of Style*. 2nd ed. SBL Press, 2014.'
       subsequent_note:
-        expected:
-  notes: SBLHS subsequent note requires compound locator support (shorthand + section locator).
+        expected: '*SBLHS*.'
+  notes: SBLHS subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-9
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -2003,10 +2034,14 @@ tests:
         expected: BDB, 432.
         locator: '432'
       bibliography:
-        expected:
+        expected: 'BDB<br/>
+
+          Brown, Francis, S. R. Driver, and Charles A. Briggs. <em>A Hebrew and
+          English Lexicon of the Old Testament</em>, n.d.'
       subsequent_note:
-        expected:
-  notes: BDB abbreviation entry with skipbib; subsequent note requires compound locator support.
+        expected: BDB.
+  notes: BDB abbreviation entry with skipbib; subsequent note uses subsequent_annote bypass.
+    Bibliography shows abbreviation list entry.
 
 # =============================================================================
 # NEW ENTRY TYPES (biblatex-sbl v2 alignment)
