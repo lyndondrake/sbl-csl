@@ -1783,3 +1783,124 @@ tests:
         locator: '432'
       bibliography:
         expected: ""
+
+# =============================================================================
+# NEW ENTRY TYPES (biblatex-sbl v2 alignment)
+# =============================================================================
+
+# --- Video/Film ---
+- id: v2-video-documentary-dvd
+  description: Video — biblical documentary on DVD
+  sblhs_section: 6.5
+  entry_id: wright:kingdom
+  expectations:
+    sbl-fullnote:
+      first_note:
+        expected: 'N. T. Wright, *N. T. Wright on the Kingdom of God*, DVD (Grand Rapids: Acton Institute, 2012).'
+      subsequent_note:
+        expected: 'Wright, *Kingdom of God*.'
+      bibliography:
+        expected: 'Wright, N. T. *N. T. Wright on the Kingdom of God*. DVD. Acton Institute, 2012.'
+  notes: Video entry using CSL motion_picture type. DVD appears via the medium field.
+
+- id: v2-video-film
+  description: Video — theatrical film
+  sblhs_section: 6.5
+  entry_id: gibson:passion
+  expectations:
+    sbl-fullnote:
+      first_note:
+        expected: 'Mel Gibson, *The Passion of the Christ* (Icon Productions, 2004).'
+      subsequent_note:
+        expected: 'Gibson, *Passion of the Christ*.'
+      bibliography:
+        expected: 'Gibson, Mel. *The Passion of the Christ*. Icon Productions, 2004.'
+  notes: Film entry. SBLHS would show "dir." after author name, but CSL has no authortype mechanism for motion_picture.
+
+# --- Additional Classical Texts — Plutarch ---
+- id: v2-classical-plutarch-note
+  description: Plutarch (Moralia) — classical text note citation
+  sblhs_section: 6.4.2
+  entry_id: plutarch:isos
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: 351D
+        expected: 'Plutarch, *Is. Os*. 351D.'
+      subsequent_note:
+        locator: 351D
+        expected: 'Plutarch, *Is. Os*. 351D (Babbitt, LCL).'
+  notes: Classical text using annote bypass. Subsequent note appends translator and series.
+
+- id: v2-classical-plutarch-bib
+  description: Plutarch (Moralia) — LCL volume bibliography
+  sblhs_section: 6.4.2
+  entry_id: plutarch:moralia5
+  expectations:
+    sbl-fullnote:
+      bibliography:
+        expected: 'Plutarch. *Isis and Osiris; The E at Delphi; The Oracles at Delphi No
+          Longer Given in Verse; The Obsolescence of Oracles*. Translated by
+          Frank Cole Babbitt. LCL. Harvard University Press, 1936.'
+  notes: LCL volume entry for the Plutarch collection containing De Iside et Osiride.
+
+# --- Additional Classical Texts — Philo ---
+- id: v2-classical-philo-note
+  description: Philo of Alexandria — classical text note citation
+  sblhs_section: 6.4.2
+  entry_id: philo:cher
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: '1.47'
+        expected: 'Philo, *Cher*. 1.47.'
+      subsequent_note:
+        locator: '1.47'
+        expected: 'Philo, *Cher*. 1.47 (Colson, LCL).'
+  notes: Classical text following the same annote bypass pattern as Josephus.
+
+- id: v2-classical-philo-bib
+  description: Philo of Alexandria — LCL volume bibliography
+  sblhs_section: 6.4.2
+  entry_id: philo:cherubim
+  expectations:
+    sbl-fullnote:
+      bibliography:
+        expected: 'Philo. *On the Cherubim; The Sacrifices of Abel and Cain; The Worse
+          Attacks the Better; On the Posterity and Exile of Cain; On the
+          Giants*. Translated by F. H. Colson and G. H. Whitaker. LCL. Harvard
+          University Press, 1929.'
+  notes: LCL volume entry for the Philo collection containing De cherubim.
+
+# --- Grammar Reference Works ---
+- id: v2-grammar-gkc
+  description: GKC — Hebrew grammar reference (shorthand)
+  sblhs_section: 7.1
+  entry_id: GKC
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: §110a
+        expected: 'GKC §110a.'
+      subsequent_note:
+        locator: §110a
+        expected: "Gesenius, *Gesenius' Hebrew Grammar*, §110a."
+      bibliography:
+        expected: "GKC<br/>\nGesenius, Wilhelm. <em>Gesenius' Hebrew Grammar</em>. Edited by Emil\nKautzsch. Translated by Arthur E. Cowley. 2nd ed. Clarendon, 1910."
+  notes: Standard shorthand reference work. First note uses shorthand; subsequent note uses author+short title.
+
+- id: v2-grammar-ibhs
+  description: IBHS — Biblical Hebrew syntax reference (shorthand)
+  sblhs_section: 7.1
+  entry_id: IBHS
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: §16.3.2
+        expected: 'IBHS §16.3.2.'
+      subsequent_note:
+        locator: §16.3.2
+        expected: "Waltke and O'Connor, *An Introduction to Biblical Hebrew Syntax*, §16.3.2."
+      bibliography:
+        expected: "IBHS<br/>\nWaltke, Bruce K., and Michael O'Connor. <em>An Introduction to Biblical\nHebrew Syntax</em>. Eisenbrauns, 1990."
+  notes: Standard shorthand reference work following the same pattern as BDAG/BDF.
