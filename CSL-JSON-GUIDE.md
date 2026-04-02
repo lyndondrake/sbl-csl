@@ -104,11 +104,12 @@ The `sbl_metadata` column stores a JSON object:
     "seriesseries": "2",
     "abbreviation_type": "sigla",
     "definition": "ablative",
+    "bibliography_annote": "Custom bibliography text with <i>HTML</i>.",
     "options": ["skipbiblist"]
 }
 ```
 
-Not all fields are needed for every entry. Most entries have only 1–3 SBL metadata fields. The `skipbib` boolean and `options` array are separate concerns: `skipbib` suppresses the entry from the bibliography, while `options` carries flags like `skipbiblist` (keep in bibliography instead of abbreviation list).
+Not all fields are needed for every entry. Most entries have only 1–3 SBL metadata fields. The `skipbib` boolean and `options` array are separate concerns: `skipbib` suppresses the entry from the bibliography, while `options` carries flags like `skipbiblist` (keep in bibliography instead of abbreviation list). The `bibliography_annote` field provides a complete HTML replacement for the bibliography entry text when CSL cannot produce the required format.
 
 The `abbreviation_type` and `definition` fields are used for sigla entries (general abbreviations like grammatical terms). See the Abbreviation List section below for details.
 
@@ -211,7 +212,8 @@ def build_sbl_note(sbl_metadata_json, entry_id, db):
     for key in ["shorthand", "shortseries", "shortjournal", "shortauthor",
                 "entrysubtype", "subsequent_annote", "subsequent_suffix",
                 "xref", "maintitle", "maineditor", "origlanguage",
-                "seriesseries", "abbreviation_type", "definition"]:
+                "seriesseries", "abbreviation_type", "definition",
+                "bibliography_annote"]:
         if key in meta and meta[key]:
             lines.append(f"  {key}: {meta[key]}")
 
@@ -259,8 +261,9 @@ Use these CSL types for SBL entries:
 | Dictionary/lexicon article | `entry-dictionary` | Headword entries in lexicons |
 | Dissertation | `thesis` | PhD dissertations, MA theses |
 | Conference paper | `speech` | Papers presented at conferences |
-| Classical text | `classic` | Greek/Latin classical authors (Josephus, Tacitus) |
+| Classical text | `classic` | Greek/Latin classical authors (Josephus, Tacitus, Plutarch, Philo) |
 | Ancient text | `document` | ANE texts, papyri, inscriptions |
+| Video/film | `motion_picture` | Documentaries, films, video recordings |
 | Website/blog | `webpage` | Online-only sources |
 | Conference proceedings | `paper-conference` | Published conference papers |
 
@@ -316,6 +319,125 @@ def annote_lexicon(entry, parent_entry):
     return ''.join(parts)
 ```
 
+### Video and film entries
+
+Use `motion_picture` type. Standard CSL fields suffice; no `sbl:` metadata is typically needed.
+
+```yaml
+- id: wright:kingdom
+  type: motion_picture
+  title: N. T. Wright on the Kingdom of God
+  author:
+    - family: Wright
+      given: N. T.
+  issued:
+    date-parts:
+      - - 2010
+  publisher: Films for the Humanities & Sciences
+  medium: DVD
+```
+
+Films list the director as author. Documentaries and interviews list the featured speaker or interviewee. The `medium` field records the format (DVD, Blu-ray, streaming).
+
+### Classical texts with separate note and bibliography entries (Plutarch/Philo pattern)
+
+Some classical authors require two entries: a `classic` type for note citations and a `book` type for the bibliography. The note entry carries `skipbib: true` and an `xref` pointing to the bibliography entry.
+
+**Note entry** (cited in footnotes):
+
+```yaml
+- id: plutarch:isos
+  type: classic
+  author:
+    - literal: Plutarch
+  title: "Is. Os."
+  annote: "Plutarch, <i>Is. Os</i>."
+  note: |
+    sbl:
+      xref: plutarch:moralia5
+      subsequent_suffix: "Babbitt, LCL"
+      skipbib: true
+```
+
+**Bibliography entry** (appears in bibliography):
+
+```yaml
+- id: plutarch:moralia5
+  type: book
+  author:
+    - literal: Plutarch
+  title: "Isis and Osiris; The E at Delphi; The Oracles at Delphi No Longer Given in Verse"
+  translator:
+    - family: Babbitt
+      given: Frank Cole
+  collection-title: Loeb Classical Library
+  collection-title-short: LCL
+  volume: "5"
+  publisher: Harvard University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+      - - 1936
+  annote: "Plutarch, <i>Is. Os</i>."
+  note: |
+    sbl:
+      shortseries: LCL
+      subsequent_annote: "Plutarch, <i>Is. Os</i>."
+      subsequent_suffix: "Babbitt, LCL"
+```
+
+The note entry uses `annote` for the abbreviated first-note format and `subsequent_suffix` for the translator/series parenthetical in subsequent notes. The bibliography entry uses `subsequent_annote` so that subsequent citations use the abbreviated form rather than the full bibliography title.
+
+### Grammar reference works
+
+Grammar reference works use `book` type with `shorthand` for abbreviated citations:
+
+```yaml
+- id: GKC
+  type: book
+  title: "Gesenius' Hebrew Grammar"
+  editor:
+    - family: Kautzsch
+      given: E.
+  translator:
+    - family: Cowley
+      given: A. E.
+  edition: "2nd English ed."
+  publisher: Clarendon
+  publisher-place: Oxford
+  issued:
+    date-parts:
+      - - 1910
+  annote: GKC
+  note: |
+    sbl:
+      shorthand: GKC
+```
+
+The `shorthand` places the entry in the abbreviation list. The `annote` field provides the shorthand-only first-note format (subsequent notes use the same shorthand via the normal CSL short-form mechanism).
+
+### Bibliography override with `bibliography_annote`
+
+When CSL cannot produce the correct bibliography format, `bibliography_annote` provides a complete HTML replacement for the bibliography entry text. The Lua filter replaces the CSL-generated bibliography with this string.
+
+```yaml
+- id: boers:introduction
+  type: chapter
+  title: Introduction
+  note: |
+    sbl:
+      subsequent_annote: "Boers, introduction,"
+      bibliography_annote: 'Boers, Hendrikus. Introduction to <i>How to Read the New Testament</i>, by Wilhelm Egger. Translated by Peter Heinegg. Hendrickson, 1996.'
+```
+
+Use `bibliography_annote` sparingly — only when the CSL style cannot produce the required output. Common use cases:
+
+- Introductions/prefaces to books by other authors (CSL has no standard way to format "Introduction to *Title*, by Author")
+- Magazine articles where the bibliography format differs from the note format in ways CSL cannot express
+- Ancient text databases with non-standard citation formats
+
+The value is parsed as HTML. Use `<i>` for italic, `<b>` for bold. The string replaces only the bibliography entry; note citations use `annote` and `subsequent_annote` as normal.
+
 ## SBL Metadata Decision Tree
 
 When creating an entry, use this decision tree for the `sbl_metadata`:
@@ -330,10 +452,20 @@ Is it a journal article?
 Is it in a series?
   → Set shortseries; also set collection-title-short in the main entry
 
+Is it a video or film?
+  → Use type: motion_picture
+  → Set medium for format (DVD, Blu-ray, streaming)
+  → No sbl: metadata typically needed
+
 Is it a classical text (Josephus, Tacitus, Pliny, etc.)?
   → Set entrysubtype: classical
   → Set annote using classical template
   → Set subsequent_suffix with translator and series (e.g., "Thackeray, LCL")
+
+Does the classical text need separate note and bibliography entries (Plutarch/Philo pattern)?
+  → Create a classic-type note entry with skipbib: true and xref to the bibliography entry
+  → Create a book-type bibliography entry with the LCL volume details
+  → Both entries share the same annote and subsequent_suffix values
 
 Is it a church father text (Augustine, Gregory, Origen, etc.)?
   → Set entrysubtype: churchfather
@@ -366,6 +498,15 @@ Is it a grammatical abbreviation or siglum (abl., col., etc.)?
   → Set definition: with the expansion text
   → Set shorthand: with the abbreviation
   → The entry appears in the "General Abbreviations and Sigla" section
+
+Is it a grammar reference work (GKC, BDF, IBHS)?
+  → Set shorthand with the standard abbreviation
+  → Set annote to the shorthand for first-note display
+  → The entry appears in the abbreviation list
+
+Does the bibliography format need a complete override?
+  → Set bibliography_annote with the full HTML replacement text
+  → Use for introductions, non-standard formats CSL cannot express
 
 Does the subsequent note need different text from the first note?
   → Set subsequent_annote for complete replacement

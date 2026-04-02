@@ -133,7 +133,7 @@ python3 -m venv .venv
 TMPDIR=.tmp/ .venv/bin/python -m pytest tests/ -k "sbl-fullnote" --tb=short -v
 ```
 
-Current results: 259 of 259 SBL fullnote tests passing (100%).
+Current results: 347 of 414 SBL fullnote tests passing (67 skipped, 0 failing). Skipped tests have unpopulated expected values for complex citation forms (ancient texts, church fathers, shorthand references).
 
 ## CSL modifications from upstream
 
