@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Generate annote values from entrysubtype templates.
 
-For entries with entrysubtype (classical, churchfather, etc.), this script
-generates the expected annote value from the entry's standard CSL fields.
-This makes adding new entries trivial — just set the entrysubtype and
-standard fields, then run this script to populate the annote.
+For entries with entrysubtype (ancientbook, inancientbook,
+inancientcollection, etc.), this script generates the expected annote
+value from the entry's standard CSL fields. This makes adding new entries
+trivial — just set the entrysubtype and standard fields, then run this
+script to populate the annote.
 
 Usage:
     python scripts/generate-annote.py [--apply] [--validate]
@@ -51,25 +52,8 @@ def get_author_short(ref: dict) -> str | None:
 TEMPLATES = {}
 
 
-def template_classical(ref: dict, sbl: dict) -> str | None:
-    """Classical texts: Author, <i>Work</i>."""
-    author = get_author_literal(ref)
-    title = ref.get('title', '')
-    if not author or not title:
-        return None
-    # Remove trailing period from title (CSL adds via annote branch)
-    if title.endswith('.'):
-        title_clean = title[:-1]
-        suffix = '.'
-    else:
-        suffix = ','
-    return f'{author}, <i>{title_clean}</i>{suffix}'
-
-TEMPLATES['classical'] = template_classical
-
-
-def template_churchfather(ref: dict, sbl: dict) -> str | None:
-    """Church father texts: Author, <i>Work</i> section (SERIES vol:page).
+def template_ancientbook(ref: dict, sbl: dict) -> str | None:
+    """Ancient book: complete ancient work in a collection series (ANF, NPNF, PG).
 
     The locator with series reference is passed separately, so the template
     only generates the base: Author, <i>Work</i>
@@ -82,7 +66,27 @@ def template_churchfather(ref: dict, sbl: dict) -> str | None:
         return f'{author}, <i>{title}</i>'
     return f'<i>{title}</i>'
 
-TEMPLATES['churchfather'] = template_churchfather
+TEMPLATES['ancientbook'] = template_ancientbook
+
+
+def template_inancientbook(ref: dict, sbl: dict) -> str | None:
+    """Part of an ancient work in a collection series.
+
+    Uses the same format as ancientbook for now.
+    """
+    return template_ancientbook(ref, sbl)
+
+TEMPLATES['inancientbook'] = template_inancientbook
+
+
+def template_inancientcollection(ref: dict, sbl: dict) -> str | None:
+    """Text in a modern collection (COS, ANET, RIMA, ABC, ANRW).
+
+    Uses the same base format as ancientbook for now.
+    """
+    return template_ancientbook(ref, sbl)
+
+TEMPLATES['inancientcollection'] = template_inancientcollection
 
 
 def template_lexicon_article(ref: dict, sbl: dict) -> str | None:

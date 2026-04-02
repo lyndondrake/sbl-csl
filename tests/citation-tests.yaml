@@ -20,7 +20,7 @@ tests:
         expected: Talbert, *Reading John*, 22.
       bibliography:
         expected: 'Talbert, Charles H. *Reading John: A Literary and Theological Commentary on the Fourth Gospel and the Johannine
-          Epistles*. New York: Crossroad, 1992.'
+          Epistles*. Crossroad, 1992.'
   notes: Standard book citation; no special handling required.
 - id: 6.2.2-a-book-by-two-or-three-authors
   description: A Book by Two or Three Authors
@@ -36,7 +36,7 @@ tests:
         locator: '23'
         expected: Robinson and Koester, *Trajectories*, 23.
       bibliography:
-        expected: 'Robinson, James M., and Helmut Koester. *Trajectories through Early Christianity*. Philadelphia: Fortress,
+        expected: 'Robinson, James M., and Helmut Koester. *Trajectories through Early Christianity*. Fortress,
           1971.'
 - id: 6.2.3-a-book-by-more-than-three
   description: A Book by More than Three Authors
@@ -52,7 +52,7 @@ tests:
         expected: Scott et al., *Reading New Testament Greek*, 42.
       bibliography:
         expected: 'Scott, Bernard Brandon, Margaret Dean, Kristen Sparks, and Frances LaZar. *Reading New Testament Greek*.
-          Peabody, MA: Hendrickson, 1993.'
+          Hendrickson, 1993.'
   notes: CSL handles et al. automatically based on style settings.
 - id: 6.2.4-a-translated-volume
   description: A Translated Volume
@@ -69,7 +69,7 @@ tests:
         expected: Egger, *How to Read*, 291.
       bibliography:
         expected: 'Egger, Wilhelm. *How to Read the New Testament: An Introduction to Linguistic and Historical-Critical Methodology*.
-          Translated by Peter Heinegg. Peabody, MA: Hendrickson, 1996.'
+          Translated by Peter Heinegg. Hendrickson, 1996.'
 - id: 6.2.5-the-full-history-of-a
   description: The Full History of a Translated Volume
   sblhs_section: 6.2.5
@@ -84,7 +84,7 @@ tests:
       bibliography:
         expected: 'Wellhausen, Julius. <em>Prolegomena to the History of Ancient
 
-          Israel</em>. New York: Meridian Books, 1957.'
+          Israel</em>. Meridian Books, 1957.'
   notes: CSL cannot automatically chain related entries (translationof, reprintof). The `note` field contains the full 
     history manually. A Lua filter could potentially automate this.
 - id: 6.2.6-a-book-with-one-editor
@@ -101,7 +101,7 @@ tests:
         locator: '38'
         expected: Tigay, *Empirical Models*, 38.
       bibliography:
-        expected: 'Tigay, Jeffrey H., ed. *Empirical Models for Biblical Criticism*. Philadelphia: University of Pennsylvania
+        expected: 'Tigay, Jeffrey H., ed. *Empirical Models for Biblical Criticism*. University of Pennsylvania
           Press, 1985.'
 - id: 6.2.7-a-book-with-two-or-three
   description: A Book with Two or Three Editors
@@ -118,7 +118,7 @@ tests:
         expected: Kaltner and McKenzie, *Beyond Babel*, viii.
       bibliography:
         expected: 'Kaltner, John, and Steven L. McKenzie, eds. *Beyond Babel: A Handbook for Biblical Hebrew and Related Languages*.
-          RBS 42. Atlanta: Society of Biblical Literature, 2002.'
+          RBS 42. Society of Biblical Literature, 2002.'
   notes: Series abbreviation (RBS) in the note field. CSL styles vary in how they handle series.
 - id: 6.2.8-a-book-with-four-or-more
   description: A Book with Four or More Editors
@@ -132,7 +132,7 @@ tests:
           ed., BASPSup 9 (Oakville, CT: American Society of Papyrologists, 2001), 10.'
       bibliography:
         expected: 'Oates, John F., William H. Willis, Roger S. Bagnall, and Klass A. Worp, eds. *Checklist of Editions of
-          Greek and Latin Papyri, Ostraca, and Tablets*. 5th ed. BASPSup 9. Oakville, CT: American Society of Papyrologists,
+          Greek and Latin Papyri, Ostraca, and Tablets*. 5th ed. BASPSup 9. American Society of Papyrologists,
           2001.'
 - id: 6.2.9-a-book-with-both-author-and
   description: A Book with Both Author and Editor
@@ -145,7 +145,7 @@ tests:
         expected: 'Edward Schillebeeckx, *The Schillebeeckx Reader*, ed. Robert J. Schreiter (Edinburgh: T&T Clark, 1986),
           20.'
       bibliography:
-        expected: 'Schillebeeckx, Edward. *The Schillebeeckx Reader*. Edited by Robert J. Schreiter. Edinburgh: T&T Clark,
+        expected: 'Schillebeeckx, Edward. *The Schillebeeckx Reader*. Edited by Robert J. Schreiter. T&T Clark,
           1986.'
 - id: 6.2.10-a-book-with-author-editor-and
   description: A Book with Author, Editor, and Translator
@@ -159,7 +159,7 @@ tests:
           trans. Giordana Pisi (Brescia: Paideia, 1982), 40.'
       bibliography:
         expected: 'Blass, Friedrich, and Albert Debrunner. *Grammatica del greco del Nuovo Testamento*. Edited by Friedrich
-          Rehkopf. Translated by Giordana Pisi. Brescia: Paideia, 1982.'
+          Rehkopf. Translated by Giordana Pisi. Paideia, 1982.'
 - id: 6.2.11-a-title-in-a-modern-work
   description: A Title in a Modern Work Citing a Nonroman Alphabet
   sblhs_section: 6.2.11
@@ -183,7 +183,7 @@ tests:
         expected: Attridge, "Jewish Historiography," 311–43.
       bibliography:
         expected: 'Attridge, Harold W. “Jewish Historiography.” Pages 311–43 in*Early Judaism and Its Modern Interpreters*.
-          Edited by Robert A. Kraft and George W. E. Nickelsburg. Philadelphia: Fortress; Atlanta: Scholars Press, 1986.'
+          Edited by Robert A. Kraft and George W. E. Nickelsburg. Fortress and Scholars Press, 1986.'
 - id: 6.2.13-an-article-in-a-festschrift
   description: An Article in a Festschrift
   sblhs_section: 6.2.13
@@ -214,7 +214,7 @@ tests:
         expected: Boers, introduction, xi–xx.
       bibliography:
         expected: 'Boers, Hendrikus. Introduction to*How to Read the New Testament: An Introduction to Linguistic and Historical-Critical
-          Methodology*, by Wilhelm Egger. Translated by Peter Heinegg. Peabody, MA: Hendrickson, 1996.'
+          Methodology*, by Wilhelm Egger. Translated by Peter Heinegg. Hendrickson, 1996.'
   notes: The `bookauthor` field distinguishes the introduction author from the book author.
 - id: 6.2.15-multiple-publishers-for-a
   description: Multiple Publishers for a Single Book
@@ -224,7 +224,7 @@ tests:
     sbl-fullnote:
       bibliography:
         expected: 'Gerhardsson, Birger. *Memory and Manuscript: Oral Tradition and Written Transmission in Rabbinic Judaism
-          and Early Christianity*. ASNU 22. Lund and Copenhagen: Gleerup and Munksgaard, 1961.'
+          and Early Christianity*. ASNU 22. Gleerup and Munksgaard, 1961.'
 - id: 6.2.16-a-revised-edition-1
   description: A Revised Edition
   sblhs_section: 6.2.16
@@ -236,8 +236,8 @@ tests:
         expected: 'James B. Pritchard, ed., *Ancient Near Eastern Texts Relating to the Old Testament*, 3rd ed. (Princeton:
           Princeton University Press, 1969), xxi.'
       bibliography:
-        expected: 'Pritchard, James B., ed. *Ancient Near Eastern Texts Relating to the Old Testament*. 3rd ed. Princeton:
-          Princeton University Press, 1969.'
+        expected: 'Pritchard, James B., ed. *Ancient Near Eastern Texts Relating to the Old Testament*. 3rd ed. Princeton
+          University Press, 1969.'
 - id: 6.2.16-a-revised-edition-2
   description: A Revised Edition
   sblhs_section: 6.2.16
@@ -249,7 +249,7 @@ tests:
         expected: 'Joseph Blenkinsopp, *A History of Prophecy in Israel*, rev. and enl. ed. (Louisville: Westminster John
           Knox, 1996), 81.'
       bibliography:
-        expected: 'Blenkinsopp, Joseph. *A History of Prophecy in Israel*. Rev. and enl. ed. Louisville: Westminster John
+        expected: 'Blenkinsopp, Joseph. *A History of Prophecy in Israel*. Rev. and enl. ed. Westminster John
           Knox, 1996.'
 - id: 6.2.17-a-recent-reprint-title
   description: A Recent Reprint Title
@@ -275,7 +275,7 @@ tests:
           Texts of the Graeco-Roman World*, trans. Lionel R. M. Strachan (Peabody, MA: Hendrickson, 1995; orig. 1927), 55.'
       bibliography:
         expected: 'Deissmann, Gustav Adolf. *Light from the Ancient East: The New Testament Illustrated by Recently Discovered
-          Texts of the Graeco-Roman World*. Translated by Lionel R. M. Strachan. 1927. Repr., Peabody, MA: Hendrickson, 1995.'
+          Texts of the Graeco-Roman World*. Translated by Lionel R. M. Strachan. 1927. Repr., Hendrickson, 1995.'
 - id: 6.2.19-a-forthcoming-book
   description: A Forthcoming Book
   sblhs_section: 6.2.19
@@ -330,7 +330,7 @@ tests:
 
           Ancient Literary Setting</em>. Vol. 1 of <em>The Book of Acts in Its
 
-          First Century </em>Setting. Grand Rapids: Eerdmans, 1993.'
+          First Century </em>Setting. Eerdmans, 1993.'
 - id: 6.2.22-a-chapter-within-a
   description: A Chapter within a Multivolume Work
   sblhs_section: 6.2.22
@@ -353,7 +353,7 @@ tests:
 
           217–35 in <em>Hebrew Bible/Old Testament: The History of Its
 
-          Interpretation</em>. Edited by Magne Sæbø. Göttingen: Vandenhoeck &amp;
+          Interpretation</em>. Edited by Magne Sæbø. Vandenhoeck &amp;
 
           Ruprecht, 1996.'
 - id: 6.2.23-a-chapter-within-a-titled
@@ -380,7 +380,7 @@ tests:
 
           Literary Setting</em>. Vol. 1 of <em>The Book of Acts in Its First
 
-          Century </em>Setting. Grand Rapids: Eerdmans, 1993.'
+          Century </em>Setting. Eerdmans, 1993.'
 - id: 6.2.24-a-work-in-a-series-1
   description: A Work in a Series
   sblhs_section: 6.2.24
@@ -394,7 +394,7 @@ tests:
         locator: '124'
         expected: Hofius, *Paulusstudien*, 124.
       bibliography:
-        expected: 'Hofius, Otfried. *Paulusstudien*. WUNT 51. Tübingen: Mohr Siebeck, 1989.'
+        expected: 'Hofius, Otfried. *Paulusstudien*. WUNT 51. Mohr Siebeck, 1989.'
   notes: Series abbreviation placement varies by CSL style.
 - id: 6.2.24-a-work-in-a-series-2
   description: A Work in a Series
@@ -409,7 +409,7 @@ tests:
         locator: '126'
         expected: Jeremias, *Prayers*, 126.
       bibliography:
-        expected: 'Jeremias, Joachim. *The Prayers of Jesus*. SBT 2/6. Naperville, IL: Allenson, 1967.'
+        expected: 'Jeremias, Joachim. *The Prayers of Jesus*. SBT 2/6. Allenson, 1967.'
 - id: 6.2.25-electronic-book-1
   description: Electronic Book
   sblhs_section: 6.2.25
@@ -429,7 +429,7 @@ tests:
       bibliography:
         expected: 'Reventlow, Henning Graf. <em>From the Old Testament to Origen</em>.
 
-          Nook. Translated by Leo G. Perdue. Vol. 1. Atlanta: Society of Biblical
+          Nook. Translated by Leo G. Perdue. Vol. 1. Society of Biblical
 
           Literature, 2009. Nook.'
 - id: 6.2.25-electronic-book-2
@@ -451,7 +451,7 @@ tests:
       bibliography:
         expected: 'Wright, Jacob L. <em>David, King of Israel, and Caleb in Biblical
 
-          Memory</em>. Kindle edition. Cambridge: Cambridge University Press,
+          Memory</em>. Kindle edition. Cambridge University Press,
 
           2014. Kindle edition.'
 - id: 6.2.25-electronic-book-3
@@ -467,7 +467,7 @@ tests:
         expected: Killebrew and Steiner, *Archaeology of the Levant*.
       bibliography:
         expected: 'Killebrew, Ann E., and Margreet Steiner, eds. *The Oxford Handbook of the Archaeology of the Levant: c.
-          8000–332 BCE*. Oxford: Oxford University Press, 2014. https://doi.org/10.1093/oxfordhb/9780199212972.001.0001.'
+          8000–332 BCE*. Oxford University Press, 2014. https://doi.org/10.1093/oxfordhb/9780199212972.001.0001.'
 - id: 6.2.25-electronic-book-4
   description: Electronic Book
   sblhs_section: 6.2.25
@@ -481,7 +481,7 @@ tests:
         locator: '123'
         expected: Kaufman, *The Akkadian Influences on Aramaic*, 123.
       bibliography:
-        expected: 'Kaufman, Stephen. *The Akkadian Influences on Aramaic*. AS 19. Chicago: The Oriental Institute of the University
+        expected: 'Kaufman, Stephen. *The Akkadian Influences on Aramaic*. AS 19. The Oriental Institute of the University
           of Chicago, 1974. http://oi.uchicago.edu/pdf/as19.pdf.'
 - id: 6.2.26-a-journal-article
   description: A Journal Article
@@ -557,9 +557,7 @@ tests:
 
           Biblical Poetry.”</span> Pages 1–22 in <em>Pottery, Poetry, and
 
-          Prophecy: Studies in Early Hebrew Poetry</em>. Winona Lake, IN:
-
-          Eisenbrauns, 1980.'
+          Prophecy: Studies in Early Hebrew Poetry</em>. Eisenbrauns, 1980.'
       subsequent_note:
         expected: ''
 - id: 6.2.29-a-book-review-1
@@ -633,7 +631,7 @@ tests:
         expected: Stendahl, “Biblical Theology,” 1:419.
       bibliography:
         expected: 'Stendahl, Krister. "Biblical Theology, Contemporary." Pages 418–32 in vol. 1 of *The Interpreter''s Dictionary
-          of the Bible*. Edited by George A. Buttrick. 4 vols. New York: Abingdon, 1962.'
+          of the Bible*. Edited by George A. Buttrick. 4 vols. Abingdon, 1962.'
   notes: SBLHS uses shorthand (IDB) in notes. CSL abbreviations list or `note` field can simulate this.
 - id: 6.2.31-an-article-in-an-2
   description: An Article in an Encyclopaedia or a Dictionary
@@ -648,7 +646,7 @@ tests:
         expected: Olson, “Numbers,” 612.
       bibliography:
         expected: 'Olson, Dennis T. “Numbers, Book of.” Pages 611–18 in*Dictionary of the Old Testament: Pentateuch*. Edited
-          by T. Desmond Alexander and David W. Baker. Downers Grove, IL: InterVarsity, 2003.'
+          by T. Desmond Alexander and David W. Baker. InterVarsity, 2003.'
 - id: 6.2.31-an-article-in-an-3
   description: An Article in an Encyclopaedia or a Dictionary
   sblhs_section: 6.2.31
@@ -658,8 +656,8 @@ tests:
       first_note:
         expected: Krister Stendahl, “Biblical Theology, Contemporary,”*IDB* 1:418–32.
       bibliography:
-        expected: "IDB<br/>\nButtrick, George A., ed. <em>The Interpreter’s Dictionary of the\nBible</em>. 4 vols. New York:
-          Abingdon, 1962."
+        expected: "IDB<br/>\nButtrick, George A., ed. <em>The Interpreter’s Dictionary of the\nBible</em>. 4 vols. Abingdon,
+          1962."
 - id: 6.2.31-an-article-in-an-4
   description: An Article in an Encyclopaedia or a Dictionary
   sblhs_section: 6.2.31
@@ -673,7 +671,7 @@ tests:
 
           Alexander, T. Desmond, and David W. Baker, eds. <em>Dictionary of the
 
-          Old Testament: Pentateuch</em>. Downers Grove, IL: InterVarsity, 2003.'
+          Old Testament: Pentateuch</em>. InterVarsity, 2003.'
 - id: 6.2.32-an-article-in-a-lexicon-or-1
   description: An Article in a Lexicon or Theological Dictionary
   sblhs_section: 6.2.32
@@ -716,7 +714,7 @@ tests:
 
           vol. 1 of <em>Theological Lexicon of the New Testament</em>. Edited by
 
-          James D. Ernest. 3 vols. Peabody, MA: Hendrickson, 1994.'
+          James D. Ernest. 3 vols. Hendrickson, 1994.'
 - id: 6.2.32-an-article-in-a-lexicon-or-4
   description: An Article in a Lexicon or Theological Dictionary
   sblhs_section: 6.2.32
@@ -734,7 +732,7 @@ tests:
 
           <em>Theological Lexicon of the New Testament</em>. Edited by James D.
 
-          Ernest. 3 vols. Peabody, MA: Hendrickson, 1994.'
+          Ernest. 3 vols. Hendrickson, 1994.'
 - id: 6.2.32-an-article-in-a-lexicon-or-5
   description: An Article in a Lexicon or Theological Dictionary
   sblhs_section: 6.2.32
@@ -771,7 +769,7 @@ tests:
 
           Brown, Colin, ed. <em>New International Dictionary of New Testament
 
-          Theology</em>. 4 vols. Grand Rapids: Zondervan, 1975–1985.'
+          Theology</em>. 4 vols. Zondervan, 1975–1985.'
       first_note:
         expected: Karl Dahn and Walter L. Liefeld, “See, Vision, Eye,”*NIDNTT* 3:511–21.
       subsequent_note:
@@ -791,7 +789,7 @@ tests:
 
           of the New Testament</em>. Translated by Geoffrey W. Bromiley. 10 vols.
 
-          Grand Rapids: Eerdmans, 1964–1976.'
+          Eerdmans, 1964–1976.'
       first_note:
         expected: Hermann W. Beyer, “διακονέω, διακονία, κτλ,”*TDNT* 2:81–93.
       subsequent_note:
@@ -809,7 +807,7 @@ tests:
 
           Spicq, Ceslas. <em>Theological Lexicon of the New Testament</em>. Edited
 
-          and translated by James D. Ernest. 3 vols. Peabody, MA: Hendrickson,
+          and translated by James D. Ernest. 3 vols. Hendrickson,
 
           1994.'
       first_note:
@@ -897,13 +895,13 @@ tests:
     sbl-fullnote:
       first_note:
         expected: 'Alan Kirk, “Karl Polanyi, Marshall Sahlins, and the Study of Ancient Social Relations,”*JBL* 126 (2007):
-          182–91, https://doi.org/10.2307/27638428, http://www.jstor.org/stable/27638428.'
+          182–91, http://www.jstor.org/stable/27638428, https://doi.org/10.2307/27638428.'
       subsequent_note:
         locator: '186'
         expected: Kirk, “Karl Polanyi,” 186.
       bibliography:
         expected: 'Kirk, Alan. “Karl Polanyi, Marshall Sahlins, and the Study of Ancient Social Relations.”*Journal of Biblical
-          Literature* 126 (2007): 182–91. https://doi.org/10.2307/27638428, http://www.jstor.org/stable/27638428.'
+          Literature* 126 (2007): 182–91. http://www.jstor.org/stable/27638428. https://doi.org/10.2307/27638428.'
 - id: 6.2.36-texts-from-the-ancient-near-1
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1022,7 +1020,7 @@ tests:
 
           Hallo, William W., ed. <em>Canonical Compositions from the Biblical
 
-          World</em>. Vol. 1. Leiden: Brill, 1997.'
+          World</em>. Vol. 1. Brill, 1997.'
 - id: 6.2.36-texts-from-the-ancient-near-12
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1034,7 +1032,7 @@ tests:
 
           Pritchard, James B., ed. <em>Ancient Near Eastern Texts Relating to the
 
-          Old Testament</em>. 3rd ed. Princeton: Princeton University Press, 1969.'
+          Old Testament</em>. 3rd ed. Princeton University Press, 1969.'
       first_note:
         expected: “Suppiluliumas and the Egyptian Queen,” trans. Albrecht Goetz (*ANET*, 319).
 - id: 6.2.36-texts-from-the-ancient-near-13
@@ -1044,7 +1042,7 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Dalley, Stephanie. *Myths from Mesopotamia*. Oxford: Oxford University Press, 1991.'
+        expected: 'Dalley, Stephanie. *Myths from Mesopotamia*. Oxford University Press, 1991.'
       first_note:
         expected: '“Erra and Ishum” (Stephanie Dalley, *Myths from Mesopotamia*[Oxford: Oxford University Press, 1991], 282–315).'
 - id: 6.2.36-texts-from-the-ancient-near-14
@@ -1056,7 +1054,7 @@ tests:
       bibliography:
         expected: 'Foster, Benjamin. <em>Before the Muses: An Anthology of Akkadian
 
-          Literature</em>. Bethesda, MD: CDL, 1993.'
+          Literature</em>. CDL, 1993.'
       first_note:
         expected: '“Erra and Ishum” (Benjamin Foster, *Before the Muses: An Anthology of Akkadian Literature*[Bethesda, MD:
           CDL, 1993], 1:771–805).'
@@ -1084,7 +1082,7 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Hoffner, Harry A., Jr. *Hittite Myths*. Edited by Gary M. Beckman. WAW 2. Atlanta: Scholars Press, 1990.'
+        expected: 'Hoffner, Harry A., Jr. *Hittite Myths*. Edited by Gary M. Beckman. WAW 2. Scholars Press, 1990.'
       first_note:
         expected: '“The Disappearance of the Sun God,” §3 (A I 11–17) (Harry A. Hoffner Jr., *Hittite Myths*, ed. Gary M.
           Beckman, WAW 2 [Atlanta: Scholars Press, 1990], 26).'
@@ -1095,8 +1093,8 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Grayson, Albert Kirk. *Assyrian Rulers of the Early First Millennium BC (1114–859 BC)*. RIMA 2. Toronto:
-          University of Toronto Press, 1991.'
+        expected: 'RIMA<br/>Grayson, Albert Kirk. *Assyrian Rulers of the Early First Millennium BC (1114–859 BC)*. RIMA 2. University
+          of Toronto Press, 1991.'
       first_note:
         expected: 'Ashur Inscription, obv. lines 10–17 (Albert Kirk Grayson, *Assyrian Rulers of the Early First Millennium
           BC [1114–859 BC]*, RIMA 2 [Toronto: University of Toronto Press, 1991], 143–44).'
@@ -1113,7 +1111,7 @@ tests:
 
           Grayson, Albert Kirk. <em>Assyrian and Babylonian Chronicles</em>. TCS
 
-          5. Locust Valley, NY: Augustin, 1975.'
+          5. Augustin, 1975.'
       first_note:
         expected: Esarhaddon Chronicle, lines 3–4 (*ABC*, 125).
 - id: 6.2.36-texts-from-the-ancient-near-19
@@ -1229,7 +1227,7 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Josephus. Translated by Henry St. J. Thackeray et al. 10 vols. LCL. Cambridge: Harvard University Press,
+        expected: 'Josephus. Translated by Henry St. J. Thackeray et al. 10 vols. LCL. Harvard University Press,
           1926–1965.'
       first_note:
         expected: Josephus, *Ant*. 2.233–235.
@@ -1315,7 +1313,7 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Hunt, Arthur S., and Campbell C. Edgar. *Select Papyri*. LCL. Cambridge: Harvard University Press, 1932.'
+        expected: 'Hunt, Arthur S., and Campbell C. Edgar. *Select Papyri*. LCL. Harvard University Press, 1932.'
       first_note:
         expected: 'P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, *Select Papyri*, LCL [Cambridge: Harvard University
           Press, 1932], 1:96).'
@@ -1328,8 +1326,8 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Betz, Hans Dieter. *The Greek Magical Papyri in Translation, Including the Demotic Spells*.2nd ed. Chicago:
-          University of Chicago Press, 1996.'
+        expected: 'Betz, Hans Dieter. *The Greek Magical Papyri in Translation, Including the Demotic Spells*.2nd ed. University
+          of Chicago Press, 1996.'
       first_note:
         expected: '*PGM* III. 1–164 (Betz).'
 - id: 6.2.39-ancient-epistles-and-homilies-1
@@ -1365,7 +1363,7 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Malherbe, Abraham J., ed. *The Cynic Epistles: A Study Edition*. SBS 12. Atlanta: Scholars Press, 1977.'
+        expected: 'Malherbe, Abraham J., ed. *The Cynic Epistles: A Study Edition*. SBS 12. Scholars Press, 1977.'
 - id: 6.2.40-emph-anf-1
   description: \emph{ANF
   sblhs_section: 6.2.40
@@ -1448,7 +1446,7 @@ tests:
     sbl-fullnote:
       bibliography:
         expected: 'Str-B Strack, Hermann L., and Paul Billerbeck. *Kommentar zum Neuen Testament aus Talmud und Midrasch*.
-          6 vols. Munich: Beck, 1922–1961'
+          6 vols. Beck, 1922–1961'
       first_note:
         expected: See the discussion of ἐκρατοῦντο in Str-B 2:271.
 - id: 6.2.43-emph-aufstieg-und-niedergang-1
@@ -1467,7 +1465,7 @@ tests:
 
           and Their Outlook in the Early Empire.”</span> Pages 80–208 in
 
-          <em>Aufstieg und Niedergang der römischen Welt</em>. New York: de
+          <em>Aufstieg und Niedergang der römischen Welt</em>. de
 
           Gruyter, 1989.'
 - id: 6.2.43-emph-aufstieg-und-niedergang-2
@@ -1483,7 +1481,7 @@ tests:
 
           Niedergang der römischen Welt: Geschichte und Kultur Roms im Spiegel der
 
-          neueren Forschung</em>. Berlin: de Gruyter, 1972.'
+          neueren Forschung</em>. de Gruyter, 1972.'
       first_note:
         expected: 'Graham Anderson, “The *pepaideumenos*in Action: Sophists and Their Outlook in the Early Empire,”*ANRW*
           33.1:80–208.'
@@ -1499,7 +1497,7 @@ tests:
         locator: '223'
         expected: 'Morna Hooker, *The Gospel according to Saint Mark*, BNTC 2 (Peabody, MA: Hendrickson, 1991), 223.'
       bibliography:
-        expected: 'Hooker, Morna. *The Gospel according to Saint Mark*. BNTC 2. Peabody, MA: Hendrickson, 1991.'
+        expected: 'Hooker, Morna. *The Gospel according to Saint Mark*. BNTC 2. Hendrickson, 1991.'
 - id: 6.2.44-bible-commentaries-2
   description: Bible Commentaries
   sblhs_section: 6.2.44
@@ -1521,8 +1519,8 @@ tests:
         expected: Petersen, “Ezekiel,” 1096.
       bibliography:
         expected: 'Petersen, David L. “Ezekiel.” Pages 1096–1167 in*The HarperCollins Study Bible Fully Revised and Updated:
-          New Revised Standard Version, with the Apocryphal/Deuterocanonical Books*. Edited by Harold W. Attridge et al. San
-          Francisco: HarperSanFrancisco, 2006.'
+          New Revised Standard Version, with the Apocryphal/Deuterocanonical Books*. Edited by Harold W. Attridge et al. HarperSanFrancisco,
+          2006.'
 - id: 6.2.44-bible-commentaries-3
   description: Bible Commentaries
   sblhs_section: 6.2.44
@@ -1537,7 +1535,7 @@ tests:
         expected: Partain, “Numbers,” 175.
       bibliography:
         expected: 'Partain, Jack G. “Numbers.” Pages 175–79 in*Mercer Commentary on the Bible*. Edited by Watson E. Mills
-          et al. Macon, GA: Mercer University Press, 1995.'
+          et al. Mercer University Press, 1995.'
 - id: 6.2.45-multivolume-commentaries-1
   description: Multivolume Commentaries
   sblhs_section: 6.2.45
@@ -1551,7 +1549,7 @@ tests:
         locator: 2:121
         expected: Dahood, *Psalms*, 2:121.
       bibliography:
-        expected: 'Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Garden City, NY: Doubleday, 1965–1970.'
+        expected: 'Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Doubleday, 1965–1970.'
 - id: 6.2.45-multivolume-commentaries-2
   description: Multivolume Commentaries
   sblhs_section: 6.2.45
@@ -1567,7 +1565,7 @@ tests:
         locator: '78'
         expected: Dahood, <em>Psalms</em>, 78.
       bibliography:
-        expected: 'Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Garden City, NY: Doubleday, 1965–1970.'
+        expected: 'Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Doubleday, 1965–1970.'
 - id: 6.2.45-multivolume-commentaries-3
   description: Multivolume Commentaries
   sblhs_section: 6.2.45
@@ -1580,7 +1578,7 @@ tests:
 
           (Garden City, NY: Doubleday, 1965–1970), 374.'
       bibliography:
-        expected: 'Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Garden City, NY: Doubleday, 1965–1970.'
+        expected: 'Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Doubleday, 1965–1970.'
       subsequent_note:
         expected: Dahood, *Psalms*, 2:121.
         locator: 2:121
@@ -1601,7 +1599,7 @@ tests:
 
           Lamentations, Ezekiel</em>. Edited by Leander E. Keck. Vol. 6 of The New
 
-          Interpreter’s Bible. Nashville: Abingdon, 2001.'
+          Interpreter’s Bible. Abingdon, 2001.'
 - id: 6.2.45-multivolume-commentaries-5
   description: Multivolume Commentaries
   sblhs_section: 6.2.45
@@ -1615,7 +1613,7 @@ tests:
 
           Keck, Leander E., ed. <em>The New Interpreter’s Bible</em>. 12 vols.
 
-          Nashville: Abingdon, 1994–2004.'
+          Abingdon, 1994–2004.'
 - id: 6.2.46-sbl-seminar-papers
   description: SBL Seminar Papers
   sblhs_section: 6.2.46
@@ -1627,7 +1625,7 @@ tests:
           Papers*, SBLSP 40 (Atlanta: Society of Biblical Literature, 2001), 1–18.'
       bibliography:
         expected: 'Crenshaw, James L. “Theodicy in the Book of the Twelve.” Pages 1–18 in*Society of Biblical Literature 2001
-          Seminar Papers*. SBLSP 40. Atlanta: Society of Biblical Literature, 2001.'
+          Seminar Papers*. SBLSP 40. Society of Biblical Literature, 2001.'
 - id: 6.2.48-text-editions-published
   description: Text Editions Published Online with No Print Counterpart
   sblhs_section: 6.2.48
@@ -1649,7 +1647,7 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected: "Cobb Institute of Archaeology, <span>“The Figurines of\nMaresha, the Persian Era,”</span> <em>DigMaster</em>,
+        expected: "Cobb Institute of Archaeology, <span>“The Figurines of\nMaresha, the Persian Era,”</span> DigMaster,
           n.d., <a href=\"http://www.cobb.msstate.edu/dignew/Maresha/index.html\">http://www.cobb.msstate.edu/dignew/Maresha/index.html</a>."
       bibliography:
         expected: ''
@@ -1660,13 +1658,13 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected: 'William R. Caraher, ed., “Pyla-Koutsopetria Archaeological Project: (Overview),”Open Context, released
-          5 November 2013, http://opencontext.org/projects/3F6DCD13-A476-488E-ED10-47D25513FCB2, https://doi.org/10.6078/M7B56GNS.'
+        expected: 'William R. Caraher, ed., “Pyla-Koutsopetria Archaeological Project: (Overview),” Open Context, 5 November
+          2013, http://opencontext.org/projects/3F6DCD13-A476-488E-ED10-47D25513FCB2, https://doi.org/10.6078/M7B56GNS.'
       subsequent_note:
         expected: Caraher, “Pyla-Koutsopetria Archaeological Project.”
       bibliography:
-        expected: 'Caraher, William R., ed. “Pyla-Koutsopetria Archaeological Project: (Overview).” Open Context. Released
-          5 November 2013. http://opencontext.org/projects/3F6DCD13-A476-488E-ED10-47D25513FCB2. https://doi.org/10.6078/M7B56GNS.'
+        expected: 'Caraher, William R., ed. “Pyla-Koutsopetria Archaeological Project: (Overview).” Open Context, 5 November
+          2013. http://opencontext.org/projects/3F6DCD13-A476-488E-ED10-47D25513FCB2. https://doi.org/10.6078/M7B56GNS.'
 - id: 6.2.50-websites-and-blogs-1
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1684,7 +1682,7 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected: 'Mark Goodacre, "Jesus'' Wife Fragment: Another Round-Up," NT Blog, May 9, 2014, http://ntweblog.blogspot.com.'
+        expected: 'Mark Goodacre, "Jesus'' Wife Fragment: Another Round-Up," <em>NT Blog</em>, 9 May 2014, http://ntweblog.blogspot.com.'
       bibliography:
         expected: "Goodacre, Mark. <span>“Jesus’ Wife Fragment: Another Round-Up.”</span>\n<em>NT Blog</em>, 9 May 2014. <a
           href=\"http://ntweblog.blogspot.com\">http://ntweblog.blogspot.com</a>."
@@ -1700,7 +1698,7 @@ tests:
         expected: BDAG, 35.
       bibliography:
         expected: 'BDAG Danker, Frederick W., Walter Bauer, William F. Arndt, and F. Wilbur Gingrich. *Greek-English Lexicon
-          of the New Testament and Other Early Christian Literature*. 3rd ed. Chicago: University of Chicago Press, 2000'
+          of the New Testament and Other Early Christian Literature*. 3rd ed. University of Chicago Press, 2000'
   notes: Standard lexicons often use shorthand in notes. CSL's `citation-key` or abbreviation lists can help.
 - id: 6.2.50-websites-and-blogs-4
   description: Websites and Blogs
@@ -1713,7 +1711,7 @@ tests:
         expected: BDB, 432.
       bibliography:
         expected: "BDB<br/>\nBrown, Francis, S. R. Driver, and Charles A. Briggs. <em>A Hebrew and\nEnglish Lexicon of the
-          Old Testament</em>. Oxford: Oxford University\nPress, 1906."
+          Old Testament</em>. Oxford University\nPress, 1906."
   notes: Standard lexicons often use shorthand in notes. CSL's `citation-key` or abbreviation lists can help.
 - id: 6.2.50-websites-and-blogs-5
   description: Websites and Blogs
@@ -1726,7 +1724,7 @@ tests:
         expected: BDF §441.
       bibliography:
         expected: 'BDF Blass, Friedrich, Albert Debrunner, and Robert W. Funk. *A Greek Grammar of the New Testament and Other
-          Early Christian Literature*. Chicago: University of Chicago Press, 1961'
+          Early Christian Literature*. University of Chicago Press, 1961'
   notes: Standard lexicons often use shorthand in notes. CSL's `citation-key` or abbreviation lists can help.
 - id: 6.2.50-websites-and-blogs-6
   description: Websites and Blogs
@@ -1744,7 +1742,7 @@ tests:
 
           and Aramaic Lexicon of the Old Testament</em>. Edited by Mervyn E. J.
 
-          Richardson. 4 vols. Leiden: Brill, 1994–1999.'
+          Richardson. 4 vols. Brill, 1994–1999.'
   notes: Standard lexicons often use shorthand in notes. CSL's `citation-key` or abbreviation lists can help.
 - id: 6.2.50-websites-and-blogs-7
   description: Websites and Blogs
@@ -1760,7 +1758,7 @@ tests:
 
           Jenni, Ernst, ed. <em>Theological Lexicon of the Old Testament</em>.
 
-          Translated by Mark E. Biddle. 3 vols. Peabody, MA: Hendrickson, 1997.'
+          Translated by Mark E. Biddle. 3 vols. Hendrickson, 1997.'
   notes: Standard lexicons often use shorthand in notes. CSL's `citation-key` or abbreviation lists can help.
 - id: 6.2.50-websites-and-blogs-8
   description: Websites and Blogs

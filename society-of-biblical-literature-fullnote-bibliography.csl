@@ -30,9 +30,6 @@
       <email>david@jdavidstark.com</email>
       <uri>https://www.jdavidstark.com/</uri>
     </contributor>
-    <contributor>
-      <name>Lyndon Drake</name>
-    </contributor>
     <category citation-format="note"/>
     <category field="theology"/>
     <summary>Society of Biblical Literature format with full notes and bibliography</summary>
@@ -448,6 +445,10 @@
       <else-if type="article-journal article-magazine review review-book" match="any">
         <text variable="container-title" font-style="italic" form="short"/>
       </else-if>
+      <!-- Webpage website names are roman; blog names (post-weblog) are italic -->
+      <else-if type="webpage" match="any">
+        <text variable="container-title"/>
+      </else-if>
       <else>
         <text variable="container-title" font-style="italic"/>
       </else>
@@ -523,7 +524,15 @@
         </group>
       </if>
     </choose>
-    <text variable="container-title" font-style="italic"/>
+    <choose>
+      <!-- Webpage website names are roman; blog names (post-weblog) are italic -->
+      <if type="webpage" match="any">
+        <text variable="container-title"/>
+      </if>
+      <else>
+        <text variable="container-title" font-style="italic"/>
+      </else>
+    </choose>
   </macro>
   <macro name="edition-note">
     <choose>
@@ -606,7 +615,7 @@
   </macro>
   <macro name="locators">
     <choose>
-      <if type="article-journal review review-book" match="any">
+      <if type="article-journal article-magazine review review-book" match="any">
         <group prefix=" " delimiter=".">
           <text variable="volume"/>
           <number variable="issue"/>
@@ -979,7 +988,7 @@
   </macro>
   <macro name="locators-journal">
     <choose>
-      <if type="article-journal review review-book" match="any">
+      <if type="article-journal article-magazine review review-book" match="any">
         <!-- Add support for individually paginated, electronic journal articles per https://sblhs2.com/2018/05/03/electronic-journals-with-individually-paginated-articles/ -->
         <choose>
           <if variable="number">
@@ -1115,10 +1124,10 @@
       <choose>
         <if variable="dimensions"/>
         <else>
-          <!-- Per SBLHS2 §6.3.10, allows either DOI or URL or both to be included. -->
+          <!-- Per SBLHS2 §6.3.10. URL before DOI per SBLHS convention. -->
           <group delimiter=", ">
-            <text variable="DOI" prefix="https://doi.org/"/>
             <text variable="URL"/>
+            <text variable="DOI" prefix="https://doi.org/"/>
           </group>
         </else>
       </choose>
@@ -1139,9 +1148,10 @@
         <if variable="dimensions"/>
         <else>
           <!-- Per SBLHS2 §6.3.10, allows either DOI or URL or both to be included. -->
-          <group delimiter=", ">
-            <text variable="DOI" prefix="https://doi.org/"/>
+          <!-- URL before DOI per SBLHS convention. -->
+          <group delimiter=". ">
             <text variable="URL"/>
+            <text variable="DOI" prefix="https://doi.org/"/>
           </group>
         </else>
       </choose>

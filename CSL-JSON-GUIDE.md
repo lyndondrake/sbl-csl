@@ -102,11 +102,15 @@ The `sbl_metadata` column stores a JSON object:
     "maineditor": "Winter, Bruce W.",
     "origlanguage": "from the 3rd German ed.",
     "seriesseries": "2",
+    "abbreviation_type": "sigla",
+    "definition": "ablative",
     "options": ["skipbiblist"]
 }
 ```
 
 Not all fields are needed for every entry. Most entries have only 1–3 SBL metadata fields. The `skipbib` boolean and `options` array are separate concerns: `skipbib` suppresses the entry from the bibliography, while `options` carries flags like `skipbiblist` (keep in bibliography instead of abbreviation list).
+
+The `abbreviation_type` and `definition` fields are used for sigla entries (general abbreviations like grammatical terms). See the Abbreviation List section below for details.
 
 ## Generating CSL JSON from SQLite
 
@@ -207,7 +211,7 @@ def build_sbl_note(sbl_metadata_json, entry_id, db):
     for key in ["shorthand", "shortseries", "shortjournal", "shortauthor",
                 "entrysubtype", "subsequent_annote", "subsequent_suffix",
                 "xref", "maintitle", "maineditor", "origlanguage",
-                "seriesseries"]:
+                "seriesseries", "abbreviation_type", "definition"]:
         if key in meta and meta[key]:
             lines.append(f"  {key}: {meta[key]}")
 
@@ -357,6 +361,12 @@ Where does it appear — abbreviation list or bibliography?
     abbreviation list: set skipbiblist in options.
   → Entries without shorthand always remain in the bibliography.
 
+Is it a grammatical abbreviation or siglum (abl., col., etc.)?
+  → Set abbreviation_type: sigla
+  → Set definition: with the expansion text
+  → Set shorthand: with the abbreviation
+  → The entry appears in the "General Abbreviations and Sigla" section
+
 Does the subsequent note need different text from the first note?
   → Set subsequent_annote for complete replacement
   → OR set subsequent_suffix for "(Translator, Series)" appending
@@ -379,29 +389,64 @@ These map abbreviations to full titles for `container-title` fields. Your app co
 
 ## Abbreviation List vs Bibliography
 
-The Lua filter generates an abbreviation list matching the format used by biblatex-sbl. The list contains **two types** of entry, mixed together alphabetically:
+The Lua filter generates an abbreviation list matching the three-section model used by biblatex-sbl v2. Entries are collected from cited bibliography data and organised into up to three sections:
 
-1. **Full bibliography entries** — reference works with `shorthand` (e.g., BDAG → Danker, Frederick W., ... *Greek-English Lexicon*... 3rd ed. Chicago: University of Chicago Press, 2000)
-2. **Simple abbreviations** — journal and series titles from cited entries (e.g., *JBL* → *Journal of Biblical Literature*, AB → Anchor Bible)
+### Three-section model
+
+biblatex-sbl v2 organises the abbreviation list into three sections. Our filter supports the same model:
+
+1. **Secondary Sources** — reference works with `shorthand` (e.g., BDAG, TDNT, HALOT). Each entry shows the shorthand abbreviation followed by the full formatted bibliography text.
+
+2. **Journals, Series, and Other Abbreviations** — journal and series titles derived from `container-title-short` and `collection-title-short` fields on cited entries (e.g., *JBL* → *Journal of Biblical Literature*, AB → Anchor Bible). These are simple abbreviation → full title mappings.
+
+3. **General Abbreviations and Sigla** — grammatical abbreviations, sigla, and other conventional abbreviations (e.g., abl. → ablative, col. → column). These use the `abbreviation_type: sigla` field in `sbl:` metadata.
+
+**When sub-headings appear**: the filter only adds section sub-headings when entries exist in more than one section. If all abbreviation entries belong to a single section (the typical case for documents that cite only reference works and journals), the list remains flat with no sub-headings — identical to the previous behaviour.
+
+**Ancient sources**: biblatex-sbl v2 also supports a separate "Ancient Sources" section for standalone ancient works with `shorttitle`. Our system handles ancient text abbreviations through the `annote` bypass mechanism rather than a separate abbreviation list section, since ancient text citations embed their abbreviations directly in the formatted citation text.
 
 ### How entries reach the abbreviation list
 
-| Source | What appears | Example |
-|--------|-------------|---------|
-| Entry with `shorthand` (no `skipbiblist`) | Full formatted bibliography text | BDAG, TDNT, HALOT |
-| `container-title-short` on a cited entry | Full journal/magazine title (italic for journals) | *JBL*, *JECS*, *BAR* |
-| `collection-title-short` on a cited entry | Full series name (roman) | AB, WUNT, LCL |
+| Source | Section | What appears | Example |
+|--------|---------|-------------|---------|
+| Entry with `shorthand` (no `skipbiblist`) | Secondary Sources | Full formatted bibliography text | BDAG, TDNT, HALOT |
+| `container-title-short` on a cited entry | Journals, Series, and Other Abbreviations | Full journal/magazine title (italic for journals) | *JBL*, *JECS*, *BAR* |
+| `collection-title-short` on a cited entry | Journals, Series, and Other Abbreviations | Full series name (roman) | AB, WUNT, LCL |
+| Entry with `abbreviation_type: sigla` | General Abbreviations and Sigla | Definition text | abl. → ablative |
 
 ### Where entries appear
 
-| Entry has… | Abbreviation list | Bibliography |
+| Entry has... | Abbreviation list | Bibliography |
 |-----------|-------------------|-------------|
 | `shorthand` only | Yes (full bib text) | No (moved to abbreviation list) |
 | `shorthand` + `skipbib: true` | Yes (full bib text) | No |
 | `shorthand` + `skipbiblist` option | No | Yes |
 | `shorthand` + `entrysubtype` | No | Yes |
 | `container-title-short` or `collection-title-short` | Yes (simple title) | Entry stays in bibliography |
+| `abbreviation_type: sigla` | Yes (definition text) | No |
 | No shorthand and no short titles | No | Yes |
+
+### Sigla entries
+
+Sigla (general abbreviations) use two fields in the `sbl:` metadata block:
+
+- `abbreviation_type: sigla` — marks the entry as a sigla entry
+- `definition: ablative` — the expansion text displayed in the abbreviation list
+
+The `shorthand` field provides the abbreviation key (e.g., `abl.`). A minimal sigla entry:
+
+```yaml
+- id: abl
+  type: book
+  title: ablative
+  note: |
+    sbl:
+      shorthand: abl.
+      abbreviation_type: sigla
+      definition: ablative
+```
+
+Sigla entries are document-specific and typically not needed unless the document uses specialist grammatical or text-critical notation. SBLHS provides standard abbreviation lists for biblical books, Dead Sea Scrolls, Nag Hammadi texts, and similar corpora, but grammatical sigla vary by discipline.
 
 ### Populating the abbreviation list
 
@@ -418,7 +463,7 @@ Similarly, entries whose `collection-title-short` or `container-title-short` sho
 
 ### Output format
 
-For typst output, the filter emits a two-column grid layout (abbreviation column + definition column) matching the biblatex-sbl tabular format. For other output formats (HTML, docx), it uses a pandoc definition list.
+For typst output, the filter emits a two-column grid layout (abbreviation column + definition column) matching the biblatex-sbl tabular format. For other output formats (HTML, docx), it uses a pandoc definition list. When multiple sections are present, each section receives a sub-heading one level below the abbreviation list heading.
 
 Without the Lua filter, shorthand entries remain in the bibliography as normal entries and no abbreviation list is generated.
 

@@ -169,6 +169,28 @@ local function load_bibliography(path)
       sbl_entries[current_id].container_title_short = cnts
     end
 
+    -- Parse publisher-place (for location suppression in bibliography)
+    local pp = line:match("^%s+publisher%-place:%s*(.+)%s*$")
+    if pp and current_id then
+      pp = pp:gsub("^['\"](.+)['\"]$", "%1")
+      if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+      sbl_entries[current_id].publisher_place = pp
+    end
+
+    -- Parse issued year from date-parts (for location suppression)
+    -- Format: "    - - YYYY" under "  issued:" / "    date-parts:"
+    local year = line:match("^%s+%-%s+%-%s+(%d+)%s*$")
+    if year and current_id then
+      local y = tonumber(year)
+      if y then
+        if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+        -- Store the first (earliest) year only
+        if not sbl_entries[current_id].issued_year then
+          sbl_entries[current_id].issued_year = y
+        end
+      end
+    end
+
     -- Note field start
     if line:match("^%s+note:%s*|%s*$") or line:match("^%s+note:%s*>%s*$") then
       in_note = true
@@ -239,9 +261,11 @@ end
 
 local templates = {}
 
--- Classical texts: Author, *Work*. [locator added by CSL annote branch]
+-- Ancient texts (standalone): Author, *Work*. [locator added by CSL annote branch]
 -- Examples: Josephus, *Ant*. / Tacitus, *Ann*. / Heraclitus, *Epistle 1*,
-templates.classical = function(entry)
+-- These are entries with no entrysubtype (standalone ancient works).
+-- Kept as a named function for use via ancienttext_standalone below.
+local function template_ancienttext_standalone(entry)
   local author = entry.author_literal
   local title = entry.entry_title
   if not author or not title then return nil end
@@ -254,11 +278,11 @@ templates.classical = function(entry)
   return author .. ", <i>" .. title .. "</i>" .. suffix
 end
 
--- Church father texts: Author, *Work* [locator added separately]
+-- Ancient book: complete ancient work in a collection series (ANF, NPNF, PG)
 -- Examples: Augustine, *Letters of St. Augustin* / Gregory, *Orationes theologicae*
 -- Note: The locator includes the series reference (ANF/NPNF/PG vol:page)
 -- which is embedded in the annote, so this template only handles the base.
-templates.churchfather = function(entry)
+templates.ancientbook = function(entry)
   local author = entry.author_literal
   local title = entry.entry_title
   if not title then return nil end
@@ -268,6 +292,14 @@ templates.churchfather = function(entry)
     return "<i>" .. title .. "</i>"
   end
 end
+
+-- inancientbook: part of an ancient work in a collection series
+-- Uses the same format as ancientbook for now.
+templates.inancientbook = templates.ancientbook
+
+-- inancientcollection: text in a modern collection (COS, ANET, RIMA, ABC, ANRW)
+-- These are typically handled via annote; template provides fallback.
+templates.inancientcollection = templates.ancientbook
 
 -- Generate annote-equivalent text from a template
 -- Returns nil if no template matches or entry lacks required fields
@@ -352,6 +384,111 @@ local function italicise_maintitle(inlines, collection_title)
     result:insert(el)
     i = i + 1
     ::continue::
+  end
+
+  if found then return result end
+  return inlines
+end
+
+-- ──────────────────────────────────────────────
+-- Location suppression (SBLHS Blog update)
+-- ──────────────────────────────────────────────
+-- For books published after 1900, remove publisher location from bibliography.
+-- Notes (footnotes) retain the full location:publisher format.
+-- The citeproc output contains "Place: Publisher, Year" in the bibliography.
+-- We need to remove the "Place: " portion, leaving "Publisher, Year".
+
+-- Suppress publisher-place in bibliography inlines for post-1900 entries.
+-- Walks the inline elements, finds the publisher_place text followed by
+-- a colon, and removes it. Returns the modified inlines (or original if
+-- no match found).
+local function suppress_location_in_bib(inlines, publisher_place)
+  if not publisher_place or publisher_place == "" then return inlines end
+
+  -- Stringify the inlines to find the place text
+  local full_text = utils.stringify(inlines)
+
+  -- Check if the publisher-place appears in the text
+  -- The pattern in bibliography is "Place: Publisher" or "Place and Place: Publisher"
+  -- We need to find "Place:" (with the colon) and also remove the following space
+  if not full_text:find(publisher_place, 1, true) then return inlines end
+
+  -- Build the target text to remove: "Place: " (with colon and space after)
+  -- We need to find the publisher_place text followed by ": " in the inline elements
+  -- Strategy: walk through inlines collecting text, find the range of elements
+  -- that comprise "Place: " and remove them.
+
+  -- First, split publisher_place into words to match against Str elements
+  local place_words = {}
+  for word in publisher_place:gmatch("%S+") do
+    table.insert(place_words, word)
+  end
+  if #place_words == 0 then return inlines end
+
+  -- Walk inlines to find where the place text starts
+  -- We look for a sequence of Str/Space elements that spell out the publisher_place
+  -- followed by a colon (which may be attached to the last Str of the place)
+  local result = pandoc.Inlines{}
+  local i = 1
+  local found = false
+
+  while i <= #inlines do
+    if not found and inlines[i].t == "Str" then
+      -- Try to match publisher_place starting at this Str element
+      local match_end = nil
+      local word_idx = 1
+      local j = i
+
+      while j <= #inlines and word_idx <= #place_words do
+        local el = inlines[j]
+        if el.t == "Str" then
+          local expected_word = place_words[word_idx]
+          if word_idx == #place_words then
+            -- Last word of place: expect ":" appended (e.g. "York:")
+            if el.text == expected_word .. ":" then
+              -- Found complete match including colon
+              match_end = j
+              word_idx = word_idx + 1
+            else
+              -- Doesn't match the expected "lastword:" pattern
+              break
+            end
+          else
+            if el.text == expected_word then
+              word_idx = word_idx + 1
+            else
+              break
+            end
+          end
+        elseif el.t == "Space" then
+          -- Spaces between words are expected; skip them
+        else
+          -- Non-Str/non-Space element breaks the match
+          break
+        end
+        j = j + 1
+      end
+
+      if match_end then
+        -- Successfully matched the publisher_place + colon
+        -- Remove the preceding Space (period-space-Place becomes period-space)
+        -- Actually: keep preceding Space so we get ". Crossroad, 1992."
+        found = true
+        i = match_end + 1
+        -- Skip trailing Space after the colon
+        if i <= #inlines and inlines[i].t == "Space" then
+          i = i + 1
+        end
+      else
+        -- No match at this position; keep the element
+        result:insert(inlines[i])
+        i = i + 1
+      end
+    else
+      -- Either already found, or not a Str element — keep it
+      result:insert(inlines[i])
+      i = i + 1
+    end
   end
 
   if found then return result end
@@ -533,17 +670,40 @@ return {
                   changed = true
                 end
               elseif not entry.skipbib then
-                -- Prepend shorthand to bibliography entries
-                if entry.shorthand and not entry.entrysubtype then
-                  prepend_shorthand_to_bib(block, entry.shorthand)
-                  changed = true
-                end
-                -- Italicise maintitle in bibliography
-                if entry.collection_title and not entry.collection_title_short then
-                  for _, sub_block in ipairs(block.content) do
-                    if sub_block.t == "Para" then
-                      sub_block.content = italicise_maintitle(sub_block.content, entry.collection_title)
-                      changed = true
+                -- Replace entire bibliography entry with bibliography_annote if set
+                if entry.bibliography_annote then
+                  local annote_doc = pandoc.read(entry.bibliography_annote, "html")
+                  if annote_doc and #annote_doc.blocks > 0 and annote_doc.blocks[1].content then
+                    for _, sub_block in ipairs(block.content) do
+                      if sub_block.t == "Para" then
+                        sub_block.content = annote_doc.blocks[1].content
+                        changed = true
+                        break
+                      end
+                    end
+                  end
+                else
+                  -- Prepend shorthand to bibliography entries
+                  if entry.shorthand and not entry.entrysubtype then
+                    prepend_shorthand_to_bib(block, entry.shorthand)
+                    changed = true
+                  end
+                  -- Italicise maintitle in bibliography
+                  if entry.collection_title and not entry.collection_title_short then
+                    for _, sub_block in ipairs(block.content) do
+                      if sub_block.t == "Para" then
+                        sub_block.content = italicise_maintitle(sub_block.content, entry.collection_title)
+                        changed = true
+                      end
+                    end
+                  end
+                  -- Suppress publisher location for post-1900 entries (SBLHS Blog update)
+                  if entry.publisher_place and entry.issued_year and entry.issued_year > 1900 then
+                    for _, sub_block in ipairs(block.content) do
+                      if sub_block.t == "Para" then
+                        sub_block.content = suppress_location_in_bib(sub_block.content, entry.publisher_place)
+                        changed = true
+                      end
                     end
                   end
                 end
@@ -589,64 +749,81 @@ return {
 
       if not refs_div then return nil end
 
-      -- Collect all abbreviation entries (two types):
-      -- 1. Shorthand entries: abbreviation → full bibliography text
-      -- 2. Journal/series abbreviations: abbreviation → full title
-      local abbrevs = {}
+      -- Collect abbreviation entries in four categories (matching biblatex-sbl v2):
+      --   ancient:    primary source shorthand entries (source_type: ancient)
+      --   secondary:  secondary source shorthand entries (full bibliography text)
+      --   simple:     journal/series abbreviations (simple titles)
+      --   sigla:      general abbreviations and sigla (abbreviation_type: sigla)
+      local ancient = {}
+      local secondary = {}
+      local simple = {}
+      local sigla = {}
       local seen_abbrevs = {}
 
-      -- Type 1: Shorthand entries (bibliography-style)
+      -- Category 1: Shorthand entries (bibliography-style, "Secondary Sources")
       for ref_id, entry in pairs(sbl_entries) do
         if entry.shorthand and not entry.skipbiblist and not seen_abbrevs[entry.shorthand] then
-          -- Check if this entry was cited (exists in bibliography)
-          local bib_entry = nil
-          for _, block in ipairs(refs_div.content) do
-            if block.t == "Div" and block.identifier == "ref-" .. ref_id then
-              bib_entry = block
-              break
-            end
-          end
-
-          if bib_entry then
-            -- Extract the formatted bibliography text
-            local content = pandoc.Inlines{}
-            for _, sub_block in ipairs(bib_entry.content) do
-              if sub_block.t == "Para" then
-                -- Skip the shorthand label line if present
-                local skip_first = false
-                for _, inline in ipairs(sub_block.content) do
-                  if inline.t == "LineBreak" then
-                    skip_first = true
-                    break
-                  end
-                end
-                if skip_first then
-                  -- Content after the LineBreak is the actual bibliography text
-                  local after_break = false
-                  for _, inline in ipairs(sub_block.content) do
-                    if after_break then
-                      content:insert(inline)
-                    end
-                    if inline.t == "LineBreak" then
-                      after_break = true
-                    end
-                  end
-                else
-                  content:extend(sub_block.content)
-                end
+          -- Check for sigla entries (abbreviation_type: sigla in sbl: metadata)
+          if entry.abbreviation_type == "sigla" then
+            -- Sigla: use definition field if present, otherwise entry title
+            local def_text = entry.definition or entry.entry_title or ""
+            table.insert(sigla, {
+              shorthand = entry.shorthand,
+              content = pandoc.Inlines{pandoc.Str(def_text)},
+            })
+            seen_abbrevs[entry.shorthand] = true
+          else
+            -- Check if this entry was cited (exists in bibliography)
+            local bib_entry = nil
+            for _, block in ipairs(refs_div.content) do
+              if block.t == "Div" and block.identifier == "ref-" .. ref_id then
+                bib_entry = block
+                break
               end
             end
 
-            table.insert(abbrevs, {
-              shorthand = entry.shorthand,
-              content = content,
-            })
-            seen_abbrevs[entry.shorthand] = true
+            if bib_entry then
+              -- Extract the formatted bibliography text
+              local content = pandoc.Inlines{}
+              for _, sub_block in ipairs(bib_entry.content) do
+                if sub_block.t == "Para" then
+                  -- Skip the shorthand label line if present
+                  local skip_first = false
+                  for _, inline in ipairs(sub_block.content) do
+                    if inline.t == "LineBreak" then
+                      skip_first = true
+                      break
+                    end
+                  end
+                  if skip_first then
+                    -- Content after the LineBreak is the actual bibliography text
+                    local after_break = false
+                    for _, inline in ipairs(sub_block.content) do
+                      if after_break then
+                        content:insert(inline)
+                      end
+                      if inline.t == "LineBreak" then
+                        after_break = true
+                      end
+                    end
+                  else
+                    content:extend(sub_block.content)
+                  end
+                end
+              end
+
+              local target = (entry.source_type == "ancient") and ancient or secondary
+              table.insert(target, {
+                shorthand = entry.shorthand,
+                content = content,
+              })
+              seen_abbrevs[entry.shorthand] = true
+            end
           end
         end
       end
 
-      -- Type 2: Journal and series abbreviations (simple title)
+      -- Category 2: Journal and series abbreviations (simple title)
       -- Build set of all cited/referenced entry IDs (refs div + seen_ids)
       -- to catch entries removed from refs div by skipbib
       local cited_ids = {}
@@ -675,7 +852,7 @@ return {
             else
               title_inlines:insert(pandoc.Str(entry.container_title))
             end
-            table.insert(abbrevs, {
+            table.insert(simple, {
               shorthand = entry.container_title_short,
               content = title_inlines,
               is_journal = is_journal,
@@ -685,21 +862,76 @@ return {
           -- Collection-title-short → collection-title (series: roman)
           if entry.collection_title_short and entry.collection_title
               and not seen_abbrevs[entry.collection_title_short] then
-            table.insert(abbrevs, {
+            table.insert(simple, {
               shorthand = entry.collection_title_short,
               content = pandoc.Inlines{pandoc.Str(entry.collection_title)},
             })
             seen_abbrevs[entry.collection_title_short] = true
           end
+          -- Sigla from definition field (entries without shorthand)
+          if entry.abbreviation_type == "sigla" and entry.definition
+              and not seen_abbrevs[ref_id] then
+            local abbr_key = entry.shorthand or ref_id
+            if not seen_abbrevs[abbr_key] then
+              table.insert(sigla, {
+                shorthand = abbr_key,
+                content = pandoc.Inlines{pandoc.Str(entry.definition)},
+              })
+              seen_abbrevs[abbr_key] = true
+            end
+          end
         end
       end
 
-      if #abbrevs == 0 then return nil end
+      -- Merge into a flat list or sectioned list depending on what's present
+      -- When only one section has entries, produce a single flat list (no sub-headings).
+      -- When multiple sections have entries, add sub-headings per biblatex-sbl v2.
+      local section_count = 0
+      if #ancient > 0 then section_count = section_count + 1 end
+      if #secondary > 0 then section_count = section_count + 1 end
+      if #simple > 0 then section_count = section_count + 1 end
+      if #sigla > 0 then section_count = section_count + 1 end
 
-      -- Sort alphabetically by shorthand
-      table.sort(abbrevs, function(a, b)
-        return a.shorthand:lower() < b.shorthand:lower()
-      end)
+      if section_count == 0 then return nil end
+
+      -- Sort each section alphabetically by shorthand
+      local function sort_abbrevs(list)
+        table.sort(list, function(a, b)
+          return a.shorthand:lower() < b.shorthand:lower()
+        end)
+      end
+      sort_abbrevs(ancient)
+      sort_abbrevs(secondary)
+      sort_abbrevs(simple)
+      sort_abbrevs(sigla)
+
+      -- Build the sections list: each entry is {heading, items}
+      -- When only one section exists, the heading is nil (no sub-heading)
+      local sections = {}
+      if section_count == 1 then
+        -- Single section: flat list, no sub-heading
+        local all = {}
+        for _, item in ipairs(ancient) do table.insert(all, item) end
+        for _, item in ipairs(secondary) do table.insert(all, item) end
+        for _, item in ipairs(simple) do table.insert(all, item) end
+        for _, item in ipairs(sigla) do table.insert(all, item) end
+        sort_abbrevs(all)
+        table.insert(sections, {heading = nil, items = all})
+      else
+        -- Multiple sections: add sub-headings
+        if #ancient > 0 then
+          table.insert(sections, {heading = "Ancient Sources", items = ancient})
+        end
+        if #secondary > 0 then
+          table.insert(sections, {heading = "Secondary Sources", items = secondary})
+        end
+        if #simple > 0 then
+          table.insert(sections, {heading = "Journals, Series, and Other Abbreviations", items = simple})
+        end
+        if #sigla > 0 then
+          table.insert(sections, {heading = "General Abbreviations and Sigla", items = sigla})
+        end
+      end
 
       -- Render inline content to a string for raw output
       local function inlines_to_typst(inlines)
@@ -732,24 +964,9 @@ return {
         return table.concat(parts)
       end
 
-      -- Detect output format
-      local is_typst = FORMAT:match("typst")
-
-      if is_typst then
-        -- Typst: emit a two-column grid matching biblatex-sbl layout
-        local lines = {}
-        -- Override the default template's #show terms.item: rule
-        -- to get a two-column layout with aligned definitions
-        table.insert(lines, '#show terms.item: it => {')
-        table.insert(lines, '  let abbr-width = 2cm')
-        table.insert(lines, '  grid(')
-        table.insert(lines, '    columns: (abbr-width, 1fr),')
-        table.insert(lines, '    column-gutter: 1em,')
-        table.insert(lines, '    text(weight: "bold")[#it.term],')
-        table.insert(lines, '    it.description,')
-        table.insert(lines, '  )')
-        table.insert(lines, '}')
-        for _, abbr in ipairs(abbrevs) do
+      -- Helper: render a list of abbreviation items as typst definition list lines
+      local function render_typst_items(items, lines)
+        for _, abbr in ipairs(items) do
           local term_str
           if abbr.is_journal then
             term_str = "_" .. abbr.shorthand .. "_"
@@ -759,12 +976,12 @@ return {
           local def_str = inlines_to_typst(abbr.content)
           table.insert(lines, "/ " .. term_str .. ": " .. def_str)
         end
-        local raw_block = pandoc.RawBlock("typst", table.concat(lines, "\n"))
-        table.insert(doc.blocks, abbrev_idx + 1, raw_block)
-      else
-        -- Other formats: definition list
-        local items = pandoc.List{}
-        for _, abbr in ipairs(abbrevs) do
+      end
+
+      -- Helper: render a list of abbreviation items as pandoc definition list
+      local function render_deflist_items(items)
+        local dl_items = pandoc.List{}
+        for _, abbr in ipairs(items) do
           local term
           if abbr.is_journal then
             term = pandoc.Inlines{pandoc.Emph{pandoc.Str(abbr.shorthand)}}
@@ -772,24 +989,78 @@ return {
             term = pandoc.Inlines{pandoc.Str(abbr.shorthand)}
           end
           local def = pandoc.Blocks{pandoc.Plain(abbr.content)}
-          items:insert({term, {def}})
+          dl_items:insert({term, {def}})
         end
-        local def_list = pandoc.DefinitionList(items)
-        table.insert(doc.blocks, abbrev_idx + 1, def_list)
+        return pandoc.DefinitionList(dl_items)
+      end
+
+      -- Detect output format
+      local is_typst = FORMAT:match("typst")
+
+      -- Determine the heading level for sub-headings (one level below the
+      -- abbreviation list heading itself)
+      local abbrev_heading = doc.blocks[abbrev_idx]
+      local sub_level = (abbrev_heading.level or 1) + 1
+
+      -- Insert blocks after the abbreviation heading
+      local insert_pos = abbrev_idx
+
+      if is_typst then
+        -- Typst: emit a two-column grid matching biblatex-sbl layout
+        for _, section in ipairs(sections) do
+          if section.heading then
+            -- Sub-heading as a typst raw block
+            insert_pos = insert_pos + 1
+            local heading_block = pandoc.Header(sub_level, pandoc.Inlines{pandoc.Str(section.heading)})
+            table.insert(doc.blocks, insert_pos, heading_block)
+          end
+
+          local lines = {}
+          -- Override the default template's #show terms.item: rule
+          -- to get a two-column layout with aligned definitions
+          table.insert(lines, '#show terms.item: it => {')
+          table.insert(lines, '  let abbr-width = 2cm')
+          table.insert(lines, '  grid(')
+          table.insert(lines, '    columns: (abbr-width, 1fr),')
+          table.insert(lines, '    column-gutter: 1em,')
+          table.insert(lines, '    text(weight: "bold")[#it.term],')
+          table.insert(lines, '    it.description,')
+          table.insert(lines, '  )')
+          table.insert(lines, '}')
+          render_typst_items(section.items, lines)
+          insert_pos = insert_pos + 1
+          table.insert(doc.blocks, insert_pos, pandoc.RawBlock("typst", table.concat(lines, "\n")))
+        end
+      else
+        -- Other formats: definition list(s) with optional sub-headings
+        for _, section in ipairs(sections) do
+          if section.heading then
+            insert_pos = insert_pos + 1
+            local heading_block = pandoc.Header(sub_level, pandoc.Inlines{pandoc.Str(section.heading)})
+            table.insert(doc.blocks, insert_pos, heading_block)
+          end
+          insert_pos = insert_pos + 1
+          table.insert(doc.blocks, insert_pos, render_deflist_items(section.items))
+        end
       end
 
       -- Remove shorthand entries from bibliography — they now live in the
       -- abbreviation list only, per SBL convention. This includes:
       -- 1. Normal shorthand entries (moved from bib to abbrev list)
       -- 2. skipbib+shorthand entries (kept in pass 2 for extraction, now removed)
+      -- 3. Sigla entries (abbreviation_type: sigla) — never in bibliography
       local bib_remove = {}
       for i, block in ipairs(refs_div.content) do
         if block.t == "Div" then
           local ref_id = block.identifier:match("^ref%-(.+)$")
           if ref_id then
             local entry = sbl_entries[ref_id]
-            if entry and entry.shorthand and not entry.skipbiblist and not entry.entrysubtype then
-              table.insert(bib_remove, i)
+            if entry then
+              local is_abbrev_list_entry = entry.shorthand and not entry.skipbiblist and not entry.entrysubtype
+              local is_sigla = entry.abbreviation_type == "sigla"
+              if is_abbrev_list_entry or is_sigla then
+                table.insert(bib_remove, i)
+              end
             end
           end
         end

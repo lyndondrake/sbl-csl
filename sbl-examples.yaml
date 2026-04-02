@@ -10,7 +10,7 @@
 #     shortseries: WUNT
 #     shortjournal: JBL
 #     shorthand: BDAG
-#     entrysubtype: classical|churchfather|COS|ANRW|inscription|chronicle
+#     entrysubtype: ancientbook|inancientbook|inancientcollection
 #     seriesseries: "2"
 #     maintitle: "Main title"
 #     maineditor: "Editor Name"
@@ -22,9 +22,9 @@
 #     origlanguage: "from the 3rd German ed."
 #     related:
 #       - id: entry-id
-#         type: translationof|reprintof|container
+#         type: translationof|reprintof
 #         options: [usevolume=false, skipbiblist]
-#     xref: parent-entry-id
+#     xref: parent-entry-id  # container/collection link (replaces related+container)
 #     options: [skipbib, skipbiblist, useeditor=false]
 
 references:
@@ -338,6 +338,7 @@ references:
   note: |
     sbl:
       subsequent_annote: Boers, introduction,
+      bibliography_annote: 'Boers, Hendrikus. Introduction to <i>How to Read the New Testament: An Introduction to Linguistic and Historical-Critical Methodology</i>, by Wilhelm Egger. Translated by Peter Heinegg. Hendrickson, 1996.'
 - id: gerhardsson:1961
   type: book
   author:
@@ -1193,6 +1194,9 @@ references:
     - - 1996
       - 8
   URL: http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm
+  note: |
+    sbl:
+      bibliography_annote: 'Truehart, Charles. "Welcome to the Next Church." <i>Atlantic Monthly</i> (August 1996). <a href="http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm">http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm</a>.'
 
 - id: kirk:2007
   type: article-journal
@@ -1238,6 +1242,7 @@ references:
   note: |
     sbl:
       shorthand: COS
+      source_type: ancient
       options: [skipbib]
           subsequent_annote: "Great Hymn to the Aten," <i>COS</i> 1.26:44–46
 
@@ -1274,11 +1279,8 @@ references:
   note: |
     sbl:
       skipbib: true
-      entrysubtype: COS
-      related:
-        - id: hallo:1997
-          type: container
-          options: [usevolume=false, skipbiblist]
+      entrysubtype: inancientcollection
+      xref: hallo:1997
 
 # ANET
   annote: '"The Great Hymn to the Aten" (trans. Miriam Lichtheim; COS 1.26:44–46)'
@@ -1298,6 +1300,7 @@ references:
   note: |
     sbl:
       shorthand: ANET
+      source_type: ancient
 
   annote: '"Suppiluliumas and the Egyptian Queen," trans. Albrecht Goetz (<i>ANET</i>, 319)'
 - id: suppiluliumas
@@ -1308,9 +1311,7 @@ references:
     given: Albrecht
   note: |
     sbl:
-      related:
-        - id: ANET
-          type: container
+      xref: ANET
       skipbib: true
 
 # Other ANE Anthologies
@@ -1334,9 +1335,7 @@ references:
   page: 282-315
   note: |
     sbl:
-      related:
-        - id: dalley:1991
-          type: container
+      xref: dalley:1991
       skipbib: true
 
   annote: '"Erra and Ishum"'
@@ -1361,10 +1360,7 @@ references:
   page: 771-805
   note: |
     sbl:
-      related:
-        - id: foster:1993
-          type: container
-          options: [usevolume=false]
+      xref: foster:1993
       skipbib: true
 
 # AEL
@@ -1385,6 +1381,7 @@ references:
   note: |
     sbl:
       shorthand: AEL
+      source_type: ancient
       options: [skipbib]
 
   annote: '"The Doomed Prince" (<i>AEL</i> 2:200–203)'
@@ -1405,7 +1402,6 @@ references:
       skipbib: true
       shorthand: AEL
       xref: AEL
-      options: [skipbiblist]
       subsequent_annote: "The Doomed Prince" (Miriam Lichtheim, <i>Ancient Egyptian Literature</i> [Berkeley: University of California Press, 1976], 2:200–203)
 
   annote: '"The Great Hymn to the Aten," trans. Miriam Lichtheim (<i>COS</i> 1.26:44–46)'
@@ -1417,10 +1413,7 @@ references:
     sbl:
       subsequent_annote: "The Doomed Prince" (<i>AEL</i> 2:200-203)
       skipbib: true
-      related:
-        - id: lichtheim:1976
-          type: container
-          options: [shorthand=short, usevolume=false, skipbiblist]
+      xref: lichtheim:1976
 
   annote: '"The Doomed Prince"'
 - id: hoffner:1990
@@ -1452,9 +1445,7 @@ references:
   title: The Disappearance of the Sun God
   note: |
     sbl:
-      related:
-        - id: hoffner:1990
-          type: container
+      xref: hoffner:1990
       skipbib: true
 
 # Royal Inscriptions
@@ -1474,7 +1465,6 @@ references:
     - - 1991
   note: |
     sbl:
-      entrysubtype: RIMA
       shortseries: RIMA
       shorthand: RIMA
       options: [skipbiblistshorthand]
@@ -1491,11 +1481,8 @@ references:
     sbl:
       subsequent_annote: Ashur Inscription (RIMA 2:143-44)
       skipbib: true
-      entrysubtype: inscription
-      related:
-        - id: RIMA
-          type: container
-          options: [skipbiblistshorthand, shorthand=short]
+      entrysubtype: inancientcollection
+      xref: RIMA
 
   annote: Ashur Inscription
 - id: ABC
@@ -1516,6 +1503,7 @@ references:
     sbl:
       shortseries: TCS
       shorthand: ABC
+      source_type: ancient
 
   collection-title-short: TCS
   annote: Esarhaddon Chronicle, lines 3–4 (<i>ABC</i>, 125)
@@ -1525,11 +1513,8 @@ references:
   note: |
     sbl:
       subsequent_annote: Esarhaddon Chronicle (<i>ABC</i>, 125)
-      entrysubtype: chronicle
-      related:
-        - id: ABC
-          type: container
-          options: [shorthand=short]
+      entrysubtype: inancientcollection
+      xref: ABC
       skipbib: true
 
 # ARM
@@ -1610,7 +1595,6 @@ references:
   title: Ant.
   note: |
     sbl:
-      entrysubtype: classical
       xref: josephus
           subsequent_suffix: Thackeray, LCL
       skipbib: true
@@ -1649,7 +1633,6 @@ references:
   title: Ann.
   note: |
     sbl:
-      entrysubtype: classical
       xref: tacitus
           subsequent_suffix: Jackson, LCL
       skipbib: true
@@ -1667,7 +1650,6 @@ references:
   collection-title: Loeb Classical Library
   note: |
     sbl:
-      entrysubtype: classical
       shortseries: LCL
       xref: josephus
           subsequent_suffix: Thackeray, LCL
@@ -1687,7 +1669,6 @@ references:
   collection-title: Loeb Classical Library
   note: |
     sbl:
-      entrysubtype: classical
       shortseries: LCL
       xref: tacitus
           subsequent_suffix: Jackson, LCL
@@ -1735,6 +1716,7 @@ references:
   note: |
     sbl:
       shorthand: P.Cair.Zen.
+      source_type: ancient
       options: [skipbib, useeditor=false]
       subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)
 
@@ -1772,12 +1754,10 @@ references:
   note: |
     sbl:
       shorthand: P.Cair.Zen.
+      source_type: ancient
       options: [skipbib, useeditor=false]
       subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)
-      related:
-        - id: hunt+edgar:1932
-          type: container
-          options: [useshorttitle=false]
+      xref: hunt+edgar:1932
 
   title-short: Select Papyri
   annote: P. Cair. Zen.
@@ -1798,6 +1778,7 @@ references:
   note: |
     sbl:
       shorthand: PGM
+      source_type: ancient
       options: [skipbib]
       subsequent_annote: <i>PGM</i> III. 1–164 (Betz)
 
@@ -1833,11 +1814,9 @@ references:
   note: |
     sbl:
       shorthand: PGM
+      source_type: ancient
       subsequent_annote: <i>PGM</i> III. 1–164 (Betz)
-      related:
-        - id: betz:1996
-          type: container
-          options: [usefullcite=false, useshorttitle=false]
+      xref: betz:1996
 
 # 6.4.4 Ancient Epistles and Homilies
   annote: <i>PGM</i>
@@ -1882,9 +1861,7 @@ references:
   note: |
     sbl:
       skipbib: true
-      related:
-        - id: malherbe:1977
-          type: container
+      xref: malherbe:1977
       options: [skipbib=false, useseries=false]
           subsequent_suffix: Worley
 
@@ -1932,11 +1909,8 @@ references:
   note: |
     sbl:
       skipbib: true
-      entrysubtype: churchfather
-      related:
-        - id: ANF
-          type: container
-          options: [useeditor=false, skipbiblist]
+      entrysubtype: ancientbook
+      xref: ANF
 
   annote: <i>Clementine Homilies</i>
 - id: NPNF1:abbreviation
@@ -1982,11 +1956,8 @@ references:
   note: |
     sbl:
       skipbib: true
-      entrysubtype: churchfather
-      related:
-        - id: NPNF1
-          type: container
-          options: [useeditor=false, skipbiblist, skipbib]
+      entrysubtype: ancientbook
+      xref: NPNF1
       options: [skipbib=false]
 
 # 6.4.6 J.-P. Migne's Patrologia Latina and Patrologia Graeca
@@ -2006,6 +1977,7 @@ references:
   note: |
     sbl:
       shorthand: PL
+      source_type: ancient
 
 - id: PG
   type: book
@@ -2022,6 +1994,7 @@ references:
   note: |
     sbl:
       shorthand: PG
+      source_type: ancient
 
   annote: Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)
 - id: gregory:orationestheologicae
@@ -2032,11 +2005,8 @@ references:
   volume: "36"
   note: |
     sbl:
-      entrysubtype: churchfather
-      related:
-        - id: PG
-          type: container
-          options: [useeditor=false]
+      entrysubtype: ancientbook
+      xref: PG
       skipbib: true
 
 # 6.4.7 Strack-Billerbeck
@@ -2059,6 +2029,7 @@ references:
   note: |
     sbl:
       shorthand: Str-B
+      source_type: ancient
 
 # 6.4.8 ANRW
   annote: See the discussion of ἐκρατοῦντο in Str-B 2:271
@@ -2079,6 +2050,7 @@ references:
   note: |
     sbl:
       shorthand: ANRW
+      source_type: ancient
       titleaddon: "Part 2, Principat"
           subsequent_annote: Anderson, "<i>Pepaideumenos</i>," <i>ANRW</i> 33.1:86
 
@@ -2102,11 +2074,8 @@ references:
     - - 1989
   note: |
     sbl:
-      entrysubtype: ANRW
-      related:
-        - id: ANRW
-          type: container
-          options: [skipbib]
+      entrysubtype: inancientcollection
+      xref: ANRW
       options: [skipbib=false]
           subsequent_annote: Anderson, "<i>Pepaideumenos</i>," <i>ANRW</i> 33.1:86
 
@@ -2304,16 +2273,19 @@ references:
     given: Gernot
   title: Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I)
   title-short: Der Vertrag Šuppiluliumas I
+  container-title: hethiter.net
   issued:
     date-parts:
     - - 2013
       - 2
       - 24
+  annote: 'Gernot Wilhelm, ed., "Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I)," hethiter.net, CTH 51.I (INTR 2013-02-24)'
   note: |
     sbl:
       eprint: CTH 51.I
       eprintclass: INTR 2013-02-24
       eprinttype: hethiter
+      bibliography_annote: 'Wilhelm, Gernot, ed. "Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I)." Released 24 February 2013. doi:hethiter/: CTH 51.I (INTR2013-02-24).'
 
 # 6.4.14 Online Database
 - id: cobb:figurines
@@ -2334,6 +2306,7 @@ references:
   - family: Caraher
     given: William R.
   title: "Pyla-Koutsopetria Archaeological Project: (Overview)"
+  container-title: Open Context
   URL: http://opencontext.org/projects/3F6DCD13-A476-488E-ED10-47D25513FCB2
   DOI: 10.6078/M7B56GNS
   issued:
@@ -2344,6 +2317,7 @@ references:
   note: |
     sbl:
       eprinttype: Open Context
+      datemodifier: released
 
 # 6.4.15 Websites and Blogs
   title-short: Pyla-Koutsopetria Archaeological Project

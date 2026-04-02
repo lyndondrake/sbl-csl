@@ -16,10 +16,11 @@ These scripts are for maintainers and contributors working on the SBL citation d
 
 ## Typical workflows
 
-### Adding a new classical text entry
+### Adding a new ancient text entry
 
 ```bash
-# 1. Add the entry to sbl-examples.yaml with entrysubtype: classical
+# 1. Add the entry to sbl-examples.yaml with appropriate entrysubtype
+#    (ancientbook, inancientbook, or inancientcollection)
 # 2. Generate the annote:
 python scripts/generate-annote.py --apply
 # 3. Run tests to verify:

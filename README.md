@@ -38,6 +38,7 @@ With `sbl-filter.lua` (pandoc only):
 - **Abbreviation list**: generated at `# Abbreviations {#sbl-abbreviations}` heading
 - **Subsequent note refinement**: translator/series suffixes and replacements
 - **Italic maintitle**: "vol. X of *Title*" with italic collection title
+- **Bibliography override**: `bibliography_annote` replaces an entry's bibliography text for non-standard formats
 
 See [examples/sbl-examples-full.pdf](examples/sbl-examples-full.pdf) for full output with the Lua filter.
 
@@ -132,7 +133,7 @@ python3 -m venv .venv
 TMPDIR=.tmp/ .venv/bin/python -m pytest tests/ -k "sbl-fullnote" --tb=short -v
 ```
 
-Current results: 251 of 259 SBL fullnote tests passing (97%).
+Current results: 259 of 259 SBL fullnote tests passing (100%).
 
 ## CSL modifications from upstream
 

@@ -446,7 +446,7 @@
       ]
     },
     "annote": "Hendrikus Boers, introduction to <i>How to Read the New Testament: An Introduction to Linguistic and Historical-Critical Methodology</i>, by Wilhelm Egger, trans. Peter Heinegg (Peabody, MA: Hendrickson, 1996),",
-    "note": "sbl:\n  subsequent_annote: Boers, introduction,\n"
+    "note": "sbl:\n  subsequent_annote: Boers, introduction,\n  bibliography_annote: 'Boers, Hendrikus. Introduction to <i>How to Read the New Testament: An Introduction to Linguistic and Historical-Critical Methodology</i>, by Wilhelm Egger. Translated by Peter Heinegg. Hendrickson, 1996.'\n"
   },
   {
     "id": "gerhardsson:1961",
@@ -1631,7 +1631,8 @@
         ]
       ]
     },
-    "URL": "http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm"
+    "URL": "http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm",
+    "note": "sbl:\n  bibliography_annote: 'Truehart, Charles. \"Welcome to the Next Church.\" <i>Atlantic Monthly</i> (August 1996). <a href=\"http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm\">http://www.theatlantic.com/atlantic/issues/96aug/nxtchrch/nxtchrch.htm</a>.'\n"
   },
   {
     "id": "kirk:2007",
@@ -1683,7 +1684,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: COS\n  options: [skipbib]\n      subsequent_annote: \"Great Hymn to the Aten,\" <i>COS</i> 1.26:44–46\n",
+    "note": "sbl:\n  shorthand: COS\n  source_type: ancient\n  options: [skipbib]\n      subsequent_annote: \"Great Hymn to the Aten,\" <i>COS</i> 1.26:44–46\n",
     "annote": "\"The Great Hymn to the Aten,\" trans. Miriam Lichtheim (<i>COS</i> 1.26:44–46)"
   },
   {
@@ -1722,7 +1723,7 @@
     ],
     "section": "26",
     "page": "44-46",
-    "note": "sbl:\n  skipbib: true\n  entrysubtype: COS\n  related:\n    - id: hallo:1997\n      type: container\n      options: [usevolume=false, skipbiblist]\n",
+    "note": "sbl:\n  skipbib: true\n  entrysubtype: inancientcollection\n  xref: hallo:1997\n",
     "annote": "\"The Great Hymn to the Aten\" (trans. Miriam Lichtheim; COS 1.26:44–46)"
   },
   {
@@ -1746,7 +1747,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: ANET\n",
+    "note": "sbl:\n  shorthand: ANET\n  source_type: ancient\n",
     "annote": "\"Suppiluliumas and the Egyptian Queen,\" trans. Albrecht Goetz (<i>ANET</i>, 319)"
   },
   {
@@ -1759,7 +1760,7 @@
         "given": "Albrecht"
       }
     ],
-    "note": "sbl:\n  related:\n    - id: ANET\n      type: container\n  skipbib: true\n",
+    "note": "sbl:\n  xref: ANET\n  skipbib: true\n",
     "annote": "\"Suppiluliumas and the Egyptian Queen,\" trans. Albrecht Goetz (<i>ANET</i>, 319)"
   },
   {
@@ -1788,7 +1789,7 @@
     "type": "document",
     "title": "Erra and Ishum",
     "page": "282-315",
-    "note": "sbl:\n  related:\n    - id: dalley:1991\n      type: container\n  skipbib: true\n",
+    "note": "sbl:\n  xref: dalley:1991\n  skipbib: true\n",
     "annote": "\"Erra and Ishum\""
   },
   {
@@ -1818,7 +1819,7 @@
     "type": "document",
     "title": "Erra and Ishum",
     "page": "771-805",
-    "note": "sbl:\n  related:\n    - id: foster:1993\n      type: container\n      options: [usevolume=false]\n  skipbib: true\n"
+    "note": "sbl:\n  xref: foster:1993\n  skipbib: true\n"
   },
   {
     "id": "AEL",
@@ -1844,7 +1845,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: AEL\n  options: [skipbib]\n",
+    "note": "sbl:\n  shorthand: AEL\n  source_type: ancient\n  options: [skipbib]\n",
     "annote": "\"The Doomed Prince\" (<i>AEL</i> 2:200–203)"
   },
   {
@@ -1867,7 +1868,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  skipbib: true\n  shorthand: AEL\n  xref: AEL\n  options: [skipbiblist]\n  subsequent_annote: \"The Doomed Prince\" (Miriam Lichtheim, <i>Ancient Egyptian Literature</i> [Berkeley: University of California Press, 1976], 2:200–203)\n",
+    "note": "sbl:\n  skipbib: true\n  shorthand: AEL\n  xref: AEL\n  subsequent_annote: \"The Doomed Prince\" (Miriam Lichtheim, <i>Ancient Egyptian Literature</i> [Berkeley: University of California Press, 1976], 2:200–203)\n",
     "annote": "\"The Great Hymn to the Aten,\" trans. Miriam Lichtheim (<i>COS</i> 1.26:44–46)"
   },
   {
@@ -1875,7 +1876,7 @@
     "type": "document",
     "title": "The Doomed Prince",
     "page": "200-203",
-    "note": "sbl:\n  subsequent_annote: \"The Doomed Prince\" (<i>AEL</i> 2:200-203)\n  skipbib: true\n  related:\n    - id: lichtheim:1976\n      type: container\n      options: [shorthand=short, usevolume=false, skipbiblist]\n",
+    "note": "sbl:\n  subsequent_annote: \"The Doomed Prince\" (<i>AEL</i> 2:200-203)\n  skipbib: true\n  xref: lichtheim:1976\n",
     "annote": "\"The Doomed Prince\""
   },
   {
@@ -1914,7 +1915,7 @@
     "id": "disappearanceofsungod",
     "type": "document",
     "title": "The Disappearance of the Sun God",
-    "note": "sbl:\n  related:\n    - id: hoffner:1990\n      type: container\n  skipbib: true\n",
+    "note": "sbl:\n  xref: hoffner:1990\n  skipbib: true\n",
     "annote": "\"The Disappearance of the Sun God\""
   },
   {
@@ -1938,7 +1939,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  entrysubtype: RIMA\n  shortseries: RIMA\n  shorthand: RIMA\n  options: [skipbiblistshorthand]\n      subsequent_annote: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44)\n",
+    "note": "sbl:\n  shortseries: RIMA\n  shorthand: RIMA\n  options: [skipbiblistshorthand]\n      subsequent_annote: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44)\n",
     "collection-title-short": "RIMA",
     "annote": "Ashur Inscription, obv. lines 10–17 (Albert Kirk Grayson, <i>Assyrian Rulers of the Early First Millennium BC [1114–859 BC]</i>, RIMA 2 [Toronto: University of Toronto Press, 1991], 143–44)"
   },
@@ -1947,7 +1948,7 @@
     "type": "document",
     "title": "Ashur Inscription",
     "page": "143-144",
-    "note": "sbl:\n  subsequent_annote: Ashur Inscription (RIMA 2:143-44)\n  skipbib: true\n  entrysubtype: inscription\n  related:\n    - id: RIMA\n      type: container\n      options: [skipbiblistshorthand, shorthand=short]\n",
+    "note": "sbl:\n  subsequent_annote: Ashur Inscription (RIMA 2:143-44)\n  skipbib: true\n  entrysubtype: inancientcollection\n  xref: RIMA\n",
     "annote": "Ashur Inscription"
   },
   {
@@ -1972,7 +1973,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shortseries: TCS\n  shorthand: ABC\n",
+    "note": "sbl:\n  shortseries: TCS\n  shorthand: ABC\n  source_type: ancient\n",
     "collection-title-short": "TCS",
     "annote": "Esarhaddon Chronicle, lines 3–4 (<i>ABC</i>, 125)"
   },
@@ -1980,7 +1981,7 @@
     "id": "esarhaddonchronicle",
     "type": "document",
     "title": "Esarhaddon Chronicle",
-    "note": "sbl:\n  subsequent_annote: Esarhaddon Chronicle (<i>ABC</i>, 125)\n  entrysubtype: chronicle\n  related:\n    - id: ABC\n      type: container\n      options: [shorthand=short]\n  skipbib: true\n",
+    "note": "sbl:\n  subsequent_annote: Esarhaddon Chronicle (<i>ABC</i>, 125)\n  entrysubtype: inancientcollection\n  xref: ABC\n  skipbib: true\n",
     "annote": "Esarhaddon Chronicle"
   },
   {
@@ -2083,7 +2084,7 @@
       }
     ],
     "title": "Ant.",
-    "note": "sbl:\n  entrysubtype: classical\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n  skipbib: true\n",
+    "note": "sbl:\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n  skipbib: true\n",
     "annote": "Josephus, <i>Ant</i>.",
     "title-short": "Ant"
   },
@@ -2131,7 +2132,7 @@
       }
     ],
     "title": "Ann.",
-    "note": "sbl:\n  entrysubtype: classical\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n  skipbib: true\n",
+    "note": "sbl:\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n  skipbib: true\n",
     "annote": "Tacitus, <i>Ann</i>.",
     "title-short": "Ann"
   },
@@ -2151,7 +2152,7 @@
       }
     ],
     "collection-title": "Loeb Classical Library",
-    "note": "sbl:\n  entrysubtype: classical\n  shortseries: LCL\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n  skipbib: true\n",
+    "note": "sbl:\n  shortseries: LCL\n  xref: josephus\n      subsequent_suffix: Thackeray, LCL\n  skipbib: true\n",
     "collection-title-short": "LCL",
     "annote": "Josephus, <i>Ant</i>.",
     "title-short": "Ant"
@@ -2172,7 +2173,7 @@
       }
     ],
     "collection-title": "Loeb Classical Library",
-    "note": "sbl:\n  entrysubtype: classical\n  shortseries: LCL\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n  skipbib: true\n",
+    "note": "sbl:\n  shortseries: LCL\n  xref: tacitus\n      subsequent_suffix: Jackson, LCL\n  skipbib: true\n",
     "collection-title-short": "LCL",
     "annote": "Tacitus, <i>Ann</i>.",
     "title-short": "Ann"
@@ -2225,7 +2226,7 @@
     ],
     "title": "Zenon Papyri, Catalogue général des antiquités égyptiennes du Musée du Caire",
     "publisher-place": "Cairo",
-    "note": "sbl:\n  shorthand: P.Cair.Zen.\n  options: [skipbib, useeditor=false]\n  subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)\n",
+    "note": "sbl:\n  shorthand: P.Cair.Zen.\n  source_type: ancient\n  options: [skipbib, useeditor=false]\n  subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)\n",
     "title-short": "Select Papyri",
     "annote": "P. Cair. Zen."
   },
@@ -2268,7 +2269,7 @@
     ],
     "title": "Zenon Papyri, Catalogue général des antiquités égyptiennes du Musée du Caire",
     "publisher-place": "Cairo",
-    "note": "sbl:\n  shorthand: P.Cair.Zen.\n  options: [skipbib, useeditor=false]\n  subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)\n  related:\n    - id: hunt+edgar:1932\n      type: container\n      options: [useshorttitle=false]\n",
+    "note": "sbl:\n  shorthand: P.Cair.Zen.\n  source_type: ancient\n  options: [skipbib, useeditor=false]\n  subsequent_annote: P. Cair. Zen. 59003 (Arthur S. Hunt and Campbell C. Edgar, <i>Select Papyri</i>, LCL [Cambridge: Harvard University Press, 1932], 1:96)\n  xref: hunt+edgar:1932\n",
     "title-short": "Select Papyri",
     "annote": "P. Cair. Zen."
   },
@@ -2296,7 +2297,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: PGM\n  options: [skipbib]\n  subsequent_annote: <i>PGM</i> III. 1–164 (Betz)\n",
+    "note": "sbl:\n  shorthand: PGM\n  source_type: ancient\n  options: [skipbib]\n  subsequent_annote: <i>PGM</i> III. 1–164 (Betz)\n",
     "annote": "<i>PGM</i>"
   },
   {
@@ -2345,7 +2346,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: PGM\n  subsequent_annote: <i>PGM</i> III. 1–164 (Betz)\n  related:\n    - id: betz:1996\n      type: container\n      options: [usefullcite=false, useshorttitle=false]\n",
+    "note": "sbl:\n  shorthand: PGM\n  source_type: ancient\n  subsequent_annote: <i>PGM</i> III. 1–164 (Betz)\n  xref: betz:1996\n",
     "annote": "<i>PGM</i>"
   },
   {
@@ -2400,7 +2401,7 @@
       }
     ],
     "page": "187",
-    "note": "sbl:\n  skipbib: true\n  related:\n    - id: malherbe:1977\n      type: container\n  options: [skipbib=false, useseries=false]\n      subsequent_suffix: Worley\n",
+    "note": "sbl:\n  skipbib: true\n  xref: malherbe:1977\n  options: [skipbib=false, useseries=false]\n      subsequent_suffix: Worley\n",
     "annote": "Heraclitus, <i>Epistle 1</i>,"
   },
   {
@@ -2453,7 +2454,7 @@
     "id": "clementinehomilies",
     "type": "classic",
     "title": "The Clementine Homilies",
-    "note": "sbl:\n  skipbib: true\n  entrysubtype: churchfather\n  related:\n    - id: ANF\n      type: container\n      options: [useeditor=false, skipbiblist]\n",
+    "note": "sbl:\n  skipbib: true\n  entrysubtype: ancientbook\n  xref: ANF\n",
     "annote": "<i>Clementine Homilies</i>"
   },
   {
@@ -2508,7 +2509,7 @@
     "title": "The Letters of St. Augustin",
     "title-short": "Letters of St. Augustin",
     "volume": "1",
-    "note": "sbl:\n  skipbib: true\n  entrysubtype: churchfather\n  related:\n    - id: NPNF1\n      type: container\n      options: [useeditor=false, skipbiblist, skipbib]\n  options: [skipbib=false]\n",
+    "note": "sbl:\n  skipbib: true\n  entrysubtype: ancientbook\n  xref: NPNF1\n  options: [skipbib=false]\n",
     "annote": "Augustine, <i>Letters of St. Augustin</i> 28.3.5 (NPNF¹ 1:252)"
   },
   {
@@ -2533,7 +2534,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: PL\n"
+    "note": "sbl:\n  shorthand: PL\n  source_type: ancient\n"
   },
   {
     "id": "PG",
@@ -2557,7 +2558,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: PG\n",
+    "note": "sbl:\n  shorthand: PG\n  source_type: ancient\n",
     "annote": "Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)"
   },
   {
@@ -2570,7 +2571,7 @@
     ],
     "title": "Orationes theologicae",
     "volume": "36",
-    "note": "sbl:\n  entrysubtype: churchfather\n  related:\n    - id: PG\n      type: container\n      options: [useeditor=false]\n  skipbib: true\n",
+    "note": "sbl:\n  entrysubtype: ancientbook\n  xref: PG\n  skipbib: true\n",
     "annote": "Gregory of Nazianzus, <i>Orationes theologicae</i> 4 (PG 36:12c)"
   },
   {
@@ -2600,7 +2601,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: Str-B\n",
+    "note": "sbl:\n  shorthand: Str-B\n  source_type: ancient\n",
     "annote": "See the discussion of ἐκρατοῦντο in Str-B 2:271"
   },
   {
@@ -2627,7 +2628,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  shorthand: ANRW\n  titleaddon: \"Part 2, Principat\"\n      subsequent_annote: Anderson, \"<i>Pepaideumenos</i>,\" <i>ANRW</i> 33.1:86\n",
+    "note": "sbl:\n  shorthand: ANRW\n  source_type: ancient\n  titleaddon: \"Part 2, Principat\"\n      subsequent_annote: Anderson, \"<i>Pepaideumenos</i>,\" <i>ANRW</i> 33.1:86\n",
     "annote": "Graham Anderson, \"The <i>pepaideumenos</i> in Action: Sophists and Their Outlook in the Early Empire,\" <i>ANRW</i> 33.1:80–208"
   },
   {
@@ -2654,7 +2655,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  entrysubtype: ANRW\n  related:\n    - id: ANRW\n      type: container\n      options: [skipbib]\n  options: [skipbib=false]\n      subsequent_annote: Anderson, \"<i>Pepaideumenos</i>,\" <i>ANRW</i> 33.1:86\n",
+    "note": "sbl:\n  entrysubtype: inancientcollection\n  xref: ANRW\n  options: [skipbib=false]\n      subsequent_annote: Anderson, \"<i>Pepaideumenos</i>,\" <i>ANRW</i> 33.1:86\n",
     "annote": "Graham Anderson, \"The <i>pepaideumenos</i> in Action: Sophists and Their Outlook in the Early Empire,\" ANRW 2.33.1:80–208"
   },
   {
@@ -2925,6 +2926,7 @@
     ],
     "title": "Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I)",
     "title-short": "Der Vertrag Šuppiluliumas I",
+    "container-title": "hethiter.net",
     "issued": {
       "date-parts": [
         [
@@ -2934,7 +2936,8 @@
         ]
       ]
     },
-    "note": "sbl:\n  eprint: CTH 51.I\n  eprintclass: INTR 2013-02-24\n  eprinttype: hethiter\n"
+    "annote": "Gernot Wilhelm, ed., \"Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I),\" hethiter.net, CTH 51.I (INTR 2013-02-24)",
+    "note": "sbl:\n  eprint: CTH 51.I\n  eprintclass: INTR 2013-02-24\n  eprinttype: hethiter\n  bibliography_annote: 'Wilhelm, Gernot, ed. \"Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I).\" Released 24 February 2013. doi:hethiter/: CTH 51.I (INTR2013-02-24).'\n"
   },
   {
     "id": "cobb:figurines",
@@ -2959,6 +2962,7 @@
       }
     ],
     "title": "Pyla-Koutsopetria Archaeological Project: (Overview)",
+    "container-title": "Open Context",
     "URL": "http://opencontext.org/projects/3F6DCD13-A476-488E-ED10-47D25513FCB2",
     "DOI": "10.6078/M7B56GNS",
     "issued": {
@@ -2970,7 +2974,7 @@
         ]
       ]
     },
-    "note": "sbl:\n  eprinttype: Open Context\n",
+    "note": "sbl:\n  eprinttype: Open Context\n  datemodifier: released\n",
     "title-short": "Pyla-Koutsopetria Archaeological Project"
   },
   {
