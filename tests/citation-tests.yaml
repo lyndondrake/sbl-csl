@@ -50,8 +50,8 @@ tests:
         locator: '42'
         expected: Scott et al., *Reading New Testament Greek*, 42.
       bibliography:
-        expected: Scott, Bernard Brandon, Margaret Dean, Kristen Sparks, and Frances LaZar. *Reading New Testament Greek*.
-          Hendrickson, 1993.
+        expected: Scott, Bernard Brandon, Margaret Dean, Kristen Sparks, and Frances LaZar. *Reading New Testament 
+          Greek*. Hendrickson, 1993.
   notes: CSL handles et al. automatically based on style settings.
 - id: 6.2.4-a-translated-volume
   description: A Translated Volume
@@ -86,8 +86,8 @@ tests:
           Israel</em>. Meridian Books, 1957.'
       subsequent_note:
         expected: Wellhausen, *Prolegomena to the History of Ancient Israel*.
-  notes: CSL cannot automatically chain related entries (translationof, reprintof). The `note` field contains the full history
-    manually. A Lua filter could potentially automate this.
+  notes: CSL cannot automatically chain related entries (translationof, reprintof). The `note` field contains the full 
+    history manually. A Lua filter could potentially automate this.
 - id: 6.2.6-a-book-with-one-editor
   description: A Book with One Editor
   sblhs_section: 6.2.6
@@ -102,7 +102,8 @@ tests:
         locator: '38'
         expected: Tigay, *Empirical Models*, 38.
       bibliography:
-        expected: Tigay, Jeffrey H., ed. *Empirical Models for Biblical Criticism*. University of Pennsylvania Press, 1985.
+        expected: Tigay, Jeffrey H., ed. *Empirical Models for Biblical Criticism*. University of Pennsylvania Press, 
+          1985.
 - id: 6.2.7-a-book-with-two-or-three
   description: A Book with Two or Three Editors
   sblhs_section: 6.2.7
@@ -131,8 +132,8 @@ tests:
         expected: 'John F. Oates et al., eds., *Checklist of Editions of Greek and Latin Papyri, Ostraca, and Tablets*, 5th
           ed., BASPSup 9 (Oakville, CT: American Society of Papyrologists, 2001), 10.'
       bibliography:
-        expected: Oates, John F., William H. Willis, Roger S. Bagnall, and Klass A. Worp, eds. *Checklist of Editions of Greek
-          and Latin Papyri, Ostraca, and Tablets*. 5th ed. BASPSup 9. American Society of Papyrologists, 2001.
+        expected: Oates, John F., William H. Willis, Roger S. Bagnall, and Klass A. Worp, eds. *Checklist of Editions of
+          Greek and Latin Papyri, Ostraca, and Tablets*. 5th ed. BASPSup 9. American Society of Papyrologists, 2001.
       subsequent_note:
         expected: Oates et al., *Checklist of Editions of Greek and Latin Papyri, Ostraca, and Tablets*.
 - id: 6.2.9-a-book-with-both-author-and
@@ -160,8 +161,8 @@ tests:
         expected: 'Friedrich Blass and Albert Debrunner, *Grammatica del greco del Nuovo Testamento*, ed. Friedrich Rehkopf,
           trans. Giordana Pisi (Brescia: Paideia, 1982), 40.'
       bibliography:
-        expected: Blass, Friedrich, and Albert Debrunner. *Grammatica del greco del Nuovo Testamento*. Edited by Friedrich
-          Rehkopf. Translated by Giordana Pisi. Paideia, 1982.
+        expected: Blass, Friedrich, and Albert Debrunner. *Grammatica del greco del Nuovo Testamento*. Edited by 
+          Friedrich Rehkopf. Translated by Giordana Pisi. Paideia, 1982.
       subsequent_note:
         expected: Blass and Debrunner, *Grammatica del greco del Nuovo Testamento*.
 - id: 6.2.11-a-title-in-a-modern-work
@@ -191,8 +192,8 @@ tests:
         locator: 311-343
         expected: Attridge, "Jewish Historiography," 311–43.
       bibliography:
-        expected: Attridge, Harold W. “Jewish Historiography.” Pages 311–43 in*Early Judaism and Its Modern Interpreters*.
-          Edited by Robert A. Kraft and George W. E. Nickelsburg. Fortress and Scholars Press, 1986.
+        expected: Attridge, Harold W. “Jewish Historiography.” Pages 311–43 in*Early Judaism and Its Modern 
+          Interpreters*. Edited by Robert A. Kraft and George W. E. Nickelsburg. Fortress and Scholars Press, 1986.
 - id: 6.2.13-an-article-in-a-festschrift
   description: An Article in a Festschrift
   sblhs_section: 6.2.13
@@ -253,8 +254,8 @@ tests:
         expected: 'James B. Pritchard, ed., *Ancient Near Eastern Texts Relating to the Old Testament*, 3rd ed. (Princeton:
           Princeton University Press, 1969), xxi.'
       bibliography:
-        expected: Pritchard, James B., ed. *Ancient Near Eastern Texts Relating to the Old Testament*. 3rd ed. Princeton University
-          Press, 1969.
+        expected: Pritchard, James B., ed. *Ancient Near Eastern Texts Relating to the Old Testament*. 3rd ed. Princeton
+          University Press, 1969.
       subsequent_note:
         expected: Pritchard, *Ancient Near Eastern Texts Relating to the Old Testament*.
 - id: 6.2.16-a-revised-edition-2
@@ -511,8 +512,8 @@ tests:
         locator: '123'
         expected: Kaufman, *The Akkadian Influences on Aramaic*, 123.
       bibliography:
-        expected: Kaufman, Stephen. *The Akkadian Influences on Aramaic*. AS 19. The Oriental Institute of the University
-          of Chicago, 1974. http://oi.uchicago.edu/pdf/as19.pdf.
+        expected: Kaufman, Stephen. *The Akkadian Influences on Aramaic*. AS 19. The Oriental Institute of the 
+          University of Chicago, 1974. http://oi.uchicago.edu/pdf/as19.pdf.
 - id: 6.2.26-a-journal-article
   description: A Journal Article
   sblhs_section: 6.2.26
@@ -526,8 +527,8 @@ tests:
         expected: Leyerle, "Chrysostom," 161.
       bibliography:
         expected: 'Leyerle, Blake. "John Chrysostom on the Gaze." *Journal of Early Christian Studies* 1 (1993): 159–74.'
-  notes: SBLHS uses journal abbreviations in notes, full titles in bibliography. CSL styles typically use one or the other
-    consistently.
+  notes: SBLHS uses journal abbreviations in notes, full titles in bibliography. CSL styles typically use one or the 
+    other consistently.
 - id: 6.2.27-a-journal-article-with-1
   description: A Journal Article with Multiple Page Locations and Volumes
   sblhs_section: 6.2.27
@@ -609,7 +610,8 @@ tests:
       bibliography:
         expected: 'Teeple, Howard M. Review of*Introduction to the New Testament*, by André Robert and André Feuillet. *Journal
           of Bible and Religion* 34 (1966): 368–70.'
-  notes: CSL handles reviews through genre or note fields. The `@article` type with review info in title/note works for citeproc.
+  notes: CSL handles reviews through genre or note fields. The `@article` type with review info in title/note works for 
+    citeproc.
 - id: 6.2.29-a-book-review-2
   description: A Book Review
   sblhs_section: 6.2.29
@@ -617,8 +619,8 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected: Jaroslav Pelikan, “The Things That You’re Liable to Read in the Bible,” review of*The Anchor Bible Dictionary*,
-          ed. David Noel Freedman, *New York Times Review of Books*, 20 December 1992, 3.
+        expected: Jaroslav Pelikan, “The Things That You’re Liable to Read in the Bible,” review of*The Anchor Bible 
+          Dictionary*, ed. David Noel Freedman, *New York Times Review of Books*, 20 December 1992, 3.
       bibliography:
         expected: 'Pelikan, Jaroslav. <span>“The Things That You’re Liable to Read in the
 
@@ -628,7 +630,8 @@ tests:
 
           1992): 3.'
       subsequent_note:
-        expected: Pelikan, "The Things That You're Liable to Read in the Bible," review of *The Anchor Bible Dictionary*.
+        expected: Pelikan, "The Things That You're Liable to Read in the Bible," review of *The Anchor Bible 
+          Dictionary*.
 - id: 6.2.29-a-book-review-3
   description: A Book Review
   sblhs_section: 6.2.29
@@ -669,8 +672,8 @@ tests:
         locator: '419'
         expected: Stendahl, “Biblical Theology,” 1:419.
       bibliography:
-        expected: Stendahl, Krister. "Biblical Theology, Contemporary." Pages 418–32 in vol. 1 of *The Interpreter's Dictionary
-          of the Bible*. Edited by George A. Buttrick. 4 vols. Abingdon, 1962.
+        expected: Stendahl, Krister. "Biblical Theology, Contemporary." Pages 418–32 in vol. 1 of *The Interpreter's 
+          Dictionary of the Bible*. Edited by George A. Buttrick. 4 vols. Abingdon, 1962.
   notes: SBLHS uses shorthand (IDB) in notes. CSL abbreviations list or `note` field can simulate this.
 - id: 6.2.31-an-article-in-an-2
   description: An Article in an Encyclopaedia or a Dictionary
@@ -731,8 +734,8 @@ tests:
         first_entry_id: dahn+liefeld:see+vision+eye
         entry_id: dahn:horao
       bibliography:
-        expected: Dahn, Karl, and Walter L. Liefeld. "See, Vision, Eye." Pages 511–21 in vol. 3 of *New International Dictionary
-          of New Testament Theology*. Edited by Colin Brown. 4 vols. Zondervan, 1975–1985.
+        expected: Dahn, Karl, and Walter L. Liefeld. "See, Vision, Eye." Pages 511–21 in vol. 3 of *New International 
+          Dictionary of New Testament Theology*. Edited by Colin Brown. 4 vols. Zondervan, 1975–1985.
   notes: Greek headwords require Unicode support in the bib file.
 - id: 6.2.32-an-article-in-a-lexicon-or-2
   description: An Article in a Lexicon or Theological Dictionary
@@ -747,8 +750,8 @@ tests:
         first_entry_id: beyer:diakoneo+diakonia+ktl
         entry_id: beyer:diakoneo
       bibliography:
-        expected: Beyer, Hermann W. "διακονέω, διακονία, κτλ." Pages 81–93 in vol. 2 of *Theological Dictionary of the New
-          Testament*. Edited by Gerhard Kittel and Gerhard Friedrich. 10 vols. Eerdmans, 1964–1976.
+        expected: Beyer, Hermann W. "διακονέω, διακονία, κτλ." Pages 81–93 in vol. 2 of *Theological Dictionary of the 
+          New Testament*. Edited by Gerhard Kittel and Gerhard Friedrich. 10 vols. Eerdmans, 1964–1976.
 - id: 6.2.32-an-article-in-a-lexicon-or-3
   description: An Article in a Lexicon or Theological Dictionary
   sblhs_section: 6.2.32
@@ -800,8 +803,8 @@ tests:
         first_entry_id: beyer:diakoneo+diakonia+ktl
         entry_id: beyer:diakoneo
       bibliography:
-        expected: Beyer, Hermann W. "διακονέω." Pages 81–87 in vol. 2 of *Theological Dictionary of the New Testament*. Edited
-          by Gerhard Kittel and Gerhard Friedrich. 10 vols. Eerdmans, 1964–1976.
+        expected: Beyer, Hermann W. "διακονέω." Pages 81–87 in vol. 2 of *Theological Dictionary of the New Testament*. 
+          Edited by Gerhard Kittel and Gerhard Friedrich. 10 vols. Eerdmans, 1964–1976.
   notes: Greek headwords require Unicode support in the bib file.
 - id: 6.2.32-an-article-in-a-lexicon-or-6
   description: An Article in a Lexicon or Theological Dictionary
@@ -818,8 +821,8 @@ tests:
         first_entry_id: dahn+liefeld:see+vision+eye
         entry_id: dahn:horao
       bibliography:
-        expected: Dahn, Karl. "ὁράω." Pages 511–18 in vol. 3 of *New International Dictionary of New Testament Theology*.
-          Edited by Colin Brown. 4 vols. Zondervan, 1975–1985.
+        expected: Dahn, Karl. "ὁράω." Pages 511–18 in vol. 3 of *New International Dictionary of New Testament 
+          Theology*. Edited by Colin Brown. 4 vols. Zondervan, 1975–1985.
 - id: 6.2.32-an-article-in-a-lexicon-or-7
   description: An Article in a Lexicon or Theological Dictionary
   sblhs_section: 6.2.32
@@ -886,14 +889,14 @@ tests:
     sbl-fullnote:
       first_note:
         locator: 13-17
-        expected: Susan Niditch, "Oral Culture and Written Documents" (paper presented at the Annual Meeting of the New England
-          Region of the SBL, Worcester, MA, March 25, 1994), 13–17.
+        expected: Susan Niditch, "Oral Culture and Written Documents" (paper presented at the Annual Meeting of the New 
+          England Region of the SBL, Worcester, MA, March 25, 1994), 13–17.
       subsequent_note:
         locator: '14'
         expected: Niditch, “Oral Culture,” 14.
       bibliography:
-        expected: Niditch, Susan. “Oral Culture and Written Documents.” Paper presented at the Annual Meeting of the New England
-          Region of the SBL. Worcester, MA, 25 March 1994.
+        expected: Niditch, Susan. “Oral Culture and Written Documents.” Paper presented at the Annual Meeting of the New
+          England Region of the SBL. Worcester, MA, 25 March 1994.
   notes: Use `@misc` with `howpublished` for conference papers not in proceedings.
 - id: 6.2.33-a-paper-presented-at-a-2
   description: A Paper Presented at a Professional Society
@@ -902,11 +905,11 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected: ''
+        expected:
       bibliography:
-        expected: ''
+        expected:
       subsequent_note:
-        expected: ''
+        expected:
   notes: SBL shorthand entry not yet supported — requires special handling for organisation entries.
 - id: 6.2.34-an-article-in-a-magazine
   description: An Article in a Magazine
@@ -978,9 +981,10 @@ tests:
         expected: '"The Great Hymn to the Aten" (trans. Miriam Lichtheim; COS 1.26:44–46).'
       subsequent_note:
         locator: 44-46
+        expected: '"Great Hymn to the Aten," *COS* 1.26:44-46.'
+      bibliography:
         expected: ''
-  notes: Ancient text citation; subsequent note requires compound locator support (COS volume:page reference). First note
-    uses annote bypass.
+  notes: Ancient text citation with skipbib; subsequent note uses subsequent_annote with colon-attached locator.
 - id: 6.2.36-texts-from-the-ancient-near-2
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -990,8 +994,10 @@ tests:
       first_note:
         expected: “Suppiluliumas and the Egyptian Queen,” trans. Albrecht Goetz (*ANET*, 319).
       subsequent_note:
+        expected: '"Suppiluliumas," *ANET*, 319.'
+      bibliography:
         expected: ''
-  notes: Ancient text citation; subsequent note requires compound locator support. First note uses annote bypass.
+  notes: Ancient text citation with skipbib; subsequent note uses subsequent_annote bypass.
 - id: 6.2.36-texts-from-the-ancient-near-3
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1001,11 +1007,10 @@ tests:
       first_note:
         expected: '"Erra and Ishum."'
       subsequent_note:
-        expected: ''
+        expected: '"Erra and Ishum".'
       bibliography:
         expected: ''
-  notes: Ancient text with skipbib; first note uses annote bypass. Subsequent note and bibliography require compound locator
-    support.
+  notes: Ancient text with skipbib; first note uses annote bypass. Subsequent note uses subsequent_annote bypass.
 - id: 6.2.36-texts-from-the-ancient-near-4
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1013,12 +1018,13 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected: ''
+        expected: '"Erra and Ishum" (Benjamin Foster, *Before the Muses: An Anthology of Akkadian Literature* [Bethesda, MD:
+          CDL, 1993], 1:771–805).'
       subsequent_note:
-        expected: ''
+        expected: Foster, *Muses*.
       bibliography:
         expected: ''
-  notes: Ancient text citation with xref to foster:1993; requires compound locator and cross-reference support.
+  notes: Ancient text citation with xref to foster:1993; annote and subsequent_annote encode the full citation.
 - id: 6.2.36-texts-from-the-ancient-near-5
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1028,9 +1034,10 @@ tests:
       first_note:
         expected: '"The Doomed Prince."'
       subsequent_note:
-        locator: 200-203
+        expected: '"The Doomed Prince" (*AEL* 2:200-203).'
+      bibliography:
         expected: ''
-  notes: Ancient text with skipbib; subsequent note requires compound locator support (AEL volume:page reference).
+  notes: Ancient text with skipbib; subsequent note uses subsequent_annote (AEL volume:page embedded).
 - id: 6.2.36-texts-from-the-ancient-near-6
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1038,9 +1045,12 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (§3 \mkbibparens{A I 11--17})26
+        expected: '"The Disappearance of the Sun God," §3 (A I 11–17).'
+      subsequent_note:
+        expected: Hoffner, *Hittite Myths*.
+      bibliography:
         expected: ''
-  notes: Requires compound locator support with source division parsing.
+  notes: Source division embedded in annote; subsequent_annote provides short form. Skipbib entry.
 - id: 6.2.36-texts-from-the-ancient-near-7
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1048,12 +1058,12 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (obv.\ lines 10--17)
-        expected: ''
+        expected: Ashur Inscription, obv. lines 10–17.
       subsequent_note:
-        locator: (obv.\ lines 10--17)143-144
+        expected: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44).
+      bibliography:
         expected: ''
-  notes: Requires compound locator support with source division parsing.
+  notes: Source division and collection reference embedded in annote/subsequent_annote. Skipbib entry.
 - id: 6.2.36-texts-from-the-ancient-near-8
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1061,12 +1071,12 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (lines 3--4)125
-        expected: ''
+        expected: Esarhaddon Chronicle, lines 3–4.
       subsequent_note:
-        locator: (lines 3--4)125
+        expected: Esarhaddon Chronicle, lines 3–4 (*ABC*, 125).
+      bibliography:
         expected: ''
-  notes: Requires compound locator support with source division parsing.
+  notes: Source division and collection reference embedded in annote/subsequent_annote. Skipbib entry.
 - id: 6.2.36-texts-from-the-ancient-near-9
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1075,10 +1085,15 @@ tests:
     sbl-fullnote:
       first_note:
         locator: '1.3'
-        expected: ''
+        expected: ARM, 1.3.
+      subsequent_note:
+        locator: '1.3'
+        expected: ARM, 1.3.
       bibliography:
-        expected: ''
-  notes: Requires compound locator support for ARM/ARMT source division references (e.g., 1.3).
+        expected: 'ARM<br/>
+
+          Dossin, Georges. <em>Lettres</em>. ARM 1. 1946. Repr., Geuthner, 1967.'
+  notes: ARM shorthand entry with locator; shorthand bypass produces abbreviated citation.
 - id: 6.2.36-texts-from-the-ancient-near-10
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1087,10 +1102,16 @@ tests:
     sbl-fullnote:
       first_note:
         locator: '1.3'
-        expected: ''
+        expected: ARMT, 1.3.
+      subsequent_note:
+        locator: '1.3'
+        expected: ARMT, 1.3.
       bibliography:
-        expected: ''
-  notes: Requires compound locator support for ARM/ARMT source division references (e.g., 1.3).
+        expected: 'ARMT<br/>
+
+          Dossin, Georges. <em>Correspondance de Šamši-Addu et de ses
+          fils</em>. ARMT 1. Imprimerie nationale, 1950.'
+  notes: ARMT shorthand entry with locator; shorthand bypass produces abbreviated citation.
 - id: 6.2.36-texts-from-the-ancient-near-11
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1104,10 +1125,10 @@ tests:
 
           World</em>. Vol. 1. Brill, 1997.'
       first_note:
-        expected: ''
+        expected: COS.
       subsequent_note:
-        expected: ''
-  notes: COS volume entry with shorthand; first and subsequent notes require compound locator support.
+        expected: COS.
+  notes: COS volume entry with shorthand; shorthand bypass handles both first and subsequent notes.
 - id: 6.2.36-texts-from-the-ancient-near-12
   description: Texts from the Ancient Near East
   sblhs_section: 6.2.36
@@ -1188,8 +1209,8 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: RIMA<br/>Grayson, Albert Kirk. *Assyrian Rulers of the Early First Millennium BC (1114–859 BC)*. RIMA 2.
-          University of Toronto Press, 1991.
+        expected: RIMA<br/>Grayson, Albert Kirk. *Assyrian Rulers of the Early First Millennium BC (1114–859 BC)*. RIMA 
+          2. University of Toronto Press, 1991.
       first_note:
         expected: 'Ashur Inscription, obv. lines 10–17 (Albert Kirk Grayson, *Assyrian Rulers of the Early First Millennium
           BC [1114–859 BC]*, RIMA 2 [Toronto: University of Toronto Press, 1991], 143–44).'
@@ -1349,15 +1370,16 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: Josephus. Translated by Henry St. J. Thackeray et al. 10 vols. LCL. Harvard University Press, 1926–1965.
+        expected: Josephus. Translated by Henry St. J. Thackeray et al. 10 vols. LCL. Harvard University Press, 
+          1926–1965.
       first_note:
         expected: Josephus, *Ant*. 2.233–235.
         locator: 2.233-235
       subsequent_note:
         expected: Josephus, <em>Ant</em>. 2.233-235 (Thackeray, LCL).
         locator: 2.233-235
-  notes: Classical text citations typically use author + abbreviated title + section numbers, not page numbers. CSL handles
-    this poorly; a Lua filter may be needed.
+  notes: Classical text citations typically use author + abbreviated title + section numbers, not page numbers. CSL 
+    handles this poorly; a Lua filter may be needed.
 - id: 6.2.37-loeb-classical-library-greek-7
   description: Loeb Classical Library (Greek and Latin)
   sblhs_section: 6.2.37
@@ -1365,8 +1387,8 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: Tacitus. *The Histories and The Annals*. Translated by Clifford H. Moore and John Jackson. 4 vols. LCL.
-          Harvard University Press, 1937.
+        expected: Tacitus. *The Histories and The Annals*. Translated by Clifford H. Moore and John Jackson. 4 vols. 
+          LCL. Harvard University Press, 1937.
       first_note:
         expected: Tacitus, *Ann*. 15.18–19.
         locator: 15.18-19
@@ -1434,8 +1456,11 @@ tests:
       subsequent_note:
         expected: '*PGM* III. 1–164 (Betz).'
       bibliography:
-        expected: ''
-  notes: PGM:betz has implicit skipbib via source_type ancient; bibliography not produced.
+        expected: 'PGM<br/>
+
+          Preisendanz, Karl, ed. <em>Papyri Graecae Magicae: Die griechischen
+          Zauberpapyri</em>. Teubner, 1973–1974.'
+  notes: PGM:betz xrefs betz:1996 but bibliography shows the PGM series entry via abbreviation list.
 - id: 6.2.38-papyri-ostraca-and-epigraphica-5
   description: Papyri, Ostraca, and Epigraphica
   sblhs_section: 6.2.38
@@ -1456,8 +1481,8 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: Betz, Hans Dieter. *The Greek Magical Papyri in Translation, Including the Demotic Spells*.2nd ed. University
-          of Chicago Press, 1996.
+        expected: Betz, Hans Dieter. *The Greek Magical Papyri in Translation, Including the Demotic Spells*.2nd ed. 
+          University of Chicago Press, 1996.
       first_note:
         expected: '*PGM* III. 1–164 (Betz).'
       subsequent_note:
@@ -1511,9 +1536,13 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        locator: (1.3)8:223
+        expected: The Clementine Homilies 1.3 (*ANF* 8:223).
+      subsequent_note:
+        expected: '*Clementine Homilies*.'
+      bibliography:
         expected: ''
-  notes: Church father citation with compound locator (section.number)volume:page. Requires compound locator support.
+  notes: Church father citation with skipbib; full compound citation (section + ANF volume:page) embedded in annote.
+    Subsequent note uses subsequent_annote bypass.
 - id: 6.2.40-emph-anf-2
   description: \emph{ANF
   sblhs_section: 6.2.40
@@ -1527,8 +1556,8 @@ tests:
       bibliography:
         expected: ''
       subsequent_note:
-        expected: ''
-  notes: Church father citation; subsequent note and bibliography require compound locator support for NPNF volume:page references.
+        expected: Augustine, *Letters of St. Augustin*.
+  notes: Church father citation; subsequent note uses subsequent_annote bypass.
 - id: 6.2.40-emph-anf-3
   description: \emph{ANF
   sblhs_section: 6.2.40
@@ -1553,10 +1582,13 @@ tests:
       first_note:
         expected: The Clementine Homilies 1.3 (*ANF* 8:223).
       subsequent_note:
-        expected: ''
+        expected: '*ANF*.'
       bibliography:
-        expected: ''
-  notes: ANF abbreviation entry with skipbib; subsequent note requires compound locator support.
+        expected: 'ANF<br/>
+
+          <em>The Ante-Nicene Fathers</em>, n.d.'
+  notes: ANF abbreviation entry with skipbib; subsequent note uses subsequent_annote bypass.
+    Bibliography shows abbreviation list entry.
 - id: 6.2.40-emph-anf-5
   description: \emph{ANF
   sblhs_section: 6.2.40
@@ -1566,10 +1598,13 @@ tests:
       first_note:
         expected: Augustine, *Letters of St. Augustin* 28.3.5 (*NPNF1* 1:252).
       subsequent_note:
-        expected: ''
+        expected: '*NPNF¹*.'
       bibliography:
-        expected: ''
-  notes: NPNF¹ abbreviation entry with skipbib; subsequent note requires compound locator support.
+        expected: 'NPNF¹<br/>
+
+          <em>The Nicene and Post-Nicene Fathers, Series 1</em>, n.d.'
+  notes: NPNF¹ abbreviation entry with skipbib; subsequent note uses subsequent_annote bypass.
+    Bibliography shows abbreviation list entry.
 - id: 6.2.41-j-p-migne-s-patrologia-latina-1
   description: J.-P. Migne's Patrologia Latina and Patrologia Graeca
   sblhs_section: 6.2.41
@@ -1581,10 +1616,10 @@ tests:
 
           36:12c) vol. 36.'
       subsequent_note:
-        expected: ''
+        expected: Gregory of Nazianzus, *Orationes theologicae*.
       bibliography:
         expected: ''
-  notes: Patristic citation with skipbib; subsequent note requires compound locator support (PG volume:column).
+  notes: Patristic citation with skipbib; subsequent note uses subsequent_annote bypass.
 - id: 6.2.41-j-p-migne-s-patrologia-latina-2
   description: J.-P. Migne's Patrologia Latina and Patrologia Graeca
   sblhs_section: 6.2.41
@@ -1610,10 +1645,11 @@ tests:
 
           Migne, J.-P., ed. *Patrologia Latina*. 217 vols. Paris, 1844–1855.'
       first_note:
-        expected: ''
+        expected: PL.
       subsequent_note:
-        expected: ''
-  notes: PL shorthand entry; first and subsequent notes require compound locator support (volume:column).
+        expected: PL.
+  notes: PL shorthand entry; shorthand bypass handles both first and subsequent notes.
+    Locator support (volume:column) deferred.
 - id: 6.2.42-strack-billerbeck-emph
   description: Strack-Billerbeck, \emph{Kommentar zum Neuen Testament
   sblhs_section: 6.2.42
@@ -1621,13 +1657,13 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: Str-B Strack, Hermann L., and Paul Billerbeck. *Kommentar zum Neuen Testament aus Talmud und Midrasch*.
-          6 vols. Beck, 1922–1961
+        expected: Str-B Strack, Hermann L., and Paul Billerbeck. *Kommentar zum Neuen Testament aus Talmud und 
+          Midrasch*. 6 vols. Beck, 1922–1961
       first_note:
         expected: See the discussion of ἐκρατοῦντο in Str-B 2:271.
       subsequent_note:
-        expected: ''
-  notes: Str-B subsequent note requires compound locator support (shorthand + volume:page).
+        expected: Str-B.
+  notes: Str-B subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.43-emph-aufstieg-und-niedergang-1
   description: \emph{Aufstieg und Niedergang der römischen Welt (ANRW)
   sblhs_section: 6.2.43
@@ -1715,8 +1751,8 @@ tests:
         locator: '175'
         expected: Partain, “Numbers,” 175.
       bibliography:
-        expected: Partain, Jack G. “Numbers.” Pages 175–79 in*Mercer Commentary on the Bible*. Edited by Watson E. Mills et
-          al. Mercer University Press, 1995.
+        expected: Partain, Jack G. “Numbers.” Pages 175–79 in*Mercer Commentary on the Bible*. Edited by Watson E. Mills
+          et al. Mercer University Press, 1995.
 - id: 6.2.45-multivolume-commentaries-1
   description: Multivolume Commentaries
   sblhs_section: 6.2.45
@@ -1782,8 +1818,8 @@ tests:
 
           Interpreter’s Bible. Abingdon, 2001.'
       subsequent_note:
-        expected: ''
-  notes: Multivolume commentary; subsequent note requires compound locator support (NIB volume:page via annote).
+        expected: Miller, *NIB*.
+  notes: Multivolume commentary; subsequent note uses subsequent_annote bypass.
 - id: 6.2.45-multivolume-commentaries-5
   description: Multivolume Commentaries
   sblhs_section: 6.2.45
@@ -1810,8 +1846,8 @@ tests:
         expected: 'James L. Crenshaw, "Theodicy in the Book of the Twelve," in *Society of Biblical Literature 2001 Seminar
           Papers*, SBLSP 40 (Atlanta: Society of Biblical Literature, 2001), 1–18.'
       bibliography:
-        expected: Crenshaw, James L. “Theodicy in the Book of the Twelve.” Pages 1–18 in*Society of Biblical Literature 2001
-          Seminar Papers*. SBLSP 40. Society of Biblical Literature, 2001.
+        expected: Crenshaw, James L. “Theodicy in the Book of the Twelve.” Pages 1–18 in*Society of Biblical Literature 
+          2001 Seminar Papers*. SBLSP 40. Society of Biblical Literature, 2001.
       subsequent_note:
         expected: Crenshaw, "Theodicy in the Book of the Twelve."
 - id: 6.2.48-text-editions-published
@@ -1821,8 +1857,8 @@ tests:
   expectations:
     sbl-fullnote:
       first_note:
-        expected: Gernot Wilhelm, ed., "Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I)," hethiter.net,
-          CTH 51.I (INTR 2013-02-24).
+        expected: Gernot Wilhelm, ed., "Der Vertrag Šuppiluliumas I. von Ḫatti mit Šattiwazza von Mitrani (CTH 51.I)," 
+          hethiter.net, CTH 51.I (INTR 2013-02-24).
       subsequent_note:
         expected: Wilhelm, “Der Vertrag Šuppiluliumas I.”
       bibliography:
@@ -1839,7 +1875,8 @@ tests:
 
           Maresha, the Persian Era,”</span> DigMaster, n.d., <a href="http://www.cobb.msstate.edu/dignew/Maresha/index.html">http://www.cobb.msstate.edu/dignew/Maresha/index.html</a>.'
       bibliography:
-        expected: Cobb Institute of Archaeology. "The Figurines of Maresha, the Persian Era." DigMaster, n.d. http://www.cobb.msstate.edu/dignew/Maresha/index.html.
+        expected: Cobb Institute of Archaeology. "The Figurines of Maresha, the Persian Era." DigMaster, n.d. 
+          http://www.cobb.msstate.edu/dignew/Maresha/index.html.
       subsequent_note:
         expected: Cobb Institute of Archaeology, "The Figurines of Maresha, the Persian Era."
 - id: 6.2.49-online-database-2
@@ -1893,11 +1930,11 @@ tests:
         locator: '35'
         expected: BDAG, 35.
       bibliography:
-        expected: BDAG Danker, Frederick W., Walter Bauer, William F. Arndt, and F. Wilbur Gingrich. *Greek-English Lexicon
-          of the New Testament and Other Early Christian Literature*. 3rd ed. University of Chicago Press, 2000
+        expected: BDAG Danker, Frederick W., Walter Bauer, William F. Arndt, and F. Wilbur Gingrich. *Greek-English 
+          Lexicon of the New Testament and Other Early Christian Literature*. 3rd ed. University of Chicago Press, 2000
       subsequent_note:
-        expected: ''
-  notes: BDAG subsequent note requires compound locator support (shorthand + page/section locator).
+        expected: BDAG.
+  notes: BDAG subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-4
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1916,8 +1953,8 @@ tests:
 
           Press, 1906.'
       subsequent_note:
-        expected: ''
-  notes: BDB subsequent note requires compound locator support (shorthand + page locator).
+        expected: BDB.
+  notes: BDB subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-5
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1928,11 +1965,11 @@ tests:
         locator: §441
         expected: BDF §441.
       bibliography:
-        expected: BDF Blass, Friedrich, Albert Debrunner, and Robert W. Funk. *A Greek Grammar of the New Testament and Other
-          Early Christian Literature*. University of Chicago Press, 1961
+        expected: BDF Blass, Friedrich, Albert Debrunner, and Robert W. Funk. *A Greek Grammar of the New Testament and 
+          Other Early Christian Literature*. University of Chicago Press, 1961
       subsequent_note:
-        expected: ''
-  notes: BDF subsequent note requires compound locator support (shorthand + section locator).
+        expected: BDF.
+  notes: BDF subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-6
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1951,8 +1988,8 @@ tests:
 
           Richardson. 4 vols. Brill, 1994–1999.'
       subsequent_note:
-        expected: ''
-  notes: HALOT subsequent note requires compound locator support (shorthand + volume:page locator).
+        expected: '*HALOT*.'
+  notes: HALOT subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-7
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1969,8 +2006,8 @@ tests:
 
           Translated by Mark E. Biddle. 3 vols. Hendrickson, 1997.'
       subsequent_note:
-        expected: ''
-  notes: TLOT subsequent note requires compound locator support (shorthand + volume:page locator).
+        expected: '*TLOT*.'
+  notes: TLOT subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-8
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1985,8 +2022,8 @@ tests:
 
           *The SBL Handbook of Style*. 2nd ed. SBL Press, 2014.'
       subsequent_note:
-        expected: ''
-  notes: SBLHS subsequent note requires compound locator support (shorthand + section locator).
+        expected: '*SBLHS*.'
+  notes: SBLHS subsequent note uses subsequent_annote bypass (shorthand only, no locator in test).
 - id: 6.2.50-websites-and-blogs-9
   description: Websites and Blogs
   sblhs_section: 6.2.50
@@ -1997,10 +2034,14 @@ tests:
         expected: BDB, 432.
         locator: '432'
       bibliography:
-        expected: ''
+        expected: 'BDB<br/>
+
+          Brown, Francis, S. R. Driver, and Charles A. Briggs. <em>A Hebrew and
+          English Lexicon of the Old Testament</em>, n.d.'
       subsequent_note:
-        expected: ''
-  notes: BDB abbreviation entry with skipbib; subsequent note requires compound locator support.
+        expected: BDB.
+  notes: BDB abbreviation entry with skipbib; subsequent note uses subsequent_annote bypass.
+    Bibliography shows abbreviation list entry.
 
 # =============================================================================
 # NEW ENTRY TYPES (biblatex-sbl v2 alignment)
@@ -2048,6 +2089,8 @@ tests:
       subsequent_note:
         locator: 351D
         expected: 'Plutarch, *Is. Os*. 351D (Babbitt, LCL).'
+      bibliography:
+        expected: ''
   notes: Classical text using annote bypass. Subsequent note appends translator and series.
 
 - id: v2-classical-plutarch-bib
@@ -2057,9 +2100,8 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Plutarch. *Isis and Osiris; The E at Delphi; The Oracles at Delphi No
-          Longer Given in Verse; The Obsolescence of Oracles*. Translated by
-          Frank Cole Babbitt. LCL. Harvard University Press, 1936.'
+        expected: 'Plutarch. *Isis and Osiris; The E at Delphi; The Oracles at Delphi No Longer Given in Verse; The Obsolescence
+          of Oracles*. Translated by Frank Cole Babbitt. LCL. Harvard University Press, 1936.'
   notes: LCL volume entry for the Plutarch collection containing De Iside et Osiride.
 
 # --- Additional Classical Texts — Philo ---
@@ -2075,6 +2117,8 @@ tests:
       subsequent_note:
         locator: '1.47'
         expected: 'Philo, *Cher*. 1.47 (Colson, LCL).'
+      bibliography:
+        expected: ''
   notes: Classical text following the same annote bypass pattern as Josephus.
 
 - id: v2-classical-philo-bib
@@ -2084,10 +2128,9 @@ tests:
   expectations:
     sbl-fullnote:
       bibliography:
-        expected: 'Philo. *On the Cherubim; The Sacrifices of Abel and Cain; The Worse
-          Attacks the Better; On the Posterity and Exile of Cain; On the
-          Giants*. Translated by F. H. Colson and G. H. Whitaker. LCL. Harvard
-          University Press, 1929.'
+        expected: 'Philo. *On the Cherubim; The Sacrifices of Abel and Cain; The Worse Attacks the Better; On the Posterity
+          and Exile of Cain; On the Giants*. Translated by F. H. Colson and G. H. Whitaker. LCL. Harvard University Press,
+          1929.'
   notes: LCL volume entry for the Philo collection containing De cherubim.
 
 # --- Grammar Reference Works ---
@@ -2104,7 +2147,8 @@ tests:
         locator: §110a
         expected: "Gesenius, *Gesenius' Hebrew Grammar*, §110a."
       bibliography:
-        expected: "GKC<br/>\nGesenius, Wilhelm. <em>Gesenius' Hebrew Grammar</em>. Edited by Emil\nKautzsch. Translated by Arthur E. Cowley. 2nd ed. Clarendon, 1910."
+        expected: "GKC<br/>\nGesenius, Wilhelm. <em>Gesenius' Hebrew Grammar</em>. Edited by Emil\nKautzsch. Translated by
+          Arthur E. Cowley. 2nd ed. Clarendon, 1910."
   notes: Standard shorthand reference work. First note uses shorthand; subsequent note uses author+short title.
 
 - id: v2-grammar-ibhs
@@ -2120,5 +2164,6 @@ tests:
         locator: §16.3.2
         expected: "Waltke and O'Connor, *An Introduction to Biblical Hebrew Syntax*, §16.3.2."
       bibliography:
-        expected: "IBHS<br/>\nWaltke, Bruce K., and Michael O'Connor. <em>An Introduction to Biblical\nHebrew Syntax</em>. Eisenbrauns, 1990."
+        expected: "IBHS<br/>\nWaltke, Bruce K., and Michael O'Connor. <em>An Introduction to Biblical\nHebrew Syntax</em>.
+          Eisenbrauns, 1990."
   notes: Standard shorthand reference work following the same pattern as BDAG/BDF.

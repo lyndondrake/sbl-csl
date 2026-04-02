@@ -75,6 +75,7 @@ local function load_bibliography(path)
   local current_id = nil
   local current_note = nil
   local current_annote = false
+  local current_annote_value = nil
   local in_note = false
   local note_indent = 0
 
@@ -95,22 +96,32 @@ local function load_bibliography(path)
             end
           end
         end
-        -- Mark if entry has annote
+        -- Mark if entry has annote (store the value for shorthand italic detection)
         if current_annote then
           if not sbl_entries[current_id] then
             sbl_entries[current_id] = {}
           end
           sbl_entries[current_id].annote = true
+          if current_annote_value then
+            sbl_entries[current_id].annote_value = current_annote_value
+          end
         end
       end
       current_id = id
       current_note = nil
       current_annote = false
+      current_annote_value = nil
       in_note = false
     end
 
-    -- Detect annote field
-    if line:match("^%s+annote:") then
+    -- Detect annote field and capture its value
+    local annote_val = line:match("^%s+annote:%s*(.+)%s*$")
+    if annote_val then
+      current_annote = true
+      -- Strip surrounding quotes
+      annote_val = annote_val:gsub("^['\"](.+)['\"]$", "%1")
+      current_annote_value = annote_val
+    elseif line:match("^%s+annote:") then
       current_annote = true
     end
 
@@ -500,9 +511,14 @@ end
 -- ──────────────────────────────────────────────
 
 -- Replace note content with shorthand citation
-local function make_shorthand_cite(shorthand, suffix_inlines)
+-- If italic is true, the shorthand is wrapped in Emph.
+local function make_shorthand_cite(shorthand, suffix_inlines, italic)
   local inlines = pandoc.Inlines{}
-  inlines:insert(pandoc.Str(shorthand))
+  if italic then
+    inlines:insert(pandoc.Emph{pandoc.Str(shorthand)})
+  else
+    inlines:insert(pandoc.Str(shorthand))
+  end
 
   -- Add suffix (locator) if present
   if suffix_inlines and #suffix_inlines > 0 then
@@ -516,6 +532,13 @@ local function make_shorthand_cite(shorthand, suffix_inlines)
 
   inlines:insert(pandoc.Str("."))
   return pandoc.Note(pandoc.Blocks{pandoc.Para(inlines)})
+end
+
+-- Determine whether a shorthand should be rendered in italic,
+-- by checking if the annote value wraps the shorthand in <i> tags.
+local function is_shorthand_italic(entry)
+  if not entry.annote_value or not entry.shorthand then return false end
+  return entry.annote_value:find("<i>" .. entry.shorthand .. "</i>", 1, true) ~= nil
 end
 
 -- Prepend shorthand label before a bibliography entry's content
@@ -570,11 +593,12 @@ return {
       if not entry then return nil end
 
       -- Handle shorthand references (only for reference works, not ancient texts)
-      -- Skip if entry has annote (CSL annote bypass takes precedence)
+      -- Skip if entry has annote (CSL annote bypass takes precedence for first notes)
       -- Skip if entry has entrysubtype (ancient texts use shorthand differently)
       if entry.shorthand and not entry.entrysubtype and not entry.annote then
         if #cite.content > 0 and cite.content[1].t == "Note" then
-          return make_shorthand_cite(entry.shorthand, citation.suffix)
+          local italic = is_shorthand_italic(entry)
+          return make_shorthand_cite(entry.shorthand, citation.suffix, italic)
         end
       end
 
@@ -605,7 +629,16 @@ return {
             local suffix = utils.stringify(citation.suffix or {}):gsub("^[,%s]+", "")
             local annote_text = entry.subsequent_annote
             if suffix ~= "" then
-              annote_text = annote_text .. " " .. suffix
+              -- Attach suffix directly if annote ends with colon (e.g., "COS 1.26:")
+              -- Otherwise separate with a space
+              if annote_text:match(":%s*$") then
+                annote_text = annote_text:gsub("%s*$", "") .. suffix
+              else
+                annote_text = annote_text .. " " .. suffix
+              end
+            else
+              -- No suffix: strip trailing comma or colon
+              annote_text = annote_text:gsub("[,:]%s*$", "")
             end
             -- Also append subsequent_suffix if present (e.g., "(Thackeray, LCL)")
             if entry.subsequent_suffix then

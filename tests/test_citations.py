@@ -99,9 +99,11 @@ def test_citation(
     entry_id = form_expectation.get('entry_id', test_case['entry_id'])
     expected = form_expectation['expected']
 
-    # Skip if expected value is empty (not yet populated)
-    if not expected or not str(expected).strip():
-        pytest.skip(f"Empty expected value for {style_id}/{form}")
+    # Skip if expected value is None (not yet populated).
+    # An empty string expected: '' is valid — it means the entry should
+    # produce no output (e.g. skipbib entries in the bibliography).
+    if expected is None:
+        pytest.skip(f"No expected value for {style_id}/{form}")
     locator = form_expectation.get('locator')
     first_entry_id = form_expectation.get('first_entry_id')
 
@@ -232,9 +234,11 @@ class TestCitationForms:
         entry_id = form_expectation.get('entry_id', test_case['entry_id'])
         expected = form_expectation['expected']
 
-        # Skip if expected value is empty (not yet populated)
-        if not expected or not str(expected).strip():
-            pytest.skip(f"Empty expected value for {style_id}/{form}")
+        # Skip if expected value is None (not yet populated).
+        # An empty string expected: '' is valid — it means the entry should
+        # produce no output (e.g. skipbib entries in the bibliography).
+        if expected is None:
+            pytest.skip(f"No expected value for {style_id}/{form}")
 
         locator = form_expectation.get('locator')
         first_entry_id = form_expectation.get('first_entry_id')

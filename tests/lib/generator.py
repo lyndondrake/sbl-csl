@@ -238,7 +238,9 @@ class CitationGenerator:
             if entries:
                 return self._clean_bibliography_entry(entries[0])
 
-        raise ValueError(f'Could not find bibliography entry for {entry_id}')
+        # Entry not found — this is expected for skipbib entries that
+        # are suppressed from the bibliography.
+        return ''
 
     def _clean_bibliography_entry(self, element) -> str:
         """Clean up bibliography entry content."""
