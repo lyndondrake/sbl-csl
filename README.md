@@ -16,6 +16,20 @@ pandoc document.md \
   -o document.pdf
 ```
 
+For PDF output via typst with Greek/Hebrew support, add a font with Unicode coverage (e.g., [SBL BibLit](https://www.sbl-site.org/educational/BiblicalFonts_SBLBibLit.aspx)):
+
+```bash
+pandoc document.md \
+  --citeproc \
+  --bibliography=your-bibliography.yaml \
+  --csl=society-of-biblical-literature-fullnote-bibliography.csl \
+  --lua-filter=sbl-filter.lua \
+  --citation-abbreviations=sbl-abbreviations-extended.json \
+  --pdf-engine-opt="--font-path=/path/to/sbl-biblit" \
+  -V mainfont="SBL BibLit" \
+  -o document.pdf -t typst
+```
+
 ## What you get without the Lua filter
 
 The CSL file alone works with **any citeproc implementation** (Zotero, Mendeley, pandoc, etc.) and produces correct output for:
