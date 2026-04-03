@@ -1474,7 +1474,6 @@ references:
     sbl:
       shortseries: RIMA
       shorthand: RIMA
-      options: [skipbiblistshorthand]
           subsequent_annote: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44)
 
   collection-title-short: RIMA
@@ -1546,7 +1545,6 @@ references:
     sbl:
       shortseries: ARM
       shorthand: ARM
-      options: [skipbiblistshorthand]
 
   collection-title-short: ARM
 - id: ARMT1
@@ -1566,7 +1564,6 @@ references:
     sbl:
       shortseries: ARMT
       shorthand: ARMT
-      options: [skipbiblistshorthand]
 
   collection-title-short: ARMT
 
@@ -2023,7 +2020,7 @@ references:
     sbl:
       shorthand: ANF
       xref: ANF:abbreviation
-      options: [useeditor=false, skipbiblist]
+      options: [useeditor=false]
 
   annote: The Clementine Homilies 1.3 (<i>ANF</i> 8:223)
 - id: clementinehomilies
@@ -2069,7 +2066,7 @@ references:
     sbl:
       shorthand: NPNF¹
       xref: NPNF1:abbreviation
-      options: [useeditor=false, skipbiblist]
+      options: [useeditor=false]
 
 - id: augustine:letters
   type: classic
@@ -2303,6 +2300,7 @@ references:
     sbl:
       shortseries: AB
       maintitle: Psalms
+      skipbib: true
 
   title-short: Psalms
   collection-title-short: AB
@@ -2325,6 +2323,7 @@ references:
     sbl:
       shortseries: AB
       maintitle: Psalms
+      skipbib: true
 
   title-short: Psalms
   collection-title-short: AB

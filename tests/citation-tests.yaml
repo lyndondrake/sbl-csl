@@ -1802,7 +1802,7 @@ tests:
       bibliography:
         expected: Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Doubleday, 1965–1970.
 - id: 6.2.45-multivolume-commentaries-2
-  description: Multivolume Commentaries
+  description: Multivolume Commentaries (individual volume with skipbib — bibliography covered by multivolume entry)
   sblhs_section: 6.2.45
   entry_id: dahood:1965
   expectations:
@@ -1816,9 +1816,9 @@ tests:
         locator: '78'
         expected: Dahood, <em>Psalms</em>, 78.
       bibliography:
-        expected: Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Doubleday, 1965–1970.
+        expected: ''
 - id: 6.2.45-multivolume-commentaries-3
-  description: Multivolume Commentaries
+  description: Multivolume Commentaries (individual volume with skipbib — bibliography covered by multivolume entry)
   sblhs_section: 6.2.45
   entry_id: dahood:1968
   expectations:
@@ -1829,7 +1829,7 @@ tests:
 
           (Garden City, NY: Doubleday, 1965–1970), 374.'
       bibliography:
-        expected: Dahood, Mitchell. *Psalms*. 3 vols. AB 16–17A. Doubleday, 1965–1970.
+        expected: ''
       subsequent_note:
         expected: Dahood, *Psalms*, 2:121.
         locator: 2:121

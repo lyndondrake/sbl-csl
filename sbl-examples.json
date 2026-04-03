@@ -1941,7 +1941,7 @@
           ]
         ]
       },
-      "note": "sbl:\n  shortseries: RIMA\n  shorthand: RIMA\n  options: [skipbiblistshorthand]\n      subsequent_annote: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44)\n",
+      "note": "sbl:\n  shortseries: RIMA\n  shorthand: RIMA\n      subsequent_annote: Ashur Inscription, obv. lines 10–17 (RIMA 2:143–44)\n",
       "collection-title-short": "RIMA",
       "annote": "Ashur Inscription, obv. lines 10–17 (Albert Kirk Grayson, <i>Assyrian Rulers of the Early First Millennium BC [1114–859 BC]</i>, RIMA 2 [Toronto: University of Toronto Press, 1991], 143–44)"
     },
@@ -2014,7 +2014,7 @@
           ]
         ]
       },
-      "note": "sbl:\n  shortseries: ARM\n  shorthand: ARM\n  options: [skipbiblistshorthand]\n",
+      "note": "sbl:\n  shortseries: ARM\n  shorthand: ARM\n",
       "collection-title-short": "ARM"
     },
     {
@@ -2038,7 +2038,7 @@
           ]
         ]
       },
-      "note": "sbl:\n  shortseries: ARMT\n  shorthand: ARMT\n  options: [skipbiblistshorthand]\n",
+      "note": "sbl:\n  shortseries: ARMT\n  shorthand: ARMT\n",
       "collection-title-short": "ARMT"
     },
     {
@@ -2563,7 +2563,7 @@
           ]
         ]
       },
-      "note": "sbl:\n  shorthand: ANF\n  xref: ANF:abbreviation\n  options: [useeditor=false, skipbiblist]\n",
+      "note": "sbl:\n  shorthand: ANF\n  xref: ANF:abbreviation\n  options: [useeditor=false]\n",
       "annote": "The Clementine Homilies 1.3 (<i>ANF</i> 8:223)"
     },
     {
@@ -2612,7 +2612,7 @@
           ]
         ]
       },
-      "note": "sbl:\n  shorthand: NPNF¹\n  xref: NPNF1:abbreviation\n  options: [useeditor=false, skipbiblist]\n"
+      "note": "sbl:\n  shorthand: NPNF¹\n  xref: NPNF1:abbreviation\n  options: [useeditor=false]\n"
     },
     {
       "id": "augustine:letters",
@@ -2912,7 +2912,7 @@
           ]
         ]
       },
-      "note": "sbl:\n  shortseries: AB\n  maintitle: Psalms\n",
+      "note": "sbl:\n  shortseries: AB\n  maintitle: Psalms\n  skipbib: true\n",
       "title-short": "Psalms",
       "collection-title-short": "AB",
       "number-of-volumes": "3"
@@ -2941,7 +2941,7 @@
           ]
         ]
       },
-      "note": "sbl:\n  shortseries: AB\n  maintitle: Psalms\n",
+      "note": "sbl:\n  shortseries: AB\n  maintitle: Psalms\n  skipbib: true\n",
       "title-short": "Psalms",
       "collection-title-short": "AB",
       "number-of-volumes": "3"

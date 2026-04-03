@@ -12,7 +12,7 @@ nocite: |
   @COS, @ANET, @AEL, @ABC, @RIMA,
   @ARM1, @ARMT1, @gerhardsson:1961, @hoffner:1990,
   @plutarch:moralia5, @philo:cherubim,
-  @series-RIMA, @series-ABC, @series-ARM1, @series-ARMT1
+  @series-ABC
 ---
 
 # Introduction

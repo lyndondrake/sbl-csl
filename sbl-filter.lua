@@ -78,6 +78,8 @@ local function load_bibliography(path)
   local current_annote_value = nil
   local in_note = false
   local note_indent = 0
+  local in_author_block = false  -- tracks whether we're inside an author: array
+  local in_editor_block = false  -- tracks whether we're inside an editor: array
 
   for line in content:gmatch("[^\n]*") do
     -- New entry
@@ -112,6 +114,25 @@ local function load_bibliography(path)
       current_annote = false
       current_annote_value = nil
       in_note = false
+      in_author_block = false
+      in_editor_block = false
+    end
+
+    -- Track whether we are inside the author: or editor: block
+    if not in_note then
+      if line:match("^%s+author:%s*$") then
+        in_author_block = true
+        in_editor_block = false
+      elseif line:match("^%s+editor:%s*$") then
+        in_editor_block = true
+        in_author_block = false
+      elseif line:match("^%s+%a[%a%-]*:") and not line:match("^%s+%-%s") and not line:match("^%s+given:") then
+        -- A new top-level field (not a list item or given: continuation) exits any block
+        if not line:match("^%s+author:") and not line:match("^%s+editor:") then
+          in_author_block = false
+          in_editor_block = false
+        end
+      end
     end
 
     -- Detect annote field and capture its value
@@ -125,11 +146,53 @@ local function load_bibliography(path)
       current_annote = true
     end
 
-    -- Parse author (literal form) for template use
-    local author_literal = line:match("^%s+%- literal:%s*(.+)%s*$")
-    if author_literal and current_id then
-      if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
-      sbl_entries[current_id].author_literal = author_literal
+    -- Parse author (literal form) for template use — only inside author: block
+    if in_author_block then
+      local author_literal = line:match("^%s+%- literal:%s*(.+)%s*$")
+      if author_literal and current_id then
+        if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+        sbl_entries[current_id].author_literal = author_literal
+      end
+
+      -- Parse author (family/given form) for bibliography em-dash repair
+      local author_family = line:match("^%s+%- family:%s*(.+)%s*$")
+      if author_family and current_id then
+        author_family = author_family:gsub("^['\"](.+)['\"]$", "%1")
+        if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+        -- Only store the first author's family name (for bibliography formatting)
+        if not sbl_entries[current_id].author_family then
+          sbl_entries[current_id].author_family = author_family
+        end
+      end
+      local author_given = line:match("^%s+given:%s*(.+)%s*$")
+      if author_given and current_id then
+        author_given = author_given:gsub("^['\"](.+)['\"]$", "%1")
+        if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+        if not sbl_entries[current_id].author_given then
+          sbl_entries[current_id].author_given = author_given
+        end
+      end
+    end
+
+    -- Parse editor family/given as fallback for entries without author
+    -- (editor-as-primary entries like ANET, IDB, etc.)
+    if in_editor_block and current_id then
+      local editor_family = line:match("^%s+%- family:%s*(.+)%s*$")
+      if editor_family then
+        editor_family = editor_family:gsub("^['\"](.+)['\"]$", "%1")
+        if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+        if not sbl_entries[current_id].editor_family then
+          sbl_entries[current_id].editor_family = editor_family
+        end
+      end
+      local editor_given = line:match("^%s+given:%s*(.+)%s*$")
+      if editor_given then
+        editor_given = editor_given:gsub("^['\"](.+)['\"]$", "%1")
+        if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+        if not sbl_entries[current_id].editor_given then
+          sbl_entries[current_id].editor_given = editor_given
+        end
+      end
     end
 
     -- Parse title for template use
@@ -749,6 +812,119 @@ return {
       -- Remove skipbib entries (iterate in reverse to preserve indices)
       for j = #to_remove, 1, -1 do
         table.remove(div.content, to_remove[j])
+      end
+
+      -- Repair orphaned em-dash authors (———.) left by citeproc after
+      -- skipbib removal.  Citeproc replaces repeated authors with an
+      -- em-dash; when the preceding entry is removed the dash becomes
+      -- meaningless.  Also repair em-dashes on shorthand entries, which
+      -- will appear in the abbreviation list where the em-dash convention
+      -- is inappropriate (entries are reordered alphabetically by shorthand).
+      -- Walk the remaining entries and restore the real author name
+      -- wherever the dash no longer follows a same-author entry, or where
+      -- the entry carries a shorthand.
+      --
+      -- Note: entries with shorthand (no skipbiblist, no entrysubtype)
+      -- will be removed from the bibliography by pass 3.  For prev_author
+      -- tracking, treat those entries as already removed so that the
+      -- *following* entry's em-dash is correctly identified as orphaned.
+      do
+        local emdash_dot   = "\u{2014}\u{2014}\u{2014}."   -- ———.  (author)
+        local emdash_comma = "\u{2014}\u{2014}\u{2014},"   -- ———,  (editor)
+        local prev_author = nil
+        for _, block in ipairs(div.content) do
+          if block.t == "Div" then
+            local ref_id = block.identifier:match("^ref%-(.+)$")
+            local entry = ref_id and sbl_entries[ref_id]
+            -- Determine the expected author name for this entry.
+            -- Fall back to editor if no author is available (editor-as-primary
+            -- entries like ANET, IDB, etc.).
+            local author_name = nil
+            if entry then
+              if entry.author_literal then
+                author_name = entry.author_literal
+              elseif entry.author_family then
+                author_name = entry.author_family
+                if entry.author_given then
+                  author_name = author_name .. ", " .. entry.author_given
+                end
+              elseif entry.editor_family then
+                author_name = entry.editor_family
+                if entry.editor_given then
+                  author_name = author_name .. ", " .. entry.editor_given
+                end
+              end
+            end
+
+            -- Will this entry be removed from bibliography by pass 3?
+            local will_be_removed = entry and entry.shorthand
+                and not entry.skipbiblist and not entry.entrysubtype
+
+            -- Check whether the entry starts with an em-dash author.
+            -- The em-dash may be the very first Str element, or it may
+            -- follow a shorthand label (Str + LineBreak) prepended earlier.
+            -- Citeproc uses ———. for authors and ———, for editors.
+            for _, sub_block in ipairs(block.content) do
+              if sub_block.t == "Para" and #sub_block.content > 0 then
+                -- Find the first content Str (skip shorthand label if present)
+                local target_idx = 1
+                local inlines = sub_block.content
+                if #inlines >= 3 and inlines[1].t == "Str" and inlines[2].t == "LineBreak" then
+                  -- Shorthand label present — check the element after LineBreak
+                  target_idx = 3
+                end
+                if target_idx <= #inlines then
+                  local target = inlines[target_idx]
+                  local is_author_dash = target.t == "Str" and target.text == emdash_dot
+                  local is_editor_dash = target.t == "Str" and target.text == emdash_comma
+                  if (is_author_dash or is_editor_dash) and author_name then
+                    local is_orphaned = author_name ~= prev_author
+                    local has_shorthand = entry and entry.shorthand
+                    if is_orphaned or has_shorthand then
+                      if is_author_dash then
+                        target.text = author_name .. "."
+                      else
+                        target.text = author_name .. ","
+                      end
+                      changed = true
+                    end
+                  end
+                end
+                break
+              end
+            end
+
+            -- Track the current entry's author for the next iteration,
+            -- but skip entries that will be removed by pass 3.
+            if not will_be_removed then
+              if author_name then
+                prev_author = author_name
+              else
+                -- No author info from sbl_entries; read from the formatted text
+                for _, sub_block in ipairs(block.content) do
+                  if sub_block.t == "Para" and #sub_block.content > 0 then
+                    local inlines = sub_block.content
+                    local idx = 1
+                    if #inlines >= 3 and inlines[1].t == "Str" and inlines[2].t == "LineBreak" then
+                      idx = 3
+                    end
+                    if idx <= #inlines then
+                      local first = inlines[idx]
+                      if first.t == "Str" and (first.text == emdash_dot or first.text == emdash_comma) then
+                        -- Still an em-dash (legitimate); author unchanged
+                      elseif first.t == "Str" then
+                        -- Extract author: text before "." in first Str
+                        local a = first.text:match("^(.-)%.$")
+                        if a then prev_author = a end
+                      end
+                    end
+                    break
+                  end
+                end
+              end
+            end
+          end
+        end
       end
 
       if changed then return div end
