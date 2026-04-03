@@ -16,7 +16,7 @@ pandoc document.md \
   -o document.pdf
 ```
 
-For PDF output via typst with Greek/Hebrew support, add a font with Unicode coverage (e.g., [SBL BibLit](https://www.sbl-site.org/educational/BiblicalFonts_SBLBibLit.aspx)):
+For PDF output via typst with Greek/Hebrew support, use [Noto Serif](https://fonts.google.com/noto/specimen/Noto+Serif) (OFL, full italic/bold) with [SBL BibLit](https://www.sbl-site.org/educational/BiblicalFonts_SBLBibLit.aspx) (freely available) as fallback for Greek and Hebrew glyphs:
 
 ```bash
 pandoc document.md \
@@ -25,10 +25,13 @@ pandoc document.md \
   --csl=society-of-biblical-literature-fullnote-bibliography.csl \
   --lua-filter=sbl-filter.lua \
   --citation-abbreviations=sbl-abbreviations-extended.json \
+  --pdf-engine-opt="--font-path=/path/to/noto-serif" \
   --pdf-engine-opt="--font-path=/path/to/sbl-biblit" \
-  -V mainfont="SBL BibLit" \
+  -V mainfont:"Noto Serif" \
   -o document.pdf -t typst
 ```
+
+Typst automatically falls back to SBL BibLit for Greek (διακονέω) and Hebrew (בָּרָא) characters not covered by Noto Serif.
 
 ## What you get without the Lua filter
 
