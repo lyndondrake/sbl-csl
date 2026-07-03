@@ -39,11 +39,48 @@ local is_typst = OUTPUT_FORMAT == "typst"
 
 local bib_authors = {}  -- id -> list of {family, given, literal}
 
+-- CSL JSON bibliographies (e.g. Bookends/Zotero exports) are decoded
+-- directly; the line-based parser below handles CSL YAML.
+local function load_bibliography_json(content)
+  local ok, data = pcall(pandoc.json.decode, content)
+  if not ok or type(data) ~= "table" then return end
+  for _, entry in ipairs(data) do
+    if type(entry) == "table" and entry.id then
+      local authors = {}
+      for _, role in ipairs({ "author", "editor" }) do
+        if type(entry[role]) == "table" then
+          for _, name in ipairs(entry[role]) do
+            if type(name) == "table" and
+               (name.family or name.given or name.literal) then
+              table.insert(authors, {
+                family = name.family,
+                given = name.given,
+                literal = name.literal,
+                -- demoted in the index like the YAML path: "Rad, Gerhard von"
+                particle = name["non-dropping-particle"]
+                  or name["dropping-particle"],
+                suffix = name.suffix,
+              })
+            end
+          end
+        end
+      end
+      if #authors > 0 then
+        bib_authors[entry.id] = authors
+      end
+    end
+  end
+end
+
 local function load_bibliography(path)
   local f = io.open(path, "r")
   if not f then return end
   local content = f:read("*a")
   f:close()
+
+  if path:match("%.json$") then
+    return load_bibliography_json(content)
+  end
 
   local current_id = nil
   local current_authors = {}
