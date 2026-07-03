@@ -535,3 +535,39 @@ v2 introduces comprehensive hyperlinking throughout:
 | Handbook examples file | Reference for expected formatting | High |
 | Blog examples file | Reference for latest SBLHS updates | High |
 | Student supplement examples | Additional test coverage | Medium |
+
+---
+
+## Addendum: v2.0 final delta review (3 July 2026)
+
+The analysis above was written on 2 April 2026 against the pre-release v2
+branch. Upstream subsequently shipped rc1 (4 Apr), rc2 (21 Apr), rc3
+(26 Apr), and **v2.0 final (29 April 2026)**, with post-release fixes to
+1 June 2026. All ~60 commits in that window were reviewed; material
+changes and our responses:
+
+| Upstream change | Commit(s) | Our response |
+|---|---|---|
+| Location suppression confirmed to apply in notes (clearrecentlocations runs unconditionally in publisher+location+date) and extended to reprint related data | e245aa47 | Filter now suppresses post-1900 places in notes, bibliography, annote/bibliography_annote text, and original/reprint segments; threshold >= 1900 matching v2's > 1899 |
+| Reprint note form: original first, "repr.," current | (v2 design, verified via 6.2.17 tlg) | CSL note layout reordered; reprint-note macro ("repr. of"/"orig.") removed |
+| Index name format: useprefix in citations only, not index/bibliography (issue 153) | b548f6d2 | ld-author-index.lua parses particles, indexes "Rad, Gerhard von"; CSL switched to demote-non-dropping-particle="display-and-sort" |
+| Missing postnotes on online/misc/periodical/ibid/related citations (issue 150) | e3bc2cc4 etc. | citeproc handles locators natively; added regression test (issue-150-online-locator) plus locator-label spacing fixes in the CSL |
+| Abbreviation-list punctuation: sigla entries lose trailing period; books keep it | b396cc61 + 335d1092 | Already aligned; added sigla exemplar entry and filter tests |
+| partsinvols option + inparts/inseries/involumes strings (GKB "2 parts in 3 vols.") | cc5bcecb, ac38fde8 | GKB entry added using freetext number-of-volumes ("2 parts in 3") |
+| Zerwick bib data: reprint related chain (SubBi 41) | 92b8026e | zerwick:2011 + zerwick alias entries added (annote + bibliography_annote pattern) |
+| Crossref-seen citation macros completed (issue 147) | 71dee39c, 0c7813ed | No change needed — our annote data layer already bakes in resolved forms (Phase 4 conclusion stands) |
+
+Documented divergences from v2 (deliberate):
+
+- v2 orders DOI before URL; we print URL before DOI.
+- v2 renders the `datemodifier` ("released 5 November 2013"); we omit it
+  (data model documents the field for future use).
+- v2 abbreviates series in the bibliography via shortseries whenever the
+  entry defines one; we do the same via collection-title-short, so this
+  now matches (the earlier claim that we print full series was wrong for
+  entries carrying collection-title-short).
+
+LaTeX-internal, documentation, translation (German/Spanish), and
+test-infrastructure commits in the window are immaterial to this
+project. Baseline for future delta reviews: upstream commit efc2b62e
+(1 June 2026).

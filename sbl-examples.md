@@ -156,13 +156,13 @@ First note: [@blenkinsopp:1996, 81]
 
 ### A Recent Reprint Title
 
-Current publisher appears first, followed by "repr. of" with original publication details.
+Original publication appears first, followed by "repr.," with the current publisher (SBLHS §6.2.17). Post-1900 places are suppressed.
 
 First note: [@vanseters:1997, 35]
 
 ### A Reprint Title in the Public Domain
 
-Uses "orig." with just the original year when no original publisher is specified.
+When no original publisher is specified, only the original year precedes "repr.,".
 
 First note: [@deissmann:1995, 55]
 
@@ -559,5 +559,23 @@ GKC: [@GKC, §111b]
 IBHS: [@IBHS, 71]
 
 IBHS: [@IBHS, §16.3.2]
+
+### GKB, Zerwick
+
+GKB (*Hebräische Grammatik*, 2 parts in 3 vols.) and Zerwick (*Biblical Greek Illustrated by Examples*, reprinted as SubBi 41) follow biblatex-sbl v2 6.3.7. Zerwick may be cited in full or by bare shorthand.
+
+GKB: [@GKB, §12a]
+
+Zerwick (full): [@zerwick:2011, §§360-62]
+
+Zerwick (shorthand): [@zerwick, §§360-62]
+
+## Name Particles
+
+Continental surnames with particles are cited with the particle ("Gerhard von Rad", subsequently "von Rad") but alphabetised in the bibliography and author index under the family name ("Rad, Gerhard von").
+
+First note: [@vonrad:1990, 58]
+
+Subsequent note: [@vonrad:1990, 60]
 
 # References

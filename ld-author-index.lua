@@ -81,7 +81,9 @@ local function load_bibliography(path)
       -- Check if we've left the names block
       if line:match("^%s+%w") and not line:match("^%s+%-") and
          not line:match("^%s+family:") and not line:match("^%s+given:") and
-         not line:match("^%s+literal:") and not line:match("^%s+suffix:") then
+         not line:match("^%s+literal:") and not line:match("^%s+suffix:") and
+         not line:match("^%s+non%-dropping%-particle:") and
+         not line:match("^%s+dropping%-particle:") then
         -- Save pending name
         if next(current_name) then
           table.insert(current_authors, current_name)
@@ -102,6 +104,22 @@ local function load_bibliography(path)
       local given = line:match("^%s+given:%s*(.+)%s*$")
       if given then
         current_name.given = given
+      end
+
+      -- Name particles: cited as "von Rad", indexed as "Rad, Gerhard von"
+      -- (cf. biblatex-sbl issue #153: useprefix in citations, not in index)
+      local ndp = line:match("^%s+non%-dropping%-particle:%s*(.+)%s*$")
+      if ndp then
+        current_name.particle = ndp
+      end
+      local dp = line:match("^%s+dropping%-particle:%s*(.+)%s*$")
+      if dp then
+        current_name.particle = dp
+      end
+
+      local suffix = line:match("^%s+suffix:%s*(.+)%s*$")
+      if suffix then
+        current_name.suffix = suffix
       end
 
       local literal = line:match("^%s+%- literal:%s*(.+)%s*$")
@@ -133,7 +151,17 @@ local function format_index_name(name)
   local family = name.family or ""
   local given = name.given or ""
   if family ~= "" and given ~= "" then
-    return family .. ", " .. given
+    -- Particles are demoted in the index: "Rad, Gerhard von" (sorted under R).
+    -- Names whose particle is part of the family field ("Van Seters") are
+    -- unaffected and sort under the particle.
+    local formatted = family .. ", " .. given
+    if name.particle then
+      formatted = formatted .. " " .. name.particle
+    end
+    if name.suffix then
+      formatted = formatted .. ", " .. name.suffix
+    end
+    return formatted
   end
   return family ~= "" and family or given
 end

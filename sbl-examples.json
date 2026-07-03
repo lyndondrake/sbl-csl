@@ -525,6 +525,7 @@
         }
       ],
       "title": "In Search of History: Historiography in the Ancient World and the Origins of Biblical History",
+      "title-short": "In Search of History",
       "publisher": "Eisenbrauns",
       "publisher-place": "Winona Lake, IN",
       "issued": {
@@ -554,6 +555,7 @@
         }
       ],
       "title": "Light from the Ancient East: The New Testament Illustrated by Recently Discovered Texts of the Graeco-Roman World",
+      "title-short": "Light from the Ancient East",
       "translator": [
         {
           "family": "Strachan",
@@ -3342,6 +3344,92 @@
       "annote": "IBHS"
     },
     {
+      "id": "GKB",
+      "type": "book",
+      "author": [
+        {
+          "family": "Gesenius",
+          "given": "Wilhelm"
+        }
+      ],
+      "title": "Hebräische Grammatik",
+      "editor": [
+        {
+          "family": "Kautzsch",
+          "given": "Emil"
+        },
+        {
+          "family": "Bergsträsser",
+          "given": "Gotthelf"
+        }
+      ],
+      "number-of-volumes": "2 parts in 3",
+      "publisher": "Vogel",
+      "publisher-place": "Leipzig",
+      "issued": {
+        "date-parts": [
+          [
+            1918
+          ],
+          [
+            1929
+          ]
+        ]
+      },
+      "annote": "GKB",
+      "note": "sbl:\n  shorthand: GKB\n"
+    },
+    {
+      "id": "zerwick:2011",
+      "type": "book",
+      "author": [
+        {
+          "family": "Zerwick",
+          "given": "Maximilian"
+        }
+      ],
+      "title": "Biblical Greek Illustrated by Examples",
+      "translator": [
+        {
+          "family": "Smith",
+          "given": "Joseph"
+        }
+      ],
+      "collection-title": "Scripta Pontificii Instituti Biblici",
+      "collection-number": "114",
+      "publisher": "Editrice Pontificio Istituto Biblico",
+      "publisher-place": "Rome",
+      "issued": {
+        "date-parts": [
+          [
+            1963
+          ]
+        ]
+      },
+      "annote": "Maximilian Zerwick, <i>Biblical Greek Illustrated by Examples</i>, trans. Joseph Smith, Scripta Pontificii Instituti Biblici 114 (Editrice Pontificio Istituto Biblico, 1963; repr. SubBi 41, Gregorian & Biblical Press, 2011)",
+      "note": "sbl:\n  shorthand: Zerwick\n  bibliography_annote: 'Zerwick, Maximilian. <i>Biblical Greek Illustrated by Examples</i>. Translated from the 4th Latin ed. by Joseph Smith. Scripta Pontificii Instituti Biblici 114. Editrice Pontificio Istituto Biblico, 1963. Repr., SubBi 41. Gregorian & Biblical Press, 2011.'\n"
+    },
+    {
+      "id": "zerwick",
+      "type": "book",
+      "author": [
+        {
+          "family": "Zerwick",
+          "given": "Maximilian"
+        }
+      ],
+      "title": "Biblical Greek Illustrated by Examples",
+      "publisher": "Editrice Pontificio Istituto Biblico",
+      "issued": {
+        "date-parts": [
+          [
+            1963
+          ]
+        ]
+      },
+      "note": "sbl:\n  shorthand: Zerwick\n  xref: zerwick:2011\n  skipbib: true\n  skipbiblist: true\n"
+    },
+    {
       "id": "HALOT",
       "type": "book",
       "author": [
@@ -3523,6 +3611,42 @@
           ]
         ]
       }
+    },
+    {
+      "id": "vonrad:1990",
+      "type": "book",
+      "author": [
+        {
+          "family": "Rad",
+          "given": "Gerhard",
+          "non-dropping-particle": "von"
+        }
+      ],
+      "title": "Genesis: A Commentary",
+      "title-short": "Genesis",
+      "translator": [
+        {
+          "family": "Marks",
+          "given": "John H."
+        }
+      ],
+      "collection-title": "Old Testament Library",
+      "collection-title-short": "OTL",
+      "publisher": "Westminster",
+      "publisher-place": "Philadelphia",
+      "issued": {
+        "date-parts": [
+          [
+            1990
+          ]
+        ]
+      }
+    },
+    {
+      "id": "sigla:abl",
+      "type": "entry",
+      "title": "ablative",
+      "note": "sbl:\n  shorthand: abl.\n  abbreviation_type: sigla\n  definition: ablative\n  skipbib: true\n"
     }
   ]
 }

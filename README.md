@@ -39,7 +39,8 @@ The CSL file alone works with **any citeproc implementation** (Zotero, Mendeley,
 
 - Books, articles, chapters, reviews, theses, conference papers
 - Journal abbreviations in notes (full titles in bibliography)
-- Reprint chains with "repr. of" / "orig." formatting
+- Reprint chains: original publication first, then "repr.," and the current publisher (SBLHS §6.2.17–18)
+- Name particles: cited as "von Rad", alphabetised as "Rad, Gerhard von" (`non-dropping-particle`)
 - Forthcoming works, reviews, magazine articles
 - Position-aware `annote`: first citations use custom text, subsequent citations use normal short form
 
@@ -51,11 +52,12 @@ With `sbl-filter.lua` (pandoc only):
 
 - **Shorthand references** (BDAG, BDB, HALOT, etc.) replace full citations in notes
 - **Shorthand labels** prepended to bibliography entries
+- **Location suppression**: publisher place omitted for works published 1900 or later, in notes as well as bibliography, including original/reprint segments (SBLHS Blog update, as implemented by biblatex-sbl v2)
 - **skipbib**: entries suppressed from bibliography (classical text variants, papyri abbreviations)
-- **Abbreviation list**: generated at `# Abbreviations {#sbl-abbreviations}` heading
+- **Abbreviation list**: generated at `# Abbreviations {#sbl-abbreviations}` heading; sigla entries print without trailing periods, bibliography-style entries keep theirs
 - **Subsequent note refinement**: translator/series suffixes and replacements
 - **Italic maintitle**: "vol. X of *Title*" with italic collection title
-- **Bibliography override**: `bibliography_annote` replaces an entry's bibliography text for non-standard formats
+- **Bibliography override**: `bibliography_annote` replaces an entry's bibliography text for non-standard formats (also gets shorthand labels and location suppression)
 
 See [examples/sbl-examples-full.pdf](examples/sbl-examples-full.pdf) for full output with the Lua filter.
 
@@ -68,7 +70,7 @@ See [examples/sbl-examples-full.pdf](examples/sbl-examples-full.pdf) for full ou
 | `ld-author-index.lua` | Author index filter (Word, typst, HTML) |
 | `sbl-abbreviations.json` | 1,284 SBLHS abbreviations (standard) |
 | `sbl-abbreviations-extended.json` | 1,847 abbreviations (standard + Zacharias 2nd ed. data) |
-| `sbl-examples.yaml` | Reference bibliography (133 entries, CSL YAML) |
+| `sbl-examples.yaml` | Reference bibliography (150 entries, CSL YAML) |
 | `sbl-examples.json` | Same bibliography in CSL JSON format |
 | `sbl-examples.md` | Comprehensive example document (49 sections) |
 
@@ -116,6 +118,8 @@ Two lists for pandoc's `--citation-abbreviations` flag:
 
 The `ld-author-index.lua` filter generates an author index from citations. Place `# Author Index {#author-index}` where the index should appear.
 
+Name particles are demoted in index entries: an author stored with `non-dropping-particle: von` is cited as "von Rad" but indexed as "Rad, Gerhard von" (under R), while names whose particle belongs to the family field ("Van Seters") index under the particle (under V).
+
 | Output | Mechanism |
 |--------|-----------|
 | Word (.docx) | XE fields — real page numbers (update with Ctrl+A, F9) |
@@ -150,7 +154,7 @@ python3 -m venv .venv
 TMPDIR=.tmp/ .venv/bin/python -m pytest tests/ -k "sbl-fullnote" --tb=short -v
 ```
 
-Current results: 347 of 414 SBL fullnote tests passing (67 skipped, 0 failing). Skipped tests have unpopulated expected values for complex citation forms (ancient texts, church fathers, shorthand references).
+Current results: 861 passing, 2 skipped, 0 failing (863 total, including author-index and abbreviation-list filter tests). Output is aligned with biblatex-sbl v2.0 final (April 2026), verified against its l3build regression outputs.
 
 ## CSL modifications from upstream
 
@@ -159,7 +163,9 @@ Current results: 347 of 414 SBL fullnote tests passing (67 skipped, 0 failing). 
 | Position-aware annote | First citation uses custom text; subsequent uses normal short form |
 | Review/magazine type handling | Added to article-journal formatting branches |
 | Encyclopedia bibliography format | Expanded "Pages X–Y in *Title*. Edited by Editor." |
-| Reprint chain reordering | Current publisher first, then "repr. of" original |
+| Reprint chains | Original publication first, then "repr.," current publisher (notes) / "Repr.," (bibliography), per SBLHS §6.2.17–18 and biblatex-sbl v2 |
+| Name particles demoted | `demote-non-dropping-particle="display-and-sort"`: "von Rad" in citations, "Rad, Gerhard von" in bibliography (biblatex-sbl v2 issue 153) |
+| Locator label spacing | "fig. 2", not "fig.2"; section locators keep "§110a" unspaced |
 | Series abbreviations in roman | Not italic for short-form collection titles |
 | Full journal titles in bibliography | Abbreviations in notes only |
 | Forthcoming support | `status` variable outputs "forthcoming" |

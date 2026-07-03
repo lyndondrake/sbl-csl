@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<style xmlns="http://purl.org/net/xbiblio/csl" class="note" version="1.0" demote-non-dropping-particle="sort-only" page-range-format="chicago" default-locale="en-US">
+<style xmlns="http://purl.org/net/xbiblio/csl" class="note" version="1.0" demote-non-dropping-particle="display-and-sort" page-range-format="chicago" default-locale="en-US">
   <info>
     <title>Society of Biblical Literature 2nd edition (full note)</title>
     <title-short>SBL (2nd edition)</title-short>
@@ -736,21 +736,6 @@
       </choose>
     </group>
   </macro>
-  <macro name="reprint-note">
-    <!--needs localization. See SBLHS2 §6.2.17-18.-->
-    <choose>
-      <if variable="original-date issued" match="all">
-        <choose>
-          <if variable="original-publisher original-publisher-place" match="any">
-            <text value="repr. of"/>
-          </if>
-          <else>
-            <text value="orig."/>
-          </else>
-        </choose>
-      </if>
-    </choose>
-  </macro>
   <macro name="reprint">
     <!--needs localization-->
     <choose>
@@ -849,8 +834,20 @@
               </group>
             </if>
             <else>
-              <label variable="locator" form="short"/>
-              <text variable="locator"/>
+              <choose>
+                <if locator="section">
+                  <group>
+                    <label variable="locator" form="short"/>
+                    <text variable="locator"/>
+                  </group>
+                </if>
+                <else>
+                  <group delimiter=" ">
+                    <label variable="locator" form="short"/>
+                    <text variable="locator"/>
+                  </group>
+                </else>
+              </choose>
             </else>
           </choose>
         </if>
@@ -899,7 +896,7 @@
               <text term="article-journal" form="short"/>
               <text variable="number"/>
             </group>
-            <group prefix=", ">
+            <group prefix=", " delimiter=" ">
               <label variable="locator" form="short"/>
               <text variable="locator"/>
             </group>
@@ -936,12 +933,16 @@
             <text variable="number" prefix=" " suffix=", "/>
             <choose>
               <if variable="locator">
-                <label variable="locator" form="short"/>
-                <text variable="locator"/>
+                <group delimiter=" ">
+                  <label variable="locator" form="short"/>
+                  <text variable="locator"/>
+                </group>
               </if>
               <else-if variable="page">
-                <label variable="page" form="short"/>
-                <text variable="page"/>
+                <group delimiter=" ">
+                  <label variable="page" form="short"/>
+                  <text variable="page"/>
+                </group>
               </else-if>
               <else>
                 <!-- Is there not a term for "no page"? See SBLHS2 §8.1.3 and CMS17 §10.42 where the same abbreviation applies to "no place," "no publisher," and "no page." -->
@@ -1054,14 +1055,31 @@
                       <text variable="genre"/>
                     </else-if>
                   </choose>
-                  <text macro="publisher"/>
+                  <choose>
+                    <!-- Reprints: original publication first, then "repr.," and the
+                         current publisher, per SBLHS §6.2.17-18 as implemented by
+                         biblatex-sbl v2 (e.g. "Yale University Press, 1983; repr.,
+                         Eisenbrauns, 1997"). -->
+                    <if variable="original-date issued" match="all">
+                      <text macro="originally-published"/>
+                    </if>
+                    <else>
+                      <text macro="publisher"/>
+                    </else>
+                  </choose>
                 </group>
-                <text macro="issued" prefix=", "/>
-                <!-- Reprint/original info comes AFTER current publisher per SBLHS §6.2.17-18 -->
-                <group prefix="; ">
-                  <text macro="reprint-note"/>
-                  <text macro="originally-published" prefix=" "/>
-                </group>
+                <choose>
+                  <if variable="original-date issued" match="all">
+                    <group prefix="; " delimiter=", ">
+                      <text value="repr."/>
+                      <text macro="publisher"/>
+                      <text macro="issued"/>
+                    </group>
+                  </if>
+                  <else>
+                    <text macro="issued" prefix=", "/>
+                  </else>
+                </choose>
               </group>
             </group>
           </group>

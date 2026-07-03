@@ -88,6 +88,22 @@ as well as bibliography, or bibliography only. Check SBLHS Blog post.
 
 **Deliverable**: Lua filter location suppression with tests.
 
+### 2c. Resolution (July 2026)
+
+The decision question is settled by biblatex-sbl v2.0 final: its
+`clearrecentlocations` macro runs inside `publisher+location+date`
+unconditionally, so post-1900 locations are suppressed in **notes as
+well as bibliography**, including original/reprint segments and
+annote-authored text. Verified against decoded v2 l3build outputs
+(6.2.1: "(Crossroad, 1992), 127"; 6.2.13: "(Vandenhoeck & Ruprecht,
+1995)"; 6.2.17: "(Yale University Press, 1983; repr., Eisenbrauns,
+1997), 35"). The filter now applies `suppress_recent_locations` (year
+>= 1900, matching v2's `> 1899`) to note paragraphs, bibliography
+entries, `bibliography_annote` replacements, and `subsequent_annote`
+output. The CSL note layout was reordered to print the original
+publication first ("orig, year; repr., publisher, year"), replacing the
+previous "current; repr. of original" form.
+
 ## Phase 3: Name Tracking
 
 *Goal: first occurrence prints "Given Family", subsequent prints "Family"

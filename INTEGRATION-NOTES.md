@@ -2,6 +2,33 @@
 
 Research notes on integrating the SBL citation system with Quarto and standalone typst.
 
+## Status update (July 2026)
+
+Upstream re-check against the blockers below (details and links in the session
+research; all issue numbers verified 3 July 2026):
+
+- **Quarto 1.9 (March 2026) renders book projects to typst** with chapter
+  numbering and cross-references (bundles pandoc 3.8.3 + typst 0.14.2). The
+  pandoc-citeproc route (`citeproc: true`) remains the documented mechanism for
+  CSL citations in typst output. This makes pandoc→typst PDF a realistic
+  production path for a monograph, alongside docx.
+- **Filter ordering** (quarto-cli#7888) and **multi-page HTML references page**
+  (quarto-cli#10180) are still open, milestone "Future". Keep deliverables to
+  PDF/docx or single-page HTML.
+- **Typst CSL-JSON input** (typst/typst#2924): still open, but hayagriva PR #489
+  (June 2026, draft) restructures hayagriva with a `hayagriva-json` crate for
+  CSL-JSON input — worth championing with an SBL test corpus.
+- **Note-style citations** (typst/typst#4994): dormant; the active front is
+  typst#8126 (citations inside footnotes break) with fix PR typst#8147 stuck
+  "waiting-on-decision" — a concrete SBL fullnote repro would help move it.
+- **Hayagriva 0.10 (June 2026)** added `subsequent-author-substitute` (the
+  3-em-dash rule) — shipped in typst 0.15. Still missing for SBL: CSL
+  `citation-abbreviations` (no issue filed upstream yet) and correct
+  ibid-with-locator position tracking (hayagriva#286).
+
+**Verdict: unchanged — Quarto (pandoc citeproc + Lua filters) near-term;
+standalone typst plausibly 2027 once CSL-JSON input and footnote citations land.**
+
 ## Quarto
 
 ### What works today

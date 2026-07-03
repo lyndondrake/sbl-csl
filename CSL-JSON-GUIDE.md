@@ -608,6 +608,36 @@ For typst output, the filter emits a two-column grid layout (abbreviation column
 
 Without the Lua filter, shorthand entries remain in the bibliography as normal entries and no abbreviation list is generated.
 
+## Location Suppression (SBLHS Blog Update)
+
+SBL Press omits the place of publication for works published **1900 or
+later**, in notes as well as bibliography, including the original and
+reprint segments of reprint chains (as implemented by biblatex-sbl v2's
+`clearrecentlocations`). **Keep `publisher-place` in your data** — the
+Lua filter suppresses it at render time using `publisher-place` +
+`issued` (and `original-publisher-place` + `original-date`). Complete
+data stays portable to styles that still print places (e.g. Chicago).
+Pre-1900 works keep their places automatically.
+
+This also applies to `annote` and `bibliography_annote` text: you may
+include places there (the filter strips post-1900 ones), but the cleaner
+convention is to author them without.
+
+## Name Particles
+
+For names like Gerhard von Rad, put the particle in
+`non-dropping-particle`:
+
+```json
+{"family": "Rad", "given": "Gerhard", "non-dropping-particle": "von"}
+```
+
+Citations render "Gerhard von Rad" / "von Rad" (capitalised "Von Rad,"
+when note-initial); the bibliography and the author index render
+"Rad, Gerhard von" and sort under R. Names whose particle is part of the
+surname by anglophone convention (John Van Seters) keep the particle in
+`family` ("Van Seters") and sort under V.
+
 ## Validation Checklist
 
 Before producing CSL JSON, verify:
@@ -628,6 +658,8 @@ Before producing CSL JSON, verify:
 - [ ] Entries that should not appear in bibliography at all have `skipbib: true`
 - [ ] Entries with `xref` have parent data embedded (editor, publisher, etc.) for bibliography
 - [ ] `collection-number` is a string (not integer) — may contain "2/6" for series-in-series
+- [ ] `publisher-place` is present even for post-1900 works (the filter suppresses it at render time)
+- [ ] Particle names use `non-dropping-particle` (von Rad) or particle-in-`family` (Van Seters) as appropriate
 
 ## Example: Complete Entry
 

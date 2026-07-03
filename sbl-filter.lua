@@ -80,6 +80,7 @@ local function load_bibliography(path)
   local note_indent = 0
   local in_author_block = false  -- tracks whether we're inside an author: array
   local in_editor_block = false  -- tracks whether we're inside an editor: array
+  local current_date_field = nil -- tracks which date field's date-parts we're in
 
   for line in content:gmatch("[^\n]*") do
     -- New entry
@@ -116,6 +117,7 @@ local function load_bibliography(path)
       in_note = false
       in_author_block = false
       in_editor_block = false
+      current_date_field = nil
     end
 
     -- Track whether we are inside the author: or editor: block
@@ -243,7 +245,7 @@ local function load_bibliography(path)
       sbl_entries[current_id].container_title_short = cnts
     end
 
-    -- Parse publisher-place (for location suppression in bibliography)
+    -- Parse publisher-place (for location suppression)
     local pp = line:match("^%s+publisher%-place:%s*(.+)%s*$")
     if pp and current_id then
       pp = pp:gsub("^['\"](.+)['\"]$", "%1")
@@ -251,16 +253,39 @@ local function load_bibliography(path)
       sbl_entries[current_id].publisher_place = pp
     end
 
-    -- Parse issued year from date-parts (for location suppression)
-    -- Format: "    - - YYYY" under "  issued:" / "    date-parts:"
+    -- Parse original-publisher-place (for location suppression in reprint chains)
+    local opp = line:match("^%s+original%-publisher%-place:%s*(.+)%s*$")
+    if opp and current_id then
+      opp = opp:gsub("^['\"](.+)['\"]$", "%1")
+      if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
+      sbl_entries[current_id].original_publisher_place = opp
+    end
+
+    -- Track which date field we are inside, so years land on the right key.
+    -- Date fields open a block like "  issued:" followed by "    date-parts:".
+    local date_field = line:match("^%s+(issued):%s*$")
+      or line:match("^%s+(original%-date):%s*$")
+      or line:match("^%s+(accessed):%s*$")
+      or line:match("^%s+(event%-date):%s*$")
+    if date_field then
+      current_date_field = date_field
+    elseif line:match("^%s+%a[%a%-]*:") and not line:match("^%s+date%-parts:") then
+      -- Any other field ends the date block
+      current_date_field = nil
+    end
+
+    -- Parse year from date-parts: "    - - YYYY" lines
     local year = line:match("^%s+%-%s+%-%s+(%d+)%s*$")
     if year and current_id then
       local y = tonumber(year)
       if y then
         if not sbl_entries[current_id] then sbl_entries[current_id] = {} end
-        -- Store the first (earliest) year only
-        if not sbl_entries[current_id].issued_year then
-          sbl_entries[current_id].issued_year = y
+        local e = sbl_entries[current_id]
+        -- Store the first year of each date field only
+        if current_date_field == "original-date" then
+          if not e.original_year then e.original_year = y end
+        elseif current_date_field == "issued" or current_date_field == nil then
+          if not e.issued_year then e.issued_year = y end
         end
       end
     end
@@ -289,7 +314,14 @@ local function load_bibliography(path)
   if current_id and current_note then
     local sbl = parse_sbl_note(current_note)
     if next(sbl) then
-      sbl_entries[current_id] = sbl
+      -- Merge sbl data with any existing entry (preserves publisher_place etc.)
+      if not sbl_entries[current_id] then
+        sbl_entries[current_id] = sbl
+      else
+        for k, v in pairs(sbl) do
+          sbl_entries[current_id][k] = v
+        end
+      end
     end
   end
 end
@@ -508,18 +540,28 @@ local function suppress_location_in_bib(inlines, publisher_place)
 
   while i <= #inlines do
     if not found and inlines[i].t == "Str" then
-      -- Try to match publisher_place starting at this Str element
+      -- Try to match publisher_place starting at this Str element.
+      -- In notes the place follows an opening paren or bracket, so the
+      -- first word may carry a "(" or "[" prefix (e.g. "(Winona",
+      -- "[Oxford:", "(Jerusalem:").
       local match_end = nil
+      local leading_paren = nil
       local word_idx = 1
       local j = i
 
       while j <= #inlines and word_idx <= #place_words do
         local el = inlines[j]
         if el.t == "Str" then
+          local text = el.text
+          local first = text:sub(1, 1)
+          if word_idx == 1 and (first == "(" or first == "[") then
+            text = text:sub(2)
+            leading_paren = first
+          end
           local expected_word = place_words[word_idx]
           if word_idx == #place_words then
             -- Last word of place: expect ":" appended (e.g. "York:")
-            if el.text == expected_word .. ":" then
+            if text == expected_word .. ":" then
               -- Found complete match including colon
               match_end = j
               word_idx = word_idx + 1
@@ -528,7 +570,7 @@ local function suppress_location_in_bib(inlines, publisher_place)
               break
             end
           else
-            if el.text == expected_word then
+            if text == expected_word then
               word_idx = word_idx + 1
             else
               break
@@ -544,10 +586,13 @@ local function suppress_location_in_bib(inlines, publisher_place)
       end
 
       if match_end then
-        -- Successfully matched the publisher_place + colon
-        -- Remove the preceding Space (period-space-Place becomes period-space)
-        -- Actually: keep preceding Space so we get ". Crossroad, 1992."
+        -- Successfully matched the publisher_place + colon.
+        -- Keep preceding Space so ". Place: Publisher" becomes ". Publisher",
+        -- and re-emit the opening paren when the place began "(Place:".
         found = true
+        if leading_paren then
+          result:insert(pandoc.Str(leading_paren))
+        end
         i = match_end + 1
         -- Skip trailing Space after the colon
         if i <= #inlines and inlines[i].t == "Space" then
@@ -569,6 +614,22 @@ local function suppress_location_in_bib(inlines, publisher_place)
   return inlines
 end
 
+-- Suppress all post-1900 locations for an entry (current and original
+-- publisher places). SBL Press style (SBLHS Blog update, as implemented by
+-- biblatex-sbl v2's clearrecentlocations) omits the place of publication
+-- for works published 1900 or later, in notes as well as bibliography,
+-- including the original-publication segment of reprint chains.
+local function suppress_recent_locations(inlines, entry)
+  local out = inlines
+  if entry.publisher_place and entry.issued_year and entry.issued_year >= 1900 then
+    out = suppress_location_in_bib(out, entry.publisher_place)
+  end
+  if entry.original_publisher_place and entry.original_year and entry.original_year >= 1900 then
+    out = suppress_location_in_bib(out, entry.original_publisher_place)
+  end
+  return out
+end
+
 -- ──────────────────────────────────────────────
 -- Note manipulation
 -- ──────────────────────────────────────────────
@@ -583,11 +644,15 @@ local function make_shorthand_cite(shorthand, suffix_inlines, italic)
     inlines:insert(pandoc.Str(shorthand))
   end
 
-  -- Add suffix (locator) if present
+  -- Add suffix (locator) if present. Page locators take a comma
+  -- ("BDAG, 35"); section locators take a bare space ("Zerwick §360",
+  -- "BDF §151") per SBLHS shorthand conventions.
   if suffix_inlines and #suffix_inlines > 0 then
     local suffix_text = utils.stringify(suffix_inlines):gsub("^[,%s]+", "")
     if suffix_text ~= "" then
-      inlines:insert(pandoc.Str(","))
+      if not suffix_text:match("^§") then
+        inlines:insert(pandoc.Str(","))
+      end
       inlines:insert(pandoc.Space())
       inlines:extend(pandoc.Inlines(suffix_text))
     end
@@ -653,7 +718,57 @@ return {
       local is_subsequent = seen_ids[id] or false
       seen_ids[id] = true
 
-      if not entry then return nil end
+      -- Suppress post-1900 publisher locations in notes (SBLHS Blog update).
+      -- Applies to every citation in the note; mutates note blocks in place
+      -- so later transformations retain the change.
+      local location_modified = false
+      if #cite.content > 0 and cite.content[1].t == "Note" then
+        local note = cite.content[1]
+        for _, cit in ipairs(cite.citations) do
+          local cit_entry = sbl_entries[cit.id]
+          if cit_entry then
+            for _, block in ipairs(note.content) do
+              if block.t == "Para" then
+                local new_content = suppress_recent_locations(block.content, cit_entry)
+                if new_content ~= block.content then
+                  block.content = new_content
+                  location_modified = true
+                end
+              end
+            end
+          end
+        end
+      end
+
+      -- Full-citation annotes (ending in a parenthetical whose last
+      -- element is a publication year) take a comma before an appended
+      -- locator: "…, 2011), §§360–62" per the SBLHS full-note convention.
+      -- Abbreviation-style annotes (BDAG, GKC) and reference glosses
+      -- ("(NPNF1 1:252)") keep the bare-space join handled by the CSL.
+      if entry and not is_subsequent and entry.annote_value
+          and entry.annote_value:match("[%s(]%d%d%d%d%)$") then
+        if #cite.content > 0 and cite.content[1].t == "Note" then
+          for _, block in ipairs(cite.content[1].content) do
+            if block.t == "Para" then
+              local last_paren = nil
+              for i, el in ipairs(block.content) do
+                if el.t == "Str" and el.text:sub(-1) == ")" then
+                  last_paren = i
+                end
+              end
+              if last_paren and last_paren < #block.content then
+                block.content[last_paren] = pandoc.Str(block.content[last_paren].text .. ",")
+                location_modified = true
+              end
+            end
+          end
+        end
+      end
+
+      if not entry then
+        if location_modified then return cite end
+        return nil
+      end
 
       -- Handle shorthand references (only for reference works, not ancient texts)
       -- Skip if entry has annote (CSL annote bypass takes precedence for first notes)
@@ -710,6 +825,8 @@ return {
             annote_text = annote_text .. "."
             -- Parse the annote text (may contain HTML italic)
             local inlines = pandoc.read(annote_text, "html").blocks[1].content
+            -- Annote-authored text is also subject to location suppression
+            inlines = suppress_recent_locations(inlines, entry)
             return pandoc.Note(pandoc.Blocks{pandoc.Para(inlines)})
           -- If entry has subsequent_suffix, append it
           elseif entry.subsequent_suffix then
@@ -736,6 +853,7 @@ return {
         end
       end
 
+      if location_modified then return cite end
       return nil
     end,
 
@@ -765,6 +883,13 @@ return {
                   prepend_shorthand_to_bib(block, entry.shorthand)
                   changed = true
                 end
+                -- Location suppression applies to abbreviation-list entries too
+                for _, sub_block in ipairs(block.content) do
+                  if sub_block.t == "Para" then
+                    sub_block.content = suppress_recent_locations(sub_block.content, entry)
+                    changed = true
+                  end
+                end
               elseif not entry.skipbib then
                 -- Replace entire bibliography entry with bibliography_annote if set
                 if entry.bibliography_annote then
@@ -772,11 +897,17 @@ return {
                   if annote_doc and #annote_doc.blocks > 0 and annote_doc.blocks[1].content then
                     for _, sub_block in ipairs(block.content) do
                       if sub_block.t == "Para" then
-                        sub_block.content = annote_doc.blocks[1].content
+                        -- Annote-authored text is also subject to location suppression
+                        sub_block.content = suppress_recent_locations(annote_doc.blocks[1].content, entry)
                         changed = true
                         break
                       end
                     end
+                  end
+                  -- Shorthand entries keep their label even when the
+                  -- bibliography text is annote-authored (e.g. Zerwick)
+                  if entry.shorthand and not entry.entrysubtype then
+                    prepend_shorthand_to_bib(block, entry.shorthand)
                   end
                 else
                   -- Prepend shorthand to bibliography entries
@@ -793,11 +924,13 @@ return {
                       end
                     end
                   end
-                  -- Suppress publisher location for post-1900 entries (SBLHS Blog update)
-                  if entry.publisher_place and entry.issued_year and entry.issued_year > 1900 then
+                  -- Suppress publisher locations for post-1900 entries (SBLHS Blog update),
+                  -- including the original place in reprint chains
+                  if (entry.publisher_place and entry.issued_year and entry.issued_year >= 1900)
+                      or (entry.original_publisher_place and entry.original_year and entry.original_year >= 1900) then
                     for _, sub_block in ipairs(block.content) do
                       if sub_block.t == "Para" then
-                        sub_block.content = suppress_location_in_bib(sub_block.content, entry.publisher_place)
+                        sub_block.content = suppress_recent_locations(sub_block.content, entry)
                         changed = true
                       end
                     end
