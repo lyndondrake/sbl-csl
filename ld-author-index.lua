@@ -244,8 +244,12 @@ local function make_typst_index_entry(name)
 end
 
 local function make_typst_index()
-  -- in-dexter: #make-index(title: none) — title already provided by the heading
-  return pandoc.RawBlock("typst", '#make-index(title: none)')
+  -- in-dexter: #make-index(title: none) — title already provided by the heading.
+  -- Scope to the "Default" index explicitly: in-dexter's `indexes: auto`
+  -- renders entries from ALL named indexes, so without this the author
+  -- index would also swallow entries from other filters' named indexes
+  -- (e.g. ld-ancient-index.lua's "ancient").
+  return pandoc.RawBlock("typst", '#make-index(title: none, indexes: ("Default",))')
 end
 
 -- ──────────────────────────────────────────────

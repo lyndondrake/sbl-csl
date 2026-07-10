@@ -145,8 +145,104 @@ def test_marker_heading_html():
     assert '<dt>Genesis</dt>' in html
 
 
-def test_marker_heading_docx():
-    """The {#ancient-index} heading expands to a flagged INDEX field."""
+def test_docx_bookmark_at_occurrence():
+    """A reference occurrence gets a hidden bookmark, not an XE field."""
     xml = run_pandoc_docx('A reference to Gen 23 for context.')
-    assert 'INDEX \\f "ancient"' in xml
-    assert 'XE "Genesis:23" \\f "ancient"' in xml
+    assert '<w:bookmarkStart w:id="90001" w:name="anc0001"/>' in xml
+    assert '<w:bookmarkEnd w:id="90001"/>' in xml
+    assert 'XE "Genesis:23"' not in xml
+
+
+def test_docx_no_xe_or_index_field():
+    """The old XE/INDEX \\f "ancient" machinery is gone entirely."""
+    xml = run_pandoc_docx('A reference to Gen 23 for context.')
+    assert 'INDEX \\f "ancient"' not in xml
+    assert '\\f "ancient"' not in xml
+    assert 'XE "' not in xml
+
+
+def test_docx_marker_generates_pageref_index():
+    """The {#ancient-index} heading expands to a self-generated index with
+    a bold book heading and a PAGEREF field pointing at the bookmark."""
+    xml = run_pandoc_docx('A reference to Gen 23 for context.')
+    assert '<w:b' in xml  # bold book heading (pandoc emits '<w:b />')
+    assert '>Genesis<' in xml
+    assert 'PAGEREF anc0001 \\h' in xml
+
+
+def test_docx_every_occurrence_bookmarked_across_blocks():
+    """Two occurrences of the same reference in DIFFERENT paragraphs each
+    get their own bookmark, and the index lists both PAGEREF fields."""
+    body = 'First mention of Gen 23 here.\n\nSecond mention of Gen 23 there.'
+    xml = run_pandoc_docx(body)
+    assert xml.count('w:name="anc0001"') == 1
+    assert xml.count('w:name="anc0002"') == 1
+    assert 'PAGEREF anc0001 \\h' in xml
+    assert 'PAGEREF anc0002 \\h' in xml
+
+
+def test_docx_same_block_dedupe():
+    """Two occurrences of the same reference in the SAME paragraph are
+    only bookmarked once."""
+    body = 'Gen 23 is mentioned, and Gen 23 is mentioned again in the same sentence.'
+    xml = run_pandoc_docx(body)
+    assert xml.count('w:name="anc0001"') == 1
+    assert 'anc0002' not in xml
+    assert xml.count('PAGEREF anc0001 \\h') == 1
+
+
+def test_docx_canonical_order():
+    """Genesis precedes Exodus precedes Jeremiah in the generated docx
+    index, regardless of the order they're first mentioned in the text."""
+    body = 'See Jer 8.8, then Exod 3.1, then Gen 1.1 for context.'
+    xml = run_pandoc_docx(body)
+    gen_pos = xml.find('>Genesis<')
+    exod_pos = xml.find('>Exodus<')
+    jer_pos = xml.find('>Jeremiah<')
+    assert gen_pos != -1 and exod_pos != -1 and jer_pos != -1
+    assert gen_pos < exod_pos < jer_pos
+
+
+def test_docx_subentry_numeric_order():
+    """Within a book, subentries are ordered numerically (2.26 before
+    11.21), not lexicographically."""
+    body = 'Gen 11.21 is mentioned before Gen 2.26 in the text.'
+    xml = run_pandoc_docx(body)
+    pos_226 = xml.find('2.26:')
+    pos_1121 = xml.find('11.21:')
+    assert pos_226 != -1 and pos_1121 != -1
+    assert pos_226 < pos_1121
+
+
+def test_typst_index_entry_display_key_tuple():
+    """The typst path emits a book string plus a (display, key) tuple for
+    the chapter/verse level, with a zero-padded numeric sort key."""
+    typst = run_pandoc('Compare Jer 32.6--15 with the parallel.', 'typst')
+    assert '#index("Jeremiah", ("32.6–15", "032.006-015"), index: "ancient")' in typst
+
+
+def test_typst_index_entry_simple_chapter():
+    """A bare chapter reference (no verse) gets a zero-padded chapter-only
+    sort key."""
+    typst = run_pandoc('A reference to Gen 23 for context.', 'typst')
+    assert '#index("Genesis", ("23", "023"), index: "ancient")' in typst
+
+
+def test_typst_marker_heading():
+    """The {#ancient-index} heading expands to a make-index call with a
+    canonical-order sort-order callback and suppressed section titles."""
+    typst = run_pandoc('A reference to Gen 23 for context.', 'typst')
+    assert '__ancient_index_order' in typst
+    assert '"Genesis": "01"' in typst
+    assert '"Revelation": "66"' in typst
+    assert 'indexes: ("ancient",)' in typst
+    assert 'section-title: (letter, counter) => []' in typst
+    assert 'sort-order: k => __ancient_index_order.at(k, default: k)' in typst
+
+
+def test_typst_every_occurrence_emitted_undeduped():
+    """Every occurrence of a reference gets its own #index() call (in-dexter
+    itself collapses duplicate pages)."""
+    body = 'First mention of Gen 23 here.\n\nSecond mention of Gen 23 there.'
+    typst = run_pandoc(body, 'typst')
+    assert typst.count('#index("Genesis", ("23", "023"), index: "ancient")') == 2
