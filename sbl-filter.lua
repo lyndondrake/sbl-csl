@@ -59,6 +59,103 @@ local function parse_sbl_note(note_str)
   return sbl
 end
 
+-- Set a field on sbl_entries[id], creating the entry table on demand
+local function set_entry_field(id, key, value)
+  if value == nil then return end
+  if not sbl_entries[id] then sbl_entries[id] = {} end
+  sbl_entries[id][key] = value
+end
+
+-- CSL JSON bibliographies (e.g. Bookends/Zotero exports) are decoded
+-- directly; the line-based parser below handles CSL YAML. Both populate
+-- sbl_entries with the same keys.
+local function load_bibliography_json(content)
+  local ok, data = pcall(pandoc.json.decode, content)
+  if not ok or type(data) ~= "table" then
+    io.stderr:write("sbl-filter: cannot parse JSON bibliography\n")
+    return
+  end
+
+  for _, entry in ipairs(data) do
+    if type(entry) == "table" and entry.id then
+      local id = entry.id
+
+      if type(entry.note) == "string" then
+        local sbl = parse_sbl_note(entry.note)
+        if next(sbl) then
+          for k, v in pairs(sbl) do
+            set_entry_field(id, k, v)
+          end
+        end
+      end
+
+      if entry.annote ~= nil then
+        set_entry_field(id, "annote", true)
+        if type(entry.annote) == "string" then
+          set_entry_field(id, "annote_value", entry.annote)
+        end
+      end
+
+      -- First author's names (literal and family/given forms)
+      if type(entry.author) == "table" then
+        for _, name in ipairs(entry.author) do
+          if type(name) == "table" then
+            if name.literal and not (sbl_entries[id] or {}).author_literal then
+              set_entry_field(id, "author_literal", name.literal)
+            end
+            if name.family and not (sbl_entries[id] or {}).author_family then
+              set_entry_field(id, "author_family", name.family)
+            end
+            if name.given and not (sbl_entries[id] or {}).author_given then
+              set_entry_field(id, "author_given", name.given)
+            end
+          end
+        end
+      end
+
+      -- First editor's names (fallback for editor-as-primary entries)
+      if type(entry.editor) == "table" then
+        for _, name in ipairs(entry.editor) do
+          if type(name) == "table" then
+            if name.family and not (sbl_entries[id] or {}).editor_family then
+              set_entry_field(id, "editor_family", name.family)
+            end
+            if name.given and not (sbl_entries[id] or {}).editor_given then
+              set_entry_field(id, "editor_given", name.given)
+            end
+          end
+        end
+      end
+
+      if type(entry.title) == "string" then
+        set_entry_field(id, "entry_title", entry.title)
+      end
+      if type(entry.type) == "string" then
+        set_entry_field(id, "entry_type", entry.type)
+      end
+      set_entry_field(id, "collection_title", entry["collection-title"])
+      set_entry_field(id, "collection_title_short", entry["collection-title-short"])
+      set_entry_field(id, "container_title", entry["container-title"])
+      set_entry_field(id, "container_title_short", entry["container-title-short"])
+      set_entry_field(id, "publisher_place", entry["publisher-place"])
+      set_entry_field(id, "original_publisher_place", entry["original-publisher-place"])
+
+      -- First year of issued / original-date
+      local function first_year(date)
+        if type(date) == "table" and type(date["date-parts"]) == "table" then
+          local parts = date["date-parts"][1]
+          if type(parts) == "table" then
+            return tonumber(parts[1])
+          end
+        end
+        return nil
+      end
+      set_entry_field(id, "issued_year", first_year(entry.issued))
+      set_entry_field(id, "original_year", first_year(entry["original-date"]))
+    end
+  end
+end
+
 -- Read bibliography file and extract SBL metadata
 local function load_bibliography(path)
   local f = io.open(path, "r")
@@ -69,6 +166,10 @@ local function load_bibliography(path)
 
   local content = f:read("*a")
   f:close()
+
+  if path:match("%.json$") then
+    return load_bibliography_json(content)
+  end
 
   -- Simple YAML parser for the fields we need
   -- We parse entry blocks delimited by "- id:" lines
@@ -634,9 +735,9 @@ end
 -- Note manipulation
 -- ──────────────────────────────────────────────
 
--- Replace note content with shorthand citation
+-- Build the inline form of a shorthand citation ("BDAG, 35"; "BDF §151").
 -- If italic is true, the shorthand is wrapped in Emph.
-local function make_shorthand_cite(shorthand, suffix_inlines, italic)
+local function make_shorthand_inlines(shorthand, suffix_inlines, italic)
   local inlines = pandoc.Inlines{}
   if italic then
     inlines:insert(pandoc.Emph{pandoc.Str(shorthand)})
@@ -658,8 +759,7 @@ local function make_shorthand_cite(shorthand, suffix_inlines, italic)
     end
   end
 
-  inlines:insert(pandoc.Str("."))
-  return pandoc.Note(pandoc.Blocks{pandoc.Para(inlines)})
+  return inlines
 end
 
 -- Determine whether a shorthand should be rendered in italic,
@@ -774,9 +874,55 @@ return {
       -- Skip if entry has annote (CSL annote bypass takes precedence for first notes)
       -- Skip if entry has entrysubtype (ancient texts use shorthand differently)
       if entry.shorthand and not entry.entrysubtype and not entry.annote then
-        if #cite.content > 0 and cite.content[1].t == "Note" then
-          local italic = is_shorthand_italic(entry)
-          return make_shorthand_cite(entry.shorthand, citation.suffix, italic)
+        -- Only shorthand the citation group when EVERY member is
+        -- shorthand-capable; a mixed group falls through to the CSL
+        -- rendering so that no citation is silently dropped.
+        local group = {}
+        for _, cit in ipairs(cite.citations) do
+          local e = sbl_entries[cit.id]
+          if e and e.shorthand and not e.entrysubtype and not e.annote then
+            table.insert(group, { entry = e, suffix = cit.suffix })
+          else
+            group = nil
+            break
+          end
+        end
+
+        if group and #cite.content > 0 then
+          local combined = pandoc.Inlines{}
+          for i, g in ipairs(group) do
+            if i > 1 then
+              combined:insert(pandoc.Str(";"))
+              combined:insert(pandoc.Space())
+            end
+            combined:extend(make_shorthand_inlines(
+              g.entry.shorthand, g.suffix, is_shorthand_italic(g.entry)))
+          end
+
+          if cite.content[1].t == "Note" then
+            combined:insert(pandoc.Str("."))
+            return pandoc.Note(pandoc.Blocks{pandoc.Para(combined)})
+          end
+
+          -- Citation inside a manual footnote: citeproc renders it as
+          -- inline text (note-form at the start of the note, parenthesised
+          -- mid-note) rather than wrapping it in a Note. Replace the
+          -- rendered text with the shorthand, preserving the surrounding
+          -- shape: parentheses if citeproc parenthesised it, the closing
+          -- full stop if the note-form citation carried one.
+          local rendered = utils.stringify(cite.content)
+          local out = pandoc.Inlines{}
+          if rendered:match("^%(") then
+            out:insert(pandoc.Str("("))
+            out:extend(combined)
+            out:insert(pandoc.Str(")"))
+          else
+            out:extend(combined)
+            if rendered:match("%.$") then
+              out:insert(pandoc.Str("."))
+            end
+          end
+          return out
         end
       end
 
