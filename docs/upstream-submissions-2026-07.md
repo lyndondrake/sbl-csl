@@ -236,3 +236,20 @@ Discursive note containing a citation.#footnote[
 > If a draft API materialises, I'm happy to prototype the SBL style
 > against it — it exercises most of the hard cases (note class, position
 > tracking, abbreviations, per-entry overrides) in one style.
+
+---
+
+## Parked observations (for the PR #489 test engagement)
+
+Noticed while testing #8147 on 3 July 2026, out of scope for the drafts
+above but worth raising once the hayagriva CSL-JSON work is engaged:
+
+1. **Stray semicolon before the publication parenthetical.** With the
+   SBL fullnote CSL, hayagriva renders the first note as
+   "…Reading John: A Literary and Theological Commentary**;** (Crossroad,
+   1992)" — pandoc/citeproc renders the same style with no semicolon.
+   Present in both typst 0.15.0 and the PR #8147 build, so it is a
+   hayagriva CSL-rendering divergence (likely group-delimiter handling),
+   not related to footnote placement. Repro: `examples/typst-footnote-repro/`.
+2. **Note-layout terminal period emitted for inline citations** — the
+   "127.." doubling already noted in the #8147 draft comment.
