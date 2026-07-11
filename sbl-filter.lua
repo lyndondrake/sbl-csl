@@ -1329,7 +1329,11 @@ return {
       for ref_id, entry in pairs(sbl_entries) do
         if cited_ids[ref_id] then
           -- Container-title-short → container-title (journals/magazines: italic)
+          -- A "short" title equal to the full title is not an abbreviation
+          -- (unabbreviated journals round-trip through CSL data that way);
+          -- listing it as self-mapping would be noise, so skip it.
           if entry.container_title_short and entry.container_title
+              and entry.container_title_short ~= entry.container_title
               and not seen_abbrevs[entry.container_title_short] then
             local is_journal = entry.entry_type == "article-journal"
                 or entry.entry_type == "article-magazine"
@@ -1349,6 +1353,7 @@ return {
           end
           -- Collection-title-short → collection-title (series: roman)
           if entry.collection_title_short and entry.collection_title
+              and entry.collection_title_short ~= entry.collection_title
               and not seen_abbrevs[entry.collection_title_short] then
             table.insert(simple, {
               shorthand = entry.collection_title_short,
@@ -1558,6 +1563,35 @@ return {
       end
 
       return doc
+    end,
+  },
+  {
+    -- Fourth pass: unwrap dangling citation links. link-citations wraps
+    -- citations in Links targeting #ref-<id>; entries removed from the
+    -- bibliography (skipbib, or moved to the abbreviation list) leave
+    -- those targets dangling, which typst rejects as missing labels.
+    Pandoc = function(doc)
+      local present = {}
+      doc:walk({
+        Div = function(d)
+          if d.identifier and d.identifier ~= "" then
+            present[d.identifier] = true
+          end
+        end,
+        Span = function(s)
+          if s.identifier and s.identifier ~= "" then
+            present[s.identifier] = true
+          end
+        end,
+      })
+      return doc:walk({
+        Link = function(link)
+          local target = link.target:match("^#(ref%-.+)$")
+          if target and not present[target] then
+            return link.content
+          end
+        end,
+      })
     end,
   },
 }
