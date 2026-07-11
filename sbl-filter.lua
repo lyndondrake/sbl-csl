@@ -1522,7 +1522,7 @@ return {
           table.insert(lines, '  grid(')
           table.insert(lines, '    columns: (abbr-width, 1fr),')
           table.insert(lines, '    column-gutter: 1em,')
-          table.insert(lines, '    text(weight: "bold")[#it.term],')
+          table.insert(lines, '    it.term,')
           table.insert(lines, '    it.description,')
           table.insert(lines, '  )')
           table.insert(lines, '}')
