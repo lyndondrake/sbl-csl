@@ -445,12 +445,25 @@ local function append_pagerefs(inl, names)
   end
 end
 
+-- Two-column region for the generated docx index, via a pair of
+-- continuous section breaks: a sectPr paragraph ends the section that
+-- PRECEDES it and carries that section's properties, so the first break
+-- (after the index heading) closes the normal single-column flow and the
+-- second (after the last index block) closes the index itself as a
+-- two-column section. Properties not specified (page size, margins)
+-- follow Word's defaults, matching the document's own minimal sectPr.
+local DOCX_COLS_OPEN = pandoc.RawBlock("openxml",
+  '<w:p><w:pPr><w:sectPr><w:type w:val="continuous"/></w:sectPr></w:pPr></w:p>')
+local DOCX_COLS_CLOSE = pandoc.RawBlock("openxml",
+  '<w:p><w:pPr><w:sectPr><w:type w:val="continuous"/>' ..
+  '<w:cols w:num="2" w:space="432"/></w:sectPr></w:pPr></w:p>')
+
 -- Build the docx index blocks: per non-empty section, a heading paragraph,
 -- then one bold paragraph per entry (with the page-only PAGEREFs on the
 -- entry line itself, if any) and subentry paragraphs with comma-separated
 -- PAGEREF fields.
 local function build_docx_index_blocks()
-  local out_blocks = {}
+  local out_blocks = { DOCX_COLS_OPEN }
   for _, s in ipairs(active_sections()) do
     table.insert(out_blocks, section_heading_block(s.title))
     for _, entry in ipairs(sorted_entries(s.slug)) do
@@ -474,6 +487,7 @@ local function build_docx_index_blocks()
       end
     end
   end
+  table.insert(out_blocks, DOCX_COLS_CLOSE)
   return out_blocks
 end
 
@@ -507,7 +521,9 @@ end
 -- for that section's index, all sharing the dict as sort-order callback.
 -- section-title is overridden to render nothing, so in-dexter's
 -- initial-letter bucketing stays invisible and each section reads as one
--- continuous ordered list.
+-- continuous ordered list. The whole index is set two-column at reduced
+-- size, unjustified with a hanging indent so long loci/page-number lines
+-- wrap legibly in the narrow measure.
 local function make_typst_index_blocks()
   local lines = { '#let __ancient_index_order = (' }
   for i, name in ipairs(CANONICAL_ORDER) do
@@ -528,24 +544,29 @@ local function make_typst_index_blocks()
   end
   table.insert(lines, ')')
 
-  local out_blocks = { pandoc.RawBlock("typst", table.concat(lines, "\n")) }
+  table.insert(lines, '#[')
+  table.insert(lines, '#set text(size: 0.85em)')
+  table.insert(lines, '#set par(justify: false, hanging-indent: 1em)')
+  table.insert(lines, '#columns(2, gutter: 1.5em)[')
   for _, s in ipairs(active_sections()) do
-    table.insert(out_blocks, section_heading_block(s.title))
-    local mk = {
-      '#make-index(',
-      '  title: none,',
-      '  indexes: ("ancient-' .. s.slug .. '",),',
-      '  section-title: (letter, counter) => [],',
-      '  sort-order: k => __ancient_index_order.at(k, default: k),',
-      -- in-dexter's entry-casing defaults to first-letter-up, which would
-      -- corrupt entries/loci like "m. B. Bat." or "gap ¶ l"; display text
-      -- is already exactly as authored, so use the identity.
-      '  entry-casing: k => k,',
-      ')',
-    }
-    table.insert(out_blocks, pandoc.RawBlock("typst", table.concat(mk, "\n")))
+    table.insert(lines,
+      '#block(above: 1.2em, below: 0.6em, breakable: false, ' ..
+      'text(weight: "bold", smallcaps("' .. typst_escape(s.title) .. '")))')
+    table.insert(lines, '#make-index(')
+    table.insert(lines, '  title: none,')
+    table.insert(lines, '  indexes: ("ancient-' .. s.slug .. '",),')
+    table.insert(lines, '  section-title: (letter, counter) => [],')
+    table.insert(lines, '  sort-order: k => __ancient_index_order.at(k, default: k),')
+    -- in-dexter's entry-casing defaults to first-letter-up, which would
+    -- corrupt entries/loci like "m. B. Bat." or "gap ¶ l"; display text
+    -- is already exactly as authored, so use the identity.
+    table.insert(lines, '  entry-casing: k => k,')
+    table.insert(lines, ')')
   end
-  return out_blocks
+  table.insert(lines, ']')
+  table.insert(lines, ']')
+
+  return { pandoc.RawBlock("typst", table.concat(lines, "\n")) }
 end
 
 -- ──────────────────────────────────────────────
@@ -909,11 +930,11 @@ return {
         end
       else
         -- HTML/other: static sectioned two-level list, entries in
-        -- canonical/sorted order, subentries by sort key.
-        local insert_at = index_idx
+        -- canonical/sorted order, subentries by sort key, wrapped in a
+        -- CSS-columns div.
+        local index_blocks = pandoc.Blocks{}
         for _, s in ipairs(active_sections()) do
-          insert_at = insert_at + 1
-          table.insert(doc.blocks, insert_at, section_heading_block(s.title))
+          index_blocks:insert(section_heading_block(s.title))
 
           local outer_items = pandoc.List{}
           for _, entry in ipairs(sorted_entries(s.slug)) do
@@ -943,9 +964,10 @@ return {
             outer_items:insert({term, defs})
           end
 
-          insert_at = insert_at + 1
-          table.insert(doc.blocks, insert_at, pandoc.DefinitionList(outer_items))
+          index_blocks:insert(pandoc.DefinitionList(outer_items))
         end
+        table.insert(doc.blocks, index_idx + 1, pandoc.Div(index_blocks,
+          pandoc.Attr("", {}, {{"style", "columns: 2; column-gap: 2em;"}})))
       end
 
       return doc

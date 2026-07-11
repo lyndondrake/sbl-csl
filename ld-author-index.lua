@@ -248,8 +248,18 @@ local function make_typst_index()
   -- Scope to the "Default" index explicitly: in-dexter's `indexes: auto`
   -- renders entries from ALL named indexes, so without this the author
   -- index would also swallow entries from other filters' named indexes
-  -- (e.g. ld-ancient-index.lua's "ancient").
-  return pandoc.RawBlock("typst", '#make-index(title: none, indexes: ("Default",))')
+  -- (e.g. ld-ancient-index.lua's "ancient-*" section indexes).
+  -- Set two-column at reduced size, unjustified with a hanging indent so
+  -- long name/page-number lines wrap legibly in the narrow measure.
+  return pandoc.RawBlock("typst", table.concat({
+    '#[',
+    '#set text(size: 0.85em)',
+    '#set par(justify: false, hanging-indent: 1em)',
+    '#columns(2, gutter: 1.5em)[',
+    '#make-index(title: none, indexes: ("Default",))',
+    ']',
+    ']',
+  }, "\n"))
 end
 
 -- ──────────────────────────────────────────────
@@ -374,7 +384,9 @@ return {
           items:insert({term, {def}})
         end
 
-        table.insert(doc.blocks, index_idx + 1, pandoc.DefinitionList(items))
+        table.insert(doc.blocks, index_idx + 1, pandoc.Div(
+          pandoc.Blocks{pandoc.DefinitionList(items)},
+          pandoc.Attr("", {}, {{"style", "columns: 2; column-gap: 2em;"}})))
       end
 
       return doc

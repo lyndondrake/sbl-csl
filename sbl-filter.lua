@@ -1495,6 +1495,14 @@ return {
       local abbrev_heading = doc.blocks[abbrev_idx]
       local sub_level = (abbrev_heading.level or 1) + 1
 
+      -- Sub-headings are apparatus, not sections: never numbered (under
+      -- --number-sections they would otherwise number 0.1, 0.2, ... below
+      -- an unnumbered Abbreviations heading) and kept out of the TOC.
+      local sub_attr = pandoc.Attr("", {"unnumbered", "unlisted"})
+      local function make_sub_heading(text)
+        return pandoc.Header(sub_level, pandoc.Inlines{pandoc.Str(text)}, sub_attr)
+      end
+
       -- Insert blocks after the abbreviation heading
       local insert_pos = abbrev_idx
 
@@ -1502,10 +1510,8 @@ return {
         -- Typst: emit a two-column grid matching biblatex-sbl layout
         for _, section in ipairs(sections) do
           if section.heading then
-            -- Sub-heading as a typst raw block
             insert_pos = insert_pos + 1
-            local heading_block = pandoc.Header(sub_level, pandoc.Inlines{pandoc.Str(section.heading)})
-            table.insert(doc.blocks, insert_pos, heading_block)
+            table.insert(doc.blocks, insert_pos, make_sub_heading(section.heading))
           end
 
           local lines = {}
@@ -1529,8 +1535,7 @@ return {
         for _, section in ipairs(sections) do
           if section.heading then
             insert_pos = insert_pos + 1
-            local heading_block = pandoc.Header(sub_level, pandoc.Inlines{pandoc.Str(section.heading)})
-            table.insert(doc.blocks, insert_pos, heading_block)
+            table.insert(doc.blocks, insert_pos, make_sub_heading(section.heading))
           end
           insert_pos = insert_pos + 1
           table.insert(doc.blocks, insert_pos, render_deflist_items(section.items))

@@ -243,6 +243,25 @@ def test_typst_marker_heading():
     assert 'section-title: (letter, counter) => []' in typst
     assert 'sort-order: k => __ancient_index_order.at(k, default: k)' in typst
     assert 'entry-casing: k => k' in typst
+    assert '#columns(2, gutter: 1.5em)[' in typst
+
+
+def test_docx_index_two_column_section():
+    """The generated docx index sits in a two-column continuous section:
+    an open break (single-column props) before the entries and a close
+    break carrying cols num=2 after them."""
+    xml = run_pandoc_docx('A reference to Gen 23 for context.')
+    open_pos = xml.find('<w:sectPr><w:type w:val="continuous"/></w:sectPr>')
+    close_pos = xml.find('<w:cols w:num="2"')
+    entry_pos = xml.find('PAGEREF anc0001')
+    assert open_pos != -1 and close_pos != -1
+    assert open_pos < entry_pos < close_pos
+
+
+def test_html_index_columns_div():
+    """The HTML index is wrapped in a CSS-columns div."""
+    html = run_pandoc('A reference to Gen 23 for context.', 'html')
+    assert 'columns: 2' in html
 
 
 def test_typst_every_occurrence_emitted_undeduped():
