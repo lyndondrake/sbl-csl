@@ -2,8 +2,9 @@
 
 Verifies recognition of scripture references (dot/colon chapter-verse
 separators, en-dash ranges, numbered books, full names, semicolon
-continuations, footnote content) and the marker-heading expansion for
-docx and HTML output. Mirrors tests/test_author_index.py's structure.
+continuations, footnote content), explicit .anc marker spans for
+non-biblical sources, SBL sectioning, and the marker-heading expansion
+for docx and HTML output. Mirrors tests/test_author_index.py's structure.
 """
 
 import subprocess
@@ -35,6 +36,7 @@ def run_pandoc(body: str, to_format: str) -> str:
                 'pandoc',
                 '--from=markdown',
                 f'--to={to_format}',
+                '--wrap=none',
                 f'--lua-filter={INDEX_FILTER}',
                 input_file,
             ],
@@ -216,28 +218,31 @@ def test_docx_subentry_numeric_order():
 
 def test_typst_index_entry_display_key_tuple():
     """The typst path emits a book string plus a (display, key) tuple for
-    the chapter/verse level, with a zero-padded numeric sort key."""
+    the chapter/verse level, with a zero-padded numeric sort key, filed
+    under the section index ancient-hb."""
     typst = run_pandoc('Compare Jer 32.6--15 with the parallel.', 'typst')
-    assert '#index("Jeremiah", ("32.6–15", "032.006-015"), index: "ancient")' in typst
+    assert '#index("Jeremiah", ("32.6–15", "0032.0006-0015"), index: "ancient-hb")' in typst
 
 
 def test_typst_index_entry_simple_chapter():
     """A bare chapter reference (no verse) gets a zero-padded chapter-only
     sort key."""
     typst = run_pandoc('A reference to Gen 23 for context.', 'typst')
-    assert '#index("Genesis", ("23", "023"), index: "ancient")' in typst
+    assert '#index("Genesis", ("23", "0023"), index: "ancient-hb")' in typst
 
 
 def test_typst_marker_heading():
-    """The {#ancient-index} heading expands to a make-index call with a
-    canonical-order sort-order callback and suppressed section titles."""
+    """The {#ancient-index} heading expands to per-section make-index calls
+    with a shared canonical-order sort-order callback and suppressed
+    initial-letter section titles."""
     typst = run_pandoc('A reference to Gen 23 for context.', 'typst')
     assert '__ancient_index_order' in typst
     assert '"Genesis": "01"' in typst
     assert '"Revelation": "66"' in typst
-    assert 'indexes: ("ancient",)' in typst
+    assert 'indexes: ("ancient-hb",)' in typst
     assert 'section-title: (letter, counter) => []' in typst
     assert 'sort-order: k => __ancient_index_order.at(k, default: k)' in typst
+    assert 'entry-casing: k => k' in typst
 
 
 def test_typst_every_occurrence_emitted_undeduped():
@@ -245,4 +250,145 @@ def test_typst_every_occurrence_emitted_undeduped():
     itself collapses duplicate pages)."""
     body = 'First mention of Gen 23 here.\n\nSecond mention of Gen 23 there.'
     typst = run_pandoc(body, 'typst')
-    assert typst.count('#index("Genesis", ("23", "023"), index: "ancient")') == 2
+    assert typst.count('#index("Genesis", ("23", "0023"), index: "ancient-hb")') == 2
+
+
+# ──────────────────────────────────────────────
+# Sections
+# ──────────────────────────────────────────────
+
+
+def test_html_ot_nt_sections():
+    """OT and NT references are filed under separate section headings, in
+    SBL order (Hebrew Bible first)."""
+    html = run_pandoc('Compare Jer 8.8 with Matt 5.3 for context.', 'html')
+    assert 'Hebrew Bible/Old Testament' in html
+    assert 'New Testament' in html
+    assert html.find('Hebrew Bible/Old Testament') < html.find('New Testament')
+    assert '<dt>Jeremiah</dt>' in html
+    assert '<dt>Matthew</dt>' in html
+
+
+def test_html_empty_sections_not_rendered():
+    """Sections with no entries produce no heading."""
+    html = run_pandoc('Only Gen 23 is cited.', 'html')
+    assert 'New Testament' not in html
+    assert 'Dead Sea Scrolls' not in html
+
+
+def test_typst_nt_filed_separately():
+    """An NT reference goes to the ancient-nt index."""
+    typst = run_pandoc('See Matt 5.3 for the beatitude.', 'typst')
+    assert '#index("Matthew", ("5.3", "0005.0003"), index: "ancient-nt")' in typst
+    assert 'indexes: ("ancient-nt",)' in typst
+
+
+# ──────────────────────────────────────────────
+# Explicit .anc marker spans (non-biblical sources)
+# ──────────────────────────────────────────────
+
+
+def test_marker_html():
+    """A marker span files its entry and locus under the right section."""
+    body = 'The law[]{.anc section="ane" entry="Laws of Hammurabi" locus="117"} is severe.'
+    html = run_pandoc(body, 'html')
+    assert 'Ancient Near Eastern Texts' in html
+    assert '<dt>Laws of Hammurabi</dt>' in html
+    assert '<li>117</li>' in html
+
+
+def test_marker_page_only_entry_html():
+    """A marker without a locus indexes the entry name alone."""
+    body = 'Jubilees[]{.anc section="pseud" entry="Jubilees"} reworks history.'
+    html = run_pandoc(body, 'html')
+    assert 'Pseudepigrapha' in html
+    assert '<dt>Jubilees</dt>' in html
+
+
+def test_marker_docx_bookmark_and_pageref():
+    """A marker occurrence gets a bookmark; the generated index carries a
+    PAGEREF and the entry name."""
+    body = 'The law[]{.anc section="ane" entry="Laws of Hammurabi" locus="117"} is severe.'
+    xml = run_pandoc_docx(body)
+    assert '<w:bookmarkStart w:id="90001" w:name="anc0001"/>' in xml
+    assert 'PAGEREF anc0001 \\h' in xml
+    assert '>Laws of Hammurabi<' in xml
+
+
+def test_marker_docx_page_only_pageref_on_entry_line():
+    """With no locus, the PAGEREF attaches to the entry line itself."""
+    body = 'Jubilees[]{.anc section="pseud" entry="Jubilees"} reworks history.'
+    xml = run_pandoc_docx(body)
+    assert '>Jubilees<' in xml
+    assert 'PAGEREF anc0001 \\h' in xml
+
+
+def test_marker_typst():
+    """A marker emits an #index call into its section's index, with the
+    auto-generated zero-padded locus key."""
+    body = 'The law[]{.anc section="ane" entry="Laws of Hammurabi" locus="117"} is severe.'
+    typst = run_pandoc(body, 'typst')
+    assert '#index("Laws of Hammurabi", ("117", "0117"), index: "ancient-ane")' in typst
+    assert 'indexes: ("ancient-ane",)' in typst
+
+
+def test_marker_typst_page_only():
+    """A locus-less marker emits a single-level #index call."""
+    body = 'Jubilees[]{.anc section="pseud" entry="Jubilees"} reworks history.'
+    typst = run_pandoc(body, 'typst')
+    assert '#index("Jubilees", index: "ancient-pseud")' in typst
+
+
+def test_marker_explicit_sort_key():
+    """A sort attribute overrides the automatic locus key, so LH gap
+    paragraph t (between 65 and 100) sorts before 117."""
+    body = (
+        'See[]{.anc section="ane" entry="Laws of Hammurabi" locus="117"} and'
+        '[]{.anc section="ane" entry="Laws of Hammurabi" locus="t" sort="0065.20"} both.'
+    )
+    html = run_pandoc(body, 'html')
+    assert html.find('<li>t</li>') < html.find('<li>117</li>')
+
+
+def test_marker_entry_sort_orders_entries():
+    """entry-sort overrides plain alphabetical entry ordering within a
+    marker section."""
+    body = (
+        'A[]{.anc section="dss" entry="Zed Scroll" entry-sort="01"} then'
+        ' B[]{.anc section="dss" entry="Alpha Scroll" entry-sort="02"}.'
+    )
+    html = run_pandoc(body, 'html')
+    assert html.find('<dt>Zed Scroll</dt>') < html.find('<dt>Alpha Scroll</dt>')
+
+
+def test_marker_inside_footnote_and_blockquote():
+    """Markers are recognised inside footnotes and block quotations."""
+    body = (
+        'Main text.[^1]\n\n'
+        '> Quoted matter citing the Mishnah[]{.anc section="rabbinic" entry="m. B. Bat." locus="10:1"}.\n\n'
+        '[^1]: See 4QInstruction[]{.anc section="dss" entry="4QInstruction"}.'
+    )
+    html = run_pandoc(body, 'html')
+    assert 'Rabbinic Works' in html
+    assert '<dt>m. B. Bat.</dt>' in html
+    assert '<li>10:1</li>' in html
+    assert 'Dead Sea Scrolls' in html
+    assert '<dt>4QInstruction</dt>' in html
+
+
+def test_marker_invalid_section_skipped():
+    """A marker with an unknown section slug is skipped with a warning,
+    not indexed, and does not crash the build."""
+    body = 'Bad[]{.anc section="nope" entry="Ghost"} marker.'
+    html = run_pandoc(body, 'html')
+    assert 'Ghost' not in html
+
+
+def test_marker_sections_in_sbl_order():
+    """Marker sections render in SBL order regardless of occurrence order."""
+    body = (
+        'First[]{.anc section="ane" entry="Laws of Eshnunna" locus="39"} then'
+        ' second[]{.anc section="dss" entry="4QInstruction"}.'
+    )
+    html = run_pandoc(body, 'html')
+    assert html.find('Dead Sea Scrolls') < html.find('Ancient Near Eastern Texts')

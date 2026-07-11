@@ -1,27 +1,62 @@
 -- ld-ancient-index.lua
--- Pandoc Lua filter that generates an index of ancient sources (scripture
--- references) from body text and footnotes. Closely modelled on
--- ld-author-index.lua: same three output paths, same marker-heading
--- mechanics, same coding style.
+-- Pandoc Lua filter that generates an index of ancient sources from body
+-- text and footnotes. Closely modelled on ld-author-index.lua: same three
+-- output paths, same marker-heading mechanics, same coding style.
 --
--- Three output paths, ALL in canonical scholarly order (Genesis ..
--- Revelation, subentries in numeric chapter/verse order):
---   Word (.docx): at each recognised reference occurrence, emits a hidden
---     bookmark (<w:bookmarkStart/><w:bookmarkEnd/>, names anc0001,
---     anc0002, ...) instead of an XE field. At the marker heading, this
---     filter generates the full index itself (one bold paragraph per
---     book, in canonical order; subentry lines with PAGEREF fields
---     pointing at the bookmarks, real page numbers once fields are
+-- v3: the index is SECTIONED in SBL style (Hebrew Bible/Old Testament,
+-- New Testament, Pseudepigrapha, Dead Sea Scrolls, ..., Ancient Near
+-- Eastern Texts, ...). Two recognition mechanisms feed it:
+--
+--   1. AUTOMATIC: biblical references ("Jer 32.6--15", "Lev 25:23",
+--      "2 Sam 24") are recognised in running text exactly as in v1/v2 and
+--      filed under "Hebrew Bible/Old Testament" or "New Testament" by
+--      canonical position.
+--   2. EXPLICIT MARKERS: non-biblical ancient sources are declared with an
+--      empty inline span carrying class .anc:
+--
+--        []{.anc section="dss" entry="4QInstruction"}
+--        []{.anc section="ane" entry="Laws of Hammurabi" locus="117"}
+--        []{.anc section="ane" entry="Laws of Hammurabi" locus="t" sort="0065.20"}
+--        []{.anc section="rabbinic" entry="m. B. Bat." locus="10:1"}
+--
+--      Attributes:
+--        section     (required) one of the SECTIONS slugs below; a marker
+--                    with an unknown slug or missing entry is reported on
+--                    stderr and skipped.
+--        entry       (required) the top-level index entry, displayed
+--                    verbatim (Unicode superscripts are fine: "4QJer\u{1D47}").
+--        locus       (optional) the subentry (passage/paragraph). Omitted
+--                    for name-only mentions: page numbers then attach to
+--                    the entry line itself.
+--        sort        (optional) explicit sort key for THIS locus,
+--                    overriding the automatic key (digit runs zero-padded
+--                    to 4). Use where document order isn't lexical, e.g.
+--                    LH gap paragraphs lettered between ¶65 and ¶100.
+--        entry-sort  (optional) explicit sort key for the entry within its
+--                    section (default: the entry text, plain string order).
+--
+--      The span itself renders as nothing (empty content); the filter
+--      appends the docx bookmark / typst #index call after it. Markers
+--      work inside footnotes and block quotations (sources cited within
+--      quoted matter are indexed, per standard practice).
+--
+-- Three output paths, all sectioned, entries in canonical/sorted order:
+--   Word (.docx): at each recognised occurrence (auto or marker), emits a
+--     hidden bookmark (<w:bookmarkStart/><w:bookmarkEnd/>, names anc0001,
+--     anc0002, ...). At the marker heading, this filter generates the full
+--     index itself: a small-caps bold section heading per non-empty
+--     section, one bold paragraph per entry, subentry lines with PAGEREF
+--     fields pointing at the bookmarks (real page numbers once fields are
 --     updated with Ctrl+A, F9). Word's INDEX/XE machinery cannot be
---     custom-ordered, so it is not used at all in v2.
---   Typst: injects #index(book, (display, key), index: "ancient") calls
---     from the in-dexter package (>=0.3.0, tested against 0.7.2) alongside
---     references, and #make-index(...) at the marker heading with a
---     custom sort-order callback (see "in-dexter API note" below).
+--     custom-ordered, so it is not used at all.
+--   Typst: injects #index(entry, (display, key), index: "ancient-<slug>")
+--     calls from the in-dexter package (>=0.3.0, tested against 0.7.2)
+--     alongside references, and one #make-index(...) per non-empty section
+--     at the marker heading, each preceded by a section-heading paragraph,
+--     sharing a single sort-order callback (see "in-dexter API note").
 --     Typst renders the index with real page numbers at compile time.
---   HTML/other: generates a static two-level list (book -> chapter.verse
---     subentries), with no page numbers, in canonical biblical book order.
---     Unchanged from v1.
+--   HTML/other: generates a static sectioned two-level list (entry ->
+--     locus subentries), with no page numbers.
 --
 -- Usage:
 --   pandoc doc.md --lua-filter=ld-ancient-index.lua -o doc.docx
@@ -53,68 +88,69 @@
 --   renders the book heading as "01 Genesis", not "Genesis" — the intended
 --   sort-key prefix leaks into the display.
 --
---   Consequence: the (display, key) tuple trick works for level-2 (chapter/
---   verse) entries, which are always leaves, but NOT for level-1 (book)
---   entries, which are grouping nodes. v2 therefore uses a different
---   mechanism for level 1: the book is passed as a plain string (so
---   display == key == the book name, which is what should be shown), and
---   canonical order is obtained by passing a custom `sort-order` callback
---   to #make-index() — a literal dict of book name -> zero-padded canonical
---   ordinal ("Genesis" -> "01", ..., "Revelation" -> "66"), generated by
---   this filter from CANONICAL_ORDER below, with `k => dict.at(k, default:
---   k)`. `sort-order` is applied uniformly by in-dexter to both grouping
---   keys (book names) and leaf keys (chapter/verse sort keys, already
---   zero-padded so the default string order already matches numeric
---   order), so a single callback handles both levels correctly.
+--   Consequence: the (display, key) tuple trick works for level-2 (locus)
+--   entries, which are always leaves, but NOT for level-1 (entry) names,
+--   which are grouping nodes whenever loci exist. The entry name is
+--   therefore always passed as a plain string (display == key == the
+--   name), and ordering is obtained by passing a custom `sort-order`
+--   callback to #make-index() — a literal dict of entry name ->
+--   sort key (canonical zero-padded ordinals "01".."66" for biblical
+--   books, any entry-sort attributes for marker entries), generated by
+--   this filter, with `k => dict.at(k, default: k)`. `sort-order` is
+--   applied uniformly by in-dexter to both grouping keys and leaf keys
+--   (locus sort keys, already zero-padded so default string order matches
+--   numeric order), so a single shared callback handles all levels and all
+--   sections correctly.
 --
 --   in-dexter also buckets entries into initial-letter sections (a normal
 --   A/B/C-style index convention) based on the first character of
---   sort-order(key). With 2-digit zero-padded ordinals this produces
---   sections "0".."6", which would appear as spurious inline headings in a
---   scholarly ancient-sources index. v2 suppresses them via
+--   sort-order(key). With zero-padded ordinals this would produce spurious
+--   inline headings, so they are suppressed via
 --   `section-title: (letter, counter) => []`, which keeps the (harmless,
 --   invisible) bucketing behaviour but renders no heading text, giving one
---   continuous canonically-ordered list.
+--   continuous ordered list per section.
 --
 -- ──────────────────────────────────────────────
--- Known limitations / design decisions (v2)
+-- Known limitations / design decisions
 -- ──────────────────────────────────────────────
 --   * Docx occurrence marking: EVERY recognised occurrence gets its own
 --     bookmark (not just the first per unique reference), so the
 --     PAGEREF-based index lists every page a reference appears on. The
---     one exception is same-block dedupe: if the identical (book, ref)
---     pair is recognised more than once within the SAME Para/Plain block
---     (including a single footnote paragraph), only the first occurrence
---     in that block gets a bookmark — repeats within one block are almost
---     certainly on the same page, and Word's PAGEREF cannot dedupe
---     repeated page numbers within one subentry's field list.
+--     one exception is same-block dedupe: if the identical (section,
+--     entry, locus) triple is recognised more than once within the SAME
+--     Para/Plain block (including a single footnote paragraph), only the
+--     first occurrence in that block gets a bookmark — repeats within one
+--     block are almost certainly on the same page, and Word's PAGEREF
+--     cannot dedupe repeated page numbers within one subentry's field
+--     list.
 --   * Residual limitation: two occurrences of the same reference that land
 --     on the same page but in DIFFERENT paragraphs are not deduped (that
 --     would require knowing page layout, which this filter cannot do at
 --     the Pandoc-AST stage) and will render as duplicate page numbers in
 --     the index (e.g. "26, 26"). A final proof-reading pass in Word may be
---     needed to manually collapse these; Word's own PAGEREF field has no
---     built-in mechanism to suppress them.
+--     needed to manually collapse these. When placing .anc markers by
+--     hand, prefer ONE marker per contiguous discussion of a source.
 --   * Chapter/verse separator: source text may use either "." or ":"
 --     (e.g. "Jer 32.7" and "Lev 25:23"). Both are recognised, but output
 --     subentries always use "." for consistency (e.g. "Lev 25:23" indexes
---     as "Leviticus" -> "25.23").
---   * Recognition is limited to Str/Space/SoftBreak runs directly inside
---     Para/Plain blocks (including footnote content, via Note elements
---     found in that flat run). Para/Plain blocks are found by recursing
---     into BlockQuote, Div, list items and DefinitionList content, so
---     references in block quotations and lists are covered; Table cells
---     are NOT recursed into in v1/v2. References nested inside further
+--     as "Leviticus" -> "25.23"). Marker locus attributes are displayed
+--     verbatim.
+--   * Automatic recognition is limited to Str/Space/SoftBreak runs
+--     directly inside Para/Plain blocks (including footnote content, via
+--     Note elements found in that flat run). Para/Plain blocks are found
+--     by recursing into BlockQuote, Div, list items and DefinitionList
+--     content, so references in block quotations and lists are covered;
+--     Table cells are NOT recursed into. References nested inside further
 --     inline containers (Emph, Strong, Span, Link, etc.) are NOT scanned,
---     so an italicised reference would be missed. In practice this also means
---     content inside `[...]{lang="he"}` spans is skipped, satisfying the
---     brief's requirement to exclude Hebrew-language spans, but as a
---     side effect of the simpler "don't descend into inline containers"
---     rule rather than a dedicated lang="he" check.
+--     so an italicised reference would be missed. In practice this also
+--     means content inside `[...]{lang="he"}` spans is skipped. This is
+--     exactly why non-biblical sources use explicit markers: forms like
+--     `[lh]{.smallcaps} 117` or `4QJer^b^` are invisible to the
+--     tokenizer.
 --   * A "book name" is only recognised when the following token begins
 --     with a digit (the chapter number). This is applied uniformly, not
---     just for ambiguous short words, since every real reference in this
---     scheme is book + chapter.
+--     just for ambiguous short words, since every real biblical reference
+--     in this scheme is book + chapter.
 --
 -- Compatible with Quarto (use citeproc: false + explicit filter ordering).
 
@@ -125,6 +161,26 @@
 local OUTPUT_FORMAT = FORMAT or "html"
 local is_docx = OUTPUT_FORMAT == "docx" or OUTPUT_FORMAT == "openxml"
 local is_typst = OUTPUT_FORMAT == "typst"
+
+-- ──────────────────────────────────────────────
+-- Sections (SBL order). Only sections with entries are rendered.
+-- ──────────────────────────────────────────────
+
+local SECTIONS = {
+  { slug = "hb",       title = "Hebrew Bible/Old Testament" },
+  { slug = "nt",       title = "New Testament" },
+  { slug = "apoc",     title = "Deuterocanonical Works" },
+  { slug = "pseud",    title = "Pseudepigrapha" },
+  { slug = "dss",      title = "Dead Sea Scrolls" },
+  { slug = "philo",    title = "Philo" },
+  { slug = "josephus", title = "Josephus" },
+  { slug = "rabbinic", title = "Rabbinic Works" },
+  { slug = "ane",      title = "Ancient Near Eastern Texts" },
+  { slug = "inscr",    title = "Inscriptions, Papyri, and Ostraca" },
+  { slug = "greco",    title = "Greco-Roman Literature" },
+}
+local SECTION_TITLES = {}
+for _, s in ipairs(SECTIONS) do SECTION_TITLES[s.slug] = s.title end
 
 -- ──────────────────────────────────────────────
 -- Book name tables
@@ -201,9 +257,10 @@ local NUMBERED_BASES = {
 -- Maximum numeral prefix allowed per base (1-3 John, 1-2 everything else).
 local MAX_NUMERAL = { John = 3 }
 
--- Canonical scholarly ordering, used by the HTML static list, the docx
--- generated index, and (as a zero-padded ordinal lookup) the typst
--- sort-order callback.
+-- Canonical scholarly ordering. Positions 1-39 are the Hebrew Bible/Old
+-- Testament ("hb" section), 40-66 the New Testament ("nt" section). Used
+-- for entry ordering in those two sections in all three output paths, and
+-- (as a zero-padded ordinal lookup) in the typst sort-order callback.
 local CANONICAL_ORDER = {
   "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
   "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings",
@@ -220,60 +277,127 @@ local CANONICAL_ORDER = {
 }
 local ORDER_INDEX = {}
 for i, name in ipairs(CANONICAL_ORDER) do ORDER_INDEX[name] = i end
+local LAST_OT_POSITION = 39
+
+local function book_section(book)
+  local pos = ORDER_INDEX[book]
+  if pos and pos > LAST_OT_POSITION then return "nt" end
+  return "hb"
+end
 
 -- ──────────────────────────────────────────────
--- Reference tracking
+-- Sort keys
 -- ──────────────────────────────────────────────
 
-local ancient_refs = {}       -- book -> { ref_string -> true }
-local ancient_order = {}      -- book -> list of ref_string, insertion order (dedup)
-local ancient_locations = {}  -- book -> ref_string -> list of docx bookmark names,
-                               -- in occurrence order (docx path only)
+-- Automatic locus sort key: every digit run zero-padded to 4 so plain
+-- string comparison matches numeric order ("2.26" -> "0002.0026" sorts
+-- before "11.21" -> "0011.0021"); en dashes normalised to '-' since keys
+-- are never displayed.
+local function auto_sort_key(s)
+  local key = s:gsub("%d+", function(d) return string.format("%04d", tonumber(d)) end)
+  key = key:gsub("\u{2013}", "-")
+  return key
+end
 
-local function record_ref(book, ref)
-  if not ancient_refs[book] then
-    ancient_refs[book] = {}
-    ancient_order[book] = {}
+-- ──────────────────────────────────────────────
+-- Entry/locus tracking
+-- ──────────────────────────────────────────────
+
+-- sections_data[slug] = {
+--   entry_order = { entry, ... }   (insertion order; sorted at output)
+--   entries = { entry -> {
+--     entry_sort  = string or nil  (explicit entry-sort attribute)
+--     locus_order = { locus, ... } (insertion order; "" = page-only)
+--     loci        = { locus -> true }
+--     locus_sort  = { locus -> key }
+--     locations   = { locus -> { bookmark_name, ... } }  (docx path)
+--   } }
+-- }
+local sections_data = {}
+
+local function record_entry(slug, entry, locus, entry_sort, locus_sort)
+  local sec = sections_data[slug]
+  if not sec then
+    sec = { entry_order = {}, entries = {} }
+    sections_data[slug] = sec
   end
-  if not ancient_refs[book][ref] then
-    ancient_refs[book][ref] = true
-    table.insert(ancient_order[book], ref)
+  local rec = sec.entries[entry]
+  if not rec then
+    rec = { locus_order = {}, loci = {}, locus_sort = {}, locations = {} }
+    sec.entries[entry] = rec
+    table.insert(sec.entry_order, entry)
+  end
+  if entry_sort then rec.entry_sort = entry_sort end
+  if not rec.loci[locus] then
+    rec.loci[locus] = true
+    table.insert(rec.locus_order, locus)
+  end
+  if locus_sort then
+    rec.locus_sort[locus] = locus_sort
+  elseif not rec.locus_sort[locus] then
+    rec.locus_sort[locus] = auto_sort_key(locus)
   end
 end
 
 -- ──────────────────────────────────────────────
--- Shared canonical-order sorting helpers (used by HTML and docx paths)
+-- Shared ordering helpers (used by all output paths)
 -- ──────────────────────────────────────────────
 
-local function canonical_books()
-  local books = {}
-  for book, _ in pairs(ancient_refs) do table.insert(books, book) end
-  table.sort(books, function(a, b)
-    local oa, ob = ORDER_INDEX[a], ORDER_INDEX[b]
-    if oa and ob then return oa < ob end
-    if oa then return true end
-    if ob then return false end
+-- Entries of a section in output order: canonical position for hb/nt,
+-- entry-sort (falling back to the entry text) elsewhere.
+local function sorted_entries(slug)
+  local sec = sections_data[slug]
+  local entries = {}
+  for _, e in ipairs(sec.entry_order) do table.insert(entries, e) end
+  if slug == "hb" or slug == "nt" then
+    table.sort(entries, function(a, b)
+      local oa, ob = ORDER_INDEX[a], ORDER_INDEX[b]
+      if oa and ob then return oa < ob end
+      if oa then return true end
+      if ob then return false end
+      return a < b
+    end)
+  else
+    table.sort(entries, function(a, b)
+      local ka = sec.entries[a].entry_sort or a
+      local kb = sec.entries[b].entry_sort or b
+      if ka ~= kb then return ka < kb end
+      return a < b
+    end)
+  end
+  return entries
+end
+
+-- Loci of an entry in output order (by sort key; "" page-only first).
+local function sorted_loci(slug, entry)
+  local rec = sections_data[slug].entries[entry]
+  local loci = {}
+  for _, l in ipairs(rec.locus_order) do table.insert(loci, l) end
+  table.sort(loci, function(a, b)
+    local ka = rec.locus_sort[a] or a
+    local kb = rec.locus_sort[b] or b
+    if ka ~= kb then return ka < kb end
     return a < b
   end)
-  return books
+  return loci
 end
 
-local function ref_sort_key(ref)
-  local c, v = ref:match("^(%d+)%.(%d+)")
-  if not c then c = ref:match("^(%d+)") end
-  return tonumber(c) or 0, tonumber(v) or 0
+-- Non-empty sections in SECTIONS order.
+local function active_sections()
+  local out = {}
+  for _, s in ipairs(SECTIONS) do
+    if sections_data[s.slug] then table.insert(out, s) end
+  end
+  return out
 end
 
-local function sorted_refs(book)
-  local refs = {}
-  for _, r in ipairs(ancient_order[book]) do table.insert(refs, r) end
-  table.sort(refs, function(a, b)
-    local ca, va = ref_sort_key(a)
-    local cb, vb = ref_sort_key(b)
-    if ca ~= cb then return ca < cb end
-    return va < vb
-  end)
-  return refs
+-- Section heading block, shared across output paths: bold small caps.
+local function section_heading_block(title)
+  return pandoc.Para(pandoc.Inlines{
+    pandoc.Strong(pandoc.Inlines{
+      pandoc.SmallCaps(pandoc.Inlines{pandoc.Str(title)})
+    })
+  })
 end
 
 -- ──────────────────────────────────────────────
@@ -285,16 +409,16 @@ end
 local BOOKMARK_ID_BASE = 90000
 local bookmark_seq = 0
 
--- Emit a hidden bookmark at a reference occurrence and record its name
--- against (book, ref) for later PAGEREF generation at the marker heading.
-local function make_bookmark(book, ref)
+-- Emit a hidden bookmark at an occurrence and record its name against
+-- (slug, entry, locus) for later PAGEREF generation at the marker heading.
+local function make_bookmark(slug, entry, locus)
   bookmark_seq = bookmark_seq + 1
   local name = string.format("anc%04d", bookmark_seq)
   local id = BOOKMARK_ID_BASE + bookmark_seq
 
-  if not ancient_locations[book] then ancient_locations[book] = {} end
-  if not ancient_locations[book][ref] then ancient_locations[book][ref] = {} end
-  table.insert(ancient_locations[book][ref], name)
+  local rec = sections_data[slug].entries[entry]
+  if not rec.locations[locus] then rec.locations[locus] = {} end
+  table.insert(rec.locations[locus], name)
 
   return pandoc.RawInline("openxml",
     '<w:bookmarkStart w:id="' .. id .. '" w:name="' .. name .. '"/>' ..
@@ -314,99 +438,137 @@ local function make_pageref_field(bookmark_name)
   )
 end
 
--- Build the docx index blocks (one bold paragraph per book in canonical
--- order, subentry paragraphs with comma-separated PAGEREF fields).
+local function append_pagerefs(inl, names)
+  for k, name in ipairs(names) do
+    if k > 1 then inl:insert(pandoc.Str(", ")) end
+    inl:insert(make_pageref_field(name))
+  end
+end
+
+-- Build the docx index blocks: per non-empty section, a heading paragraph,
+-- then one bold paragraph per entry (with the page-only PAGEREFs on the
+-- entry line itself, if any) and subentry paragraphs with comma-separated
+-- PAGEREF fields.
 local function build_docx_index_blocks()
   local out_blocks = {}
-  local books = canonical_books()
-  for _, book in ipairs(books) do
-    table.insert(out_blocks, pandoc.Para(pandoc.Inlines{
-      pandoc.Strong(pandoc.Inlines{pandoc.Str(book)})
-    }))
-    for _, ref in ipairs(sorted_refs(book)) do
-      local inl = pandoc.List{}
-      inl:insert(pandoc.Str(ref))
-      inl:insert(pandoc.Str(": "))
-      local names = (ancient_locations[book] and ancient_locations[book][ref]) or {}
-      for k, name in ipairs(names) do
-        if k > 1 then inl:insert(pandoc.Str(", ")) end
-        inl:insert(make_pageref_field(name))
+  for _, s in ipairs(active_sections()) do
+    table.insert(out_blocks, section_heading_block(s.title))
+    for _, entry in ipairs(sorted_entries(s.slug)) do
+      local rec = sections_data[s.slug].entries[entry]
+      local head = pandoc.List{}
+      head:insert(pandoc.Strong(pandoc.Inlines{pandoc.Str(entry)}))
+      local page_only = rec.locations[""]
+      if page_only and #page_only > 0 then
+        head:insert(pandoc.Str(": "))
+        append_pagerefs(head, page_only)
       end
-      table.insert(out_blocks, pandoc.Para(inl))
+      table.insert(out_blocks, pandoc.Para(head))
+      for _, locus in ipairs(sorted_loci(s.slug, entry)) do
+        if locus ~= "" then
+          local inl = pandoc.List{}
+          inl:insert(pandoc.Str(locus))
+          inl:insert(pandoc.Str(": "))
+          append_pagerefs(inl, rec.locations[locus] or {})
+          table.insert(out_blocks, pandoc.Para(inl))
+        end
+      end
     end
   end
   return out_blocks
 end
 
 -- ──────────────────────────────────────────────
--- Typst index generation (via in-dexter package, dedicated "ancient" index)
+-- Typst index generation (via in-dexter, one index per section)
 -- ──────────────────────────────────────────────
 
 local function typst_escape(s)
   return (s:gsub('"', '\\"'))
 end
 
-local function zpad3(numstr)
-  return string.format("%03d", tonumber(numstr))
-end
-
--- Build a zero-padded, lexicographically-numeric sort key for a chapter/
--- verse ref string. Handles all four shapes parse_clause() produces:
---   "C.V\u{2013}W" (chapter.verse-range), "C.V" (chapter.verse),
---   "C\u{2013}D" (chapter-range), "C" (chapter only).
--- The en dash is normalised to a plain '-' since keys are never displayed.
-local function typst_ref_key(ref)
-  local c, v1, v2 = ref:match("^(%d+)%.(%d+)\u{2013}(%d+)$")
-  if c then return zpad3(c) .. "." .. zpad3(v1) .. "-" .. zpad3(v2) end
-
-  local c2, v = ref:match("^(%d+)%.(%d+)$")
-  if c2 then return zpad3(c2) .. "." .. zpad3(v) end
-
-  local d1, d2 = ref:match("^(%d+)\u{2013}(%d+)$")
-  if d1 then return zpad3(d1) .. "-" .. zpad3(d2) end
-
-  local c3 = ref:match("^(%d+)$")
-  if c3 then return zpad3(c3) end
-
-  return ref
-end
-
--- Book is a plain string (display == key, both the correct display text).
--- Chapter/verse is a (display, key) tuple: display stays as the readable
--- form ("32.6\u{2013}15"); key is the zero-padded sort key used by the
--- custom sort-order callback installed at #make-index().
-local function make_typst_index_entry(book, ref)
-  local display = typst_escape(ref)
-  local key = typst_ref_key(ref)
+-- The occurrence-site #index() call. Entry names are always plain strings
+-- (see the in-dexter API note); loci are (display, key) tuples; page-only
+-- occurrences are single-level entries.
+local function make_typst_index_entry(slug, entry, locus)
+  local index_name = "ancient-" .. slug
+  if locus == "" then
+    return pandoc.RawInline("typst",
+      '#index("' .. typst_escape(entry) .. '", index: "' .. index_name .. '")')
+  end
+  local rec = sections_data[slug].entries[entry]
+  local key = rec.locus_sort[locus] or auto_sort_key(locus)
   return pandoc.RawInline("typst",
-    '#index("' .. typst_escape(book) .. '", ("' .. display .. '", "' .. key .. '"), index: "ancient")'
-  )
+    '#index("' .. typst_escape(entry) .. '", ("' .. typst_escape(locus) ..
+    '", "' .. typst_escape(key) .. '"), index: "' .. index_name .. '")')
 end
 
--- Emits a literal book-name -> zero-padded canonical-ordinal dict and
--- installs it as #make-index()'s sort-order callback (see the in-dexter
--- API note above for why this is needed instead of a display/key tuple at
--- the book level). section-title is overridden to render nothing, so the
--- initial-letter bucketing in-dexter always does stays invisible and the
--- index reads as one continuous canonically-ordered list.
-local function make_typst_index()
+-- Emits one shared entry-name -> sort-key dict (canonical zero-padded
+-- ordinals for biblical books, plus any entry-sort attributes from
+-- markers) and, per non-empty section, a heading and a #make-index() call
+-- for that section's index, all sharing the dict as sort-order callback.
+-- section-title is overridden to render nothing, so in-dexter's
+-- initial-letter bucketing stays invisible and each section reads as one
+-- continuous ordered list.
+local function make_typst_index_blocks()
   local lines = { '#let __ancient_index_order = (' }
   for i, name in ipairs(CANONICAL_ORDER) do
     table.insert(lines,
       '  "' .. typst_escape(name) .. '": "' .. string.format('%02d', i) .. '",')
   end
+  for _, s in ipairs(active_sections()) do
+    if s.slug ~= "hb" and s.slug ~= "nt" then
+      local sec = sections_data[s.slug]
+      for _, entry in ipairs(sec.entry_order) do
+        local es = sec.entries[entry].entry_sort
+        if es then
+          table.insert(lines,
+            '  "' .. typst_escape(entry) .. '": "' .. typst_escape(es) .. '",')
+        end
+      end
+    end
+  end
   table.insert(lines, ')')
-  table.insert(lines, '#make-index(')
-  table.insert(lines, '  title: none,')
-  table.insert(lines, '  indexes: ("ancient",),')
-  table.insert(lines, '  section-title: (letter, counter) => [],')
-  table.insert(lines, '  sort-order: k => __ancient_index_order.at(k, default: k),')
-  table.insert(lines, ')')
-  return pandoc.RawBlock("typst", table.concat(lines, "\n"))
+
+  local out_blocks = { pandoc.RawBlock("typst", table.concat(lines, "\n")) }
+  for _, s in ipairs(active_sections()) do
+    table.insert(out_blocks, section_heading_block(s.title))
+    local mk = {
+      '#make-index(',
+      '  title: none,',
+      '  indexes: ("ancient-' .. s.slug .. '",),',
+      '  section-title: (letter, counter) => [],',
+      '  sort-order: k => __ancient_index_order.at(k, default: k),',
+      -- in-dexter's entry-casing defaults to first-letter-up, which would
+      -- corrupt entries/loci like "m. B. Bat." or "gap ¶ l"; display text
+      -- is already exactly as authored, so use the identity.
+      '  entry-casing: k => k,',
+      ')',
+    }
+    table.insert(out_blocks, pandoc.RawBlock("typst", table.concat(mk, "\n")))
+  end
+  return out_blocks
 end
 
 -- ──────────────────────────────────────────────
--- Reference recognition
+-- Explicit marker spans ([]{.anc section=".." entry=".." locus=".."})
+-- ──────────────────────────────────────────────
+
+local function handle_marker_span(span)
+  local attrs = span.attributes
+  local slug = attrs["section"]
+  local entry = attrs["entry"]
+  if not slug or not SECTION_TITLES[slug] or not entry or entry == "" then
+    io.stderr:write("[ld-ancient-index] WARNING: skipping .anc marker with " ..
+      "missing/unknown section or entry (section=" .. tostring(slug) ..
+      ", entry=" .. tostring(entry) .. ")\n")
+    return nil
+  end
+  local locus = attrs["locus"] or ""
+  record_entry(slug, entry, locus, attrs["entry-sort"], attrs["sort"])
+  return slug, entry, locus
+end
+
+-- ──────────────────────────────────────────────
+-- Automatic biblical reference recognition
 -- ──────────────────────────────────────────────
 
 -- Strip leading bracket/quote punctuation only (book-name tokens).
@@ -593,44 +755,60 @@ end
 
 -- Process a flat Inlines list (the direct content of a Para/Plain block),
 -- returning a new Inlines list with index-marker RawInlines inserted after
--- each recognised reference (docx/typst only; HTML output is unaffected
--- here but references are still recorded for the static list).
+-- each recognised biblical reference and each .anc marker span (docx/typst
+-- only; HTML output is unaffected here but occurrences are still recorded
+-- for the static list).
 --
--- docx: every occurrence gets a bookmark, EXCEPT that the same (book, ref)
--- pair recognised more than once within this single block is only
--- bookmarked on its first occurrence (see the "Docx occurrence marking"
--- note at the top of the file).
--- typst: every occurrence gets its own #index() call, un-deduped; in-dexter
--- collapses duplicate pages on its own.
+-- docx: every occurrence gets a bookmark, EXCEPT that the same (section,
+-- entry, locus) triple recognised more than once within this single block
+-- is only bookmarked on its first occurrence (see the "Docx occurrence
+-- marking" note at the top of the file).
+-- typst: every occurrence gets its own #index() call, un-deduped;
+-- in-dexter collapses duplicate pages on its own.
 local function process_inlines(inlines)
   local tokens = tokenize(inlines)
   local n = #inlines
   local out = pandoc.List{}
   local seen_in_block = {}
+
+  local function emit_occurrence(slug, entry, locus)
+    if is_docx then
+      local dedup_key = slug .. "\30" .. entry .. "\30" .. locus
+      if not seen_in_block[dedup_key] then
+        seen_in_block[dedup_key] = true
+        out:insert(make_bookmark(slug, entry, locus))
+      end
+    elseif is_typst then
+      out:insert(make_typst_index_entry(slug, entry, locus))
+    end
+  end
+
   local i = 1
   while i <= n do
-    local book, refs, match_end
-    if inlines[i].t == "Str" then
-      book, refs, match_end = match_reference(inlines, tokens, n, i)
-    end
-    if book then
-      for k = i, match_end do out:insert(inlines[k]) end
-      for _, ref in ipairs(refs) do
-        record_ref(book, ref)
-        if is_docx then
-          local dedup_key = book .. "\30" .. ref
-          if not seen_in_block[dedup_key] then
-            seen_in_block[dedup_key] = true
-            out:insert(make_bookmark(book, ref))
-          end
-        elseif is_typst then
-          out:insert(make_typst_index_entry(book, ref))
-        end
-      end
-      i = match_end + 1
-    else
-      out:insert(inlines[i])
+    local el = inlines[i]
+    if el.t == "Span" and el.classes:includes("anc") then
+      -- The marker span is a pure directive: drop it from the output and
+      -- emit only the bookmark/#index call in its place.
+      local slug, entry, locus = handle_marker_span(el)
+      if slug then emit_occurrence(slug, entry, locus) end
       i = i + 1
+    else
+      local book, refs, match_end
+      if el.t == "Str" then
+        book, refs, match_end = match_reference(inlines, tokens, n, i)
+      end
+      if book then
+        for k = i, match_end do out:insert(inlines[k]) end
+        local slug = book_section(book)
+        for _, ref in ipairs(refs) do
+          record_entry(slug, book, ref)
+          emit_occurrence(slug, book, ref)
+        end
+        i = match_end + 1
+      else
+        out:insert(el)
+        i = i + 1
+      end
     end
   end
   return out
@@ -717,40 +895,57 @@ return {
 
       if not index_idx then return doc end
 
+      if #active_sections() == 0 then return doc end
+
       if is_docx then
         local index_blocks = build_docx_index_blocks()
         for j, blk in ipairs(index_blocks) do
           table.insert(doc.blocks, index_idx + j, blk)
         end
       elseif is_typst then
-        table.insert(doc.blocks, index_idx + 1, make_typst_index())
+        local index_blocks = make_typst_index_blocks()
+        for j, blk in ipairs(index_blocks) do
+          table.insert(doc.blocks, index_idx + j, blk)
+        end
       else
-        -- HTML/other: static two-level list in canonical book order,
-        -- subentries sorted numerically by chapter then verse.
-        local books = canonical_books()
-        if #books == 0 then return doc end
+        -- HTML/other: static sectioned two-level list, entries in
+        -- canonical/sorted order, subentries by sort key.
+        local insert_at = index_idx
+        for _, s in ipairs(active_sections()) do
+          insert_at = insert_at + 1
+          table.insert(doc.blocks, insert_at, section_heading_block(s.title))
 
-        local outer_items = pandoc.List{}
-        for _, book in ipairs(books) do
-          local inner_items = pandoc.List{}
-          for _, ref in ipairs(sorted_refs(book)) do
-            inner_items:insert(pandoc.Plain(pandoc.Inlines{pandoc.Str(ref)}))
+          local outer_items = pandoc.List{}
+          for _, entry in ipairs(sorted_entries(s.slug)) do
+            local inner_items = pandoc.List{}
+            for _, locus in ipairs(sorted_loci(s.slug, entry)) do
+              if locus ~= "" then
+                inner_items:insert(pandoc.Plain(pandoc.Inlines{pandoc.Str(locus)}))
+              end
+            end
+
+            local term = pandoc.Inlines{pandoc.Str(entry)}
+            local defs
+            if #inner_items > 0 then
+              local def = pandoc.Blocks{pandoc.BulletList(
+                (function()
+                  local items = {}
+                  for _, it in ipairs(inner_items) do
+                    table.insert(items, pandoc.Blocks{it})
+                  end
+                  return items
+                end)()
+              )}
+              defs = {def}
+            else
+              defs = {pandoc.Blocks{}}
+            end
+            outer_items:insert({term, defs})
           end
 
-          local term = pandoc.Inlines{pandoc.Str(book)}
-          local def = pandoc.Blocks{pandoc.BulletList(
-            (function()
-              local items = {}
-              for _, it in ipairs(inner_items) do
-                table.insert(items, pandoc.Blocks{it})
-              end
-              return items
-            end)()
-          )}
-          outer_items:insert({term, {def}})
+          insert_at = insert_at + 1
+          table.insert(doc.blocks, insert_at, pandoc.DefinitionList(outer_items))
         end
-
-        table.insert(doc.blocks, index_idx + 1, pandoc.DefinitionList(outer_items))
       end
 
       return doc
