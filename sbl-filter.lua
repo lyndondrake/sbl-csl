@@ -23,17 +23,42 @@ local function parse_sbl_note(note_str)
   if not note_str then return {} end
   local sbl = {}
   local in_sbl = false
+  local skip_indent = nil  -- set while inside a nested block (e.g. related:)
 
   for line in note_str:gmatch("[^\n]+") do
     if line:match("^%s*sbl:%s*$") then
       in_sbl = true
     elseif in_sbl then
-      local key, value = line:match("^%s+(%S+):%s*(.+)%s*$")
-      if key and value then
-        value = value:gsub("^['\"](.+)['\"]$", "%1")
-        sbl[key] = value
-      elseif not line:match("^%s") then
-        in_sbl = false
+      local indent = line:match("^(%s*)")
+      if skip_indent and #indent > skip_indent then
+        -- Content of a nested block (list items and their keys, e.g. the
+        -- type/options lines of a related: item): these are not entry
+        -- keys and must not flatten into the entry's own flags.
+      else
+        skip_indent = nil
+        local key, value = line:match("^%s+(%S+):%s*(.+)%s*$")
+        if key and value then
+          -- Strip a matching outer quote pair and undo the YAML escapes.
+          -- Double-quoted style: \" becomes " (ld-agent's CSLJSONExporter
+          -- escapes only double quotes, not backslashes, so \\ is left
+          -- alone to avoid corrupting literal-backslash values).
+          -- Single-quoted style: '' becomes '.
+          local dq = value:match('^"(.*)"$')
+          local sq = value:match("^'(.*)'$")
+          if dq then
+            value = dq:gsub('\\"', '"')
+          elseif sq then
+            value = sq:gsub("''", "'")
+          end
+          sbl[key] = value
+        else
+          local opener = line:match("^(%s+)%S+:%s*$")
+          if opener then
+            skip_indent = #opener
+          elseif not line:match("^%s") then
+            in_sbl = false
+          end
+        end
       end
     end
   end
@@ -588,6 +613,21 @@ local function italicise_maintitle(inlines, collection_title)
       end
     end
 
+    -- Citations rendered under link-citations: true arrive wrapped in a
+    -- Link (similarly Span wrappers); descend so the "vol. X of Title"
+    -- pattern inside the container is still found. Clone rather than
+    -- mutate: el is a live reference into the caller's list, and mutating
+    -- in place would make the caller's changed-content comparison see
+    -- "no change".
+    if not found and (el.t == "Link" or el.t == "Span") then
+      local inner = italicise_maintitle(el.content, collection_title)
+      if inner ~= el.content then
+        el = el:clone()
+        el.content = inner
+        found = true
+      end
+    end
+
     result:insert(el)
     i = i + 1
     ::continue::
@@ -705,8 +745,23 @@ local function suppress_location_in_bib(inlines, publisher_place)
         i = i + 1
       end
     else
+      local el = inlines[i]
+      -- Citations rendered under link-citations: true arrive wrapped in a
+      -- Link (similarly Span/Emph wrappers); descend so the place text
+      -- inside the container is still found and removed.
+      if not found and (el.t == "Link" or el.t == "Span" or el.t == "Emph") then
+        local inner = suppress_location_in_bib(el.content, publisher_place)
+        if inner ~= el.content then
+          -- Clone rather than mutate: el is a live reference into the
+          -- caller's inline list, and mutating it in place would make the
+          -- caller's changed-content comparison see "no change".
+          el = el:clone()
+          el.content = inner
+          found = true
+        end
+      end
       -- Either already found, or not a Str element — keep it
-      result:insert(inlines[i])
+      result:insert(el)
       i = i + 1
     end
   end
@@ -734,6 +789,60 @@ end
 -- ──────────────────────────────────────────────
 -- Note manipulation
 -- ──────────────────────────────────────────────
+
+-- Append a comma to the trailing Str of an inline list, descending through
+-- trailing Link/Span/Emph wrappers to reach it. Returns true on success.
+local function append_comma_at_end(inlines)
+  local last = inlines[#inlines]
+  if last == nil then return false end
+  if last.t == "Str" then
+    inlines[#inlines] = pandoc.Str(last.text .. ",")
+    return true
+  elseif last.t == "Link" or last.t == "Span" or last.t == "Emph" then
+    local inner = last.content
+    if append_comma_at_end(inner) then
+      last.content = inner
+      return true
+    end
+  end
+  return false
+end
+
+-- Append a comma to the last Str ending in ")" when a locator follows it
+-- (". …2011), §§360–62"). Recurses into Link/Span/Emph wrappers so
+-- citations rendered under link-citations: true are still handled.
+-- Returns (modified, paren_at_end): paren_at_end reports a trailing ")"
+-- that ends this level, so a caller can append when the locator sits
+-- outside the wrapper.
+local function append_comma_after_last_paren(inlines)
+  for i = #inlines, 1, -1 do
+    local el = inlines[i]
+    if el.t == "Str" and el.text:sub(-1) == ")" then
+      if i < #inlines then
+        inlines[i] = pandoc.Str(el.text .. ",")
+        return true, false
+      end
+      return false, true
+    elseif el.t == "Link" or el.t == "Span" or el.t == "Emph" then
+      local modified, at_end = append_comma_after_last_paren(el.content)
+      if modified then return true, false end
+      if at_end then
+        if i < #inlines then
+          -- The paren ends this wrapper's subtree (possibly nested
+          -- deeper); append at the subtree's trailing Str.
+          local inner = el.content
+          if append_comma_at_end(inner) then
+            el.content = inner
+            return true, false
+          end
+          return false, false
+        end
+        return false, true
+      end
+    end
+  end
+  return false, false
+end
 
 -- Build the inline form of a shorthand citation ("BDAG, 35"; "BDF §151").
 -- If italic is true, the shorthand is wrapped in Emph.
@@ -850,14 +959,7 @@ return {
         if #cite.content > 0 and cite.content[1].t == "Note" then
           for _, block in ipairs(cite.content[1].content) do
             if block.t == "Para" then
-              local last_paren = nil
-              for i, el in ipairs(block.content) do
-                if el.t == "Str" and el.text:sub(-1) == ")" then
-                  last_paren = i
-                end
-              end
-              if last_paren and last_paren < #block.content then
-                block.content[last_paren] = pandoc.Str(block.content[last_paren].text .. ",")
+              if append_comma_after_last_paren(block.content) then
                 location_modified = true
               end
             end

@@ -1,0 +1,230 @@
+[
+  {
+    "author": [
+      {
+        "family": "Clines",
+        "given": "David J. A."
+      }
+    ],
+    "citation-key": "clines-1981-nehemiah-memoir",
+    "id": "clines-1981-nehemiah-memoir",
+    "issued": {
+      "date-parts": [
+        [
+          1981
+        ]
+      ]
+    },
+    "publisher": "JSOT Press",
+    "publisher-place": "Sheffield",
+    "title": "The Nehemiah Memoir: The Perils of Autobiography",
+    "title-short": "Nehemiah Memoir",
+    "type": "book"
+  },
+  {
+    "author": [
+      {
+        "family": "Smith",
+        "given": "Jane R."
+      }
+    ],
+    "citation-key": "smith-1995-cross-language-transfer",
+    "container-title": "Journal of Biblical Literature",
+    "container-title-short": "JBL",
+    "id": "smith-1995-cross-language-transfer",
+    "issue": "3",
+    "issued": {
+      "date-parts": [
+        [
+          1995
+        ]
+      ]
+    },
+    "language": "en",
+    "page": "401-419",
+    "title": "Cross-Language Transfer in Second Temple Historiography",
+    "type": "article-journal",
+    "volume": "114"
+  },
+  {
+    "author": [
+      {
+        "family": "Rad",
+        "given": "Gerhard",
+        "non-dropping-particle": "von"
+      }
+    ],
+    "citation-key": "rad-1966-hexateuch-problem",
+    "container-title": "The Problem of the Hexateuch and Other Essays",
+    "editor": [
+      {
+        "family": "Kottsieper",
+        "given": "Ingo"
+      }
+    ],
+    "id": "rad-1966-hexateuch-problem",
+    "issued": {
+      "date-parts": [
+        [
+          1966
+        ]
+      ]
+    },
+    "page": "1-78",
+    "publisher": "Oliver and Boyd",
+    "publisher-place": "Edinburgh",
+    "title": "The Form-Critical Problem of the Hexateuch",
+    "title-short": "Form-Critical Problem",
+    "type": "chapter"
+  },
+  {
+    "author": [
+      {
+        "family": "Koehler",
+        "given": "Ludwig"
+      },
+      {
+        "family": "Baumgartner",
+        "given": "Walter"
+      },
+      {
+        "family": "Stamm",
+        "given": "Johann Jakob"
+      }
+    ],
+    "citation-key": "HALOT",
+    "editor": [
+      {
+        "family": "Richardson",
+        "given": "Mervyn E. J."
+      }
+    ],
+    "id": "HALOT",
+    "issued": {
+      "date-parts": [
+        [
+          2000
+        ]
+      ]
+    },
+    "note": "sbl:\n  shorthand: HALOT\n  skipbib: true\n",
+    "number-of-volumes": "4",
+    "publisher": "Brill",
+    "publisher-place": "Leiden",
+    "title": "The Hebrew and Aramaic Lexicon of the Old Testament",
+    "title-short": "HALOT",
+    "type": "book"
+  },
+  {
+    "citation-key": "COS",
+    "editor": [
+      {
+        "family": "Hallo",
+        "given": "William W."
+      },
+      {
+        "family": "Younger",
+        "given": "K. Lawson"
+      }
+    ],
+    "id": "COS",
+    "issued": {
+      "date-parts": [
+        [
+          1997
+        ],
+        [
+          2016
+        ]
+      ]
+    },
+    "note": "sbl:\n  shorthand: COS\n  options: [skipbib]\n",
+    "number-of-volumes": "4",
+    "publisher": "Brill",
+    "publisher-place": "Leiden",
+    "title": "The Context of Scripture",
+    "title-short": "COS",
+    "type": "book"
+  },
+  {
+    "citation-key": "COS1",
+    "collection-title": "Canonical Compositions from the Biblical World",
+    "editor": [
+      {
+        "family": "Hallo",
+        "given": "William W."
+      },
+      {
+        "family": "Younger",
+        "given": "K. Lawson"
+      }
+    ],
+    "id": "COS1",
+    "issued": {
+      "date-parts": [
+        [
+          1997
+        ]
+      ]
+    },
+    "note": "sbl:\n  shorthand: COS\n  xref: COS\n  maintitle: The Context of Scripture\n  options: [skipbiblist]\n",
+    "publisher": "Brill",
+    "publisher-place": "Leiden",
+    "title": "The Context of Scripture",
+    "type": "book",
+    "volume": "1"
+  },
+  {
+    "annote": "“The Deir ʿAlla Plaster Inscriptions (The Book of Balaam, Son of Beor)” (<i>COS</i> 1.26:139–40)",
+    "citation-key": "COS1.26",
+    "id": "COS1.26",
+    "note": "sbl:\n  entrysubtype: inancientcollection\n  xref: COS1\n  subsequent_annote: \"‘Deir ʿAlla Plaster Inscriptions’, <i>COS</i> 1.26:139–40\"\n  skipbib: true\n",
+    "page": "139-140",
+    "section": "26",
+    "title": "The Deir ʿAlla Plaster Inscriptions (The Book of Balaam, Son of Beor)",
+    "title-short": "The Deir ʿAlla Plaster Inscriptions",
+    "type": "document"
+  },
+  {
+    "citation-key": "sigla-gen",
+    "id": "sigla-gen",
+    "note": "sbl:\n  shorthand: gen.\n  abbreviation_type: sigla\n  definition: genitive\n  skipbib: true\n",
+    "title": "genitive",
+    "type": "entry"
+  },
+  {
+    "author": [
+      {
+        "family": "Brown",
+        "given": "Alan T."
+      }
+    ],
+    "citation-key": "brown-2005-example-article",
+    "container-title": "Vetus Testamentum",
+    "container-title-short": "VT",
+    "id": "brown-2005-example-article",
+    "issued": {
+      "date-parts": [
+        [
+          2005
+        ]
+      ]
+    },
+    "note": "sbl:\n  xref: COS\n  bibNote: \"Internal cataloguing note, not for print\"\n  sortkey: Brown2005a\n  related:\n    - id: clines-1981-nehemiah-memoir\n      type: reprint\n      options: [skipbib]\n",
+    "page": "1-20",
+    "title": "An Example Article for Unknown-Key Testing",
+    "type": "article-journal",
+    "volume": "55"
+  },
+  {
+    "annote": "“The Nebuchadnezzar Inscription” (<i>COS</i> 3.115:141)",
+    "citation-key": "COS3.115",
+    "id": "COS3.115",
+    "note": "sbl:\n  entrysubtype: inancientcollection\n  xref: COS1\n  subsequent_annote: \"\\\"A Boundary Stone Inscription\\\", <i>COS</i> 3.115:141\"\n  skipbib: true\n",
+    "page": "141",
+    "section": "115",
+    "title": "The Nebuchadnezzar Inscription",
+    "title-short": "Nebuchadnezzar Inscription",
+    "type": "document"
+  }
+]

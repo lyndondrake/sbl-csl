@@ -105,6 +105,71 @@ Standard CSL fields are used wherever possible. SBL-specific metadata goes in a 
 
 See [CSL-JSON-GUIDE.md](CSL-JSON-GUIDE.md) for the complete data format reference, including SQLite schema design for applications producing CSL JSON.
 
+## Consumer contract
+
+This section is the stable interface for tools that generate bibliographies
+for this pipeline (for example ld-agent's `CSLJSONExporter`) and for projects
+that build documents with it. Everything not listed here is an internal
+detail and may change without notice.
+
+**Files a consuming project needs.** The CSL style, `sbl-filter.lua`, one of
+the abbreviation lists, and optionally `ld-author-index.lua` and
+`ld-ancient-index.lua`. Consumers should pin the commit (or release tag) they
+build against rather than tracking the working tree.
+
+**Bibliography input.** CSL YAML or CSL JSON, selected by file extension.
+The filters expect a single `bibliography` path in the document metadata —
+multiple bibliography files are not supported by the filters (citeproc
+itself still merges them, but the `sbl:` metadata will not load). Citekeys
+are opaque strings — the filters never parse their internal structure, so
+any key scheme works.
+
+**`sbl:` note keys that `sbl-filter.lua` acts on.** All other keys inside the
+`sbl:` block are parsed and then ignored silently; producers may emit extra
+keys freely.
+
+| Key | Effect |
+|-----|--------|
+| `shorthand` | Replaces citations with the shorthand form; labels the bibliography entry |
+| `options: [skipbib]` / `skipbib: true` | Suppresses the entry from the bibliography |
+| `options: [skipbiblist]` | Suppresses the entry from the abbreviation list |
+| `entrysubtype` | Selects ancient-text citation templates (e.g. `inancientcollection`) |
+| `subsequent_annote` | Full replacement text for subsequent citations |
+| `subsequent_suffix` | Suffix appended to subsequent citations |
+| `bibliography_annote` | Replaces the entry's bibliography text entirely |
+| `source_type: ancient` | Files the shorthand under Ancient Sources in the abbreviation list |
+| `abbreviation_type: sigla` + `definition` | Adds a sigla entry (no trailing period) to the abbreviation list |
+
+**Note-value format.** A key without a value (e.g. `related:`) opens a
+nested block: everything indented deeper than it is ignored rather than
+read as entry keys. Values containing `:`, `[`, `,`, `"` or `'` must be
+YAML-quoted with a matching pair: double-quoted style un-escapes `\"`
+(backslashes are otherwise left alone, matching what `CSLJSONExporter`
+emits), single-quoted style un-escapes `''`.
+
+Notably **not** read by any filter: `xref`. It is a convention for
+bibliography-assembly tools (scope the export so that xref-target entries are
+included in the emitted file — their shorthands feed the abbreviation list);
+the filters themselves never follow it. Also note the filter key is
+`bibliography_annote` (snake_case): ld-agent's exporter currently emits
+`bibliographyAnnote`, which is inert — tracked as an ld-agent fix.
+
+**CSL entry fields the filters read directly** (beyond what citeproc
+renders): `id`, `type`, `title`, `annote` (position-aware first-citation
+text), `author`/`editor` (including `non-dropping-particle` etc., for the
+author index), `collection-title`/`-short`, `container-title`/`-short`,
+`publisher-place`, `original-publisher-place`, and the year of
+`issued`/`original-date` (location suppression for post-1900 works).
+
+**Document markers.** `# Abbreviations {#sbl-abbreviations}`,
+`# Author Index {#author-index}` and `# Ancient Sources Index
+{#ancient-index}` headings position the generated lists;
+`[]{.anc section=… entry=… locus=…}` spans index non-biblical ancient
+sources (`ld-ancient-index.lua` reads no bibliography at all).
+
+This contract is exercised by `tests/test_exporter_shape.py` against a
+fixture in the exact shape `CSLJSONExporter` emits.
+
 ## Abbreviation lists
 
 Two lists for pandoc's `--citation-abbreviations` flag:
@@ -154,7 +219,7 @@ python3 -m venv .venv
 TMPDIR=.tmp/ .venv/bin/python -m pytest tests/ -k "sbl-fullnote" --tb=short -v
 ```
 
-Current results: 861 passing, 2 skipped, 0 failing (863 total, including author-index and abbreviation-list filter tests). Output is aligned with biblatex-sbl v2.0 final (April 2026), verified against its l3build regression outputs.
+Current results: 974 passing, 2 skipped, 0 failing (976 total, including author-index, abbreviation-list, ancient-index and exporter-shape filter tests). Output is aligned with biblatex-sbl v2.0 final (April 2026), verified against its l3build regression outputs.
 
 ## CSL modifications from upstream
 

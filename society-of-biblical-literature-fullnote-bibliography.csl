@@ -290,6 +290,11 @@
           </else>
         </choose>
       </if>
+      <!-- Titled volume of a multivolume work: the volume's own title stands
+           as the main italic title (SBLHS 6.4.1 / 6.2.21). -->
+      <else-if type="book" variable="volume-title" match="all">
+        <text variable="volume-title" font-style="italic"/>
+      </else-if>
       <else-if type="bill book classic document graphic legal_case legislation motion_picture report song" match="any">
         <text variable="title" font-style="italic"/>
       </else-if>
@@ -330,6 +335,11 @@
           </else-if>
         </choose>
       </if>
+      <!-- Titled volume of a multivolume work: the volume's own title stands
+           as the main italic title (SBLHS 6.4.1 / 6.2.21). -->
+      <else-if type="book" variable="volume-title" match="all">
+        <text variable="volume-title" font-style="italic"/>
+      </else-if>
       <else-if type="bill book classic document graphic legal_case legislation motion_picture report song" match="any">
         <text variable="title" font-style="italic"/>
       </else-if>
@@ -372,6 +382,19 @@
           </else-if>
         </choose>
       </if>
+      <!-- Titled volume of a multivolume work: short form is based on the
+           volume's own title (SBLHS 6.4.1 / 6.2.21) — title-short if
+           supplied, else the volume-title in full, as for books generally. -->
+      <else-if type="book" variable="volume-title" match="all">
+        <choose>
+          <if variable="title-short">
+            <text variable="title" form="short" font-style="italic"/>
+          </if>
+          <else>
+            <text variable="volume-title" font-style="italic"/>
+          </else>
+        </choose>
+      </else-if>
       <else-if type="bill book classic document graphic legal_case legislation motion_picture report song" match="any">
         <text variable="title" form="short" font-style="italic"/>
       </else-if>
@@ -578,14 +601,25 @@
             <if variable="volume">
               <!--If volume-->
               <choose>
-                <if type="book" variable="collection-title" match="all">
+                <!-- Titled volume of a multivolume work: "vol. N of Title".
+                     Tested before the collection-title branch so a titled
+                     volume that also sits in a series keeps its set title. -->
+                <if type="book" variable="volume-title" match="all">
+                  <group>
+                    <text term="volume" form="short" suffix=" "/>
+                    <number variable="volume" form="numeric"/>
+                    <text value=" of "/>
+                    <text variable="title" font-style="italic"/>
+                  </group>
+                </if>
+                <else-if type="book" variable="collection-title" match="all">
                   <!--SBL 6.2.21-->
                   <group>
                     <text term="volume" form="short" suffix=" "/>
                     <number variable="volume" form="numeric"/>
                     <text value=" of"/>
                   </group>
-                </if>
+                </else-if>
                 <else-if type="chapter" variable="collection-title" match="all">
                   <!--SBL 6.2.23-->
                   <group>
@@ -629,14 +663,25 @@
             <if variable="volume">
               <!--If volume-->
               <choose>
-                <if type="book" variable="collection-title" match="all">
+                <!-- Titled volume of a multivolume work: "Vol. N of Title".
+                     Tested before the collection-title branch so a titled
+                     volume that also sits in a series keeps its set title. -->
+                <if type="book" variable="volume-title" match="all">
+                  <group>
+                    <text term="volume" form="short" text-case="capitalize-first" suffix=" "/>
+                    <number variable="volume" form="numeric"/>
+                    <text value=" of "/>
+                    <text variable="title" font-style="italic"/>
+                  </group>
+                </if>
+                <else-if type="book" variable="collection-title" match="all">
                   <!--SBL 6.2.21-->
                   <group>
                     <text term="volume" form="short" text-case="capitalize-first" suffix=" "/>
                     <number variable="volume" form="numeric"/>
                     <text value=" of"/>
                   </group>
-                </if>
+                </else-if>
                 <else-if type="chapter" variable="collection-title" match="all">
                   <!--SBL 6.2.23-->
                   <group>

@@ -2290,3 +2290,235 @@ tests:
         expected: 'Zerwick §§360-62.'
   notes: 'Shorthand alias in roman (biblatex-sbl v2 shorthandformat=roman); skipbib +
     skipbiblist keep it out of the bibliography, which zerwick:2011 provides.'
+
+# =============================================================================
+# Entry shapes mined from a real monograph (gold: monograph-gold.html in the
+# thesis-monograph repo). Expectations derived from harness output and
+# cross-checked against the gold rendering. Known systematic build
+# differences vs the gold (documented, not style bugs): (1) the gold build
+# passes --citation-abbreviations, so journal abbreviations may differ in
+# notes; (2) the gold build renders UK single quotes (locale) — the
+# normaliser makes quotes glyph-insensitive anyway. A third difference
+# existed at first capture: under link-citations: true the gold's footnotes
+# retained post-1900 publisher places, because suppress_location_in_bib did
+# not descend into Link wrappers. That filter bug was fixed and the gold
+# regenerated 2026-07-13, so gold footnotes now match the harness's
+# "(Publisher, Year)" form; per-case "gold shows (Place: …)" notes below
+# describe the pre-fix capture.
+# =============================================================================
+
+- id: mono-chapter-in-numbered-series-1
+  description: A Chapter within an Edited Volume in a Numbered Series (full series title)
+  sblhs_section: 6.2.12
+  entry_id: Abraham2001
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: '192'
+        expected: 'Kathleen Abraham, “The Middle Assyrian Period,” in *Security for Debt in Ancient Near Eastern Law*,
+          ed. Raymond Westbrook and Richard Lewis Jasnow, Culture and History of the Ancient Near East 9 (Brill, 2001),
+          192.'
+      subsequent_note:
+        locator: '50'
+        expected: 'Abraham, “The Middle Assyrian Period,” 50.'
+      bibliography:
+        expected: 'Abraham, Kathleen. “The Middle Assyrian Period.” Pages 161–97 in *Security for Debt in Ancient Near
+          Eastern Law*. Edited by Raymond Westbrook and Richard Lewis Jasnow. Culture and History of the Ancient Near
+          East 9. Brill, 2001.'
+  notes: 'Chapter carrying collection-title + collection-number (unabbreviated series). Matches gold fn243 modulo the
+    documented place-suppression difference (gold: "(Leiden Boston: Brill, 2001)").'
+
+- id: mono-chapter-in-numbered-series-2
+  description: A Chapter within an Edited Volume in a Numbered Series (abbreviated series)
+  sblhs_section: 6.2.12
+  entry_id: BenZvi1995
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: 104-7
+        expected: 'Ehud Ben Zvi, <span>“Inclusion in and Exclusion from Israel as Conveyed by the Use of the Term
+          <span>‘Israel’</span> in Post-Monarchic Biblical Texts,”</span> in *The Pitcher Is Broken: Memorial Essays
+          for Gösta W. Ahlström*, ed. Steven W. Holloway and Lowell K. Handy, JSOTSup 190 (Sheffield Academic, 1995),
+          104–7.'
+      subsequent_note:
+        locator: '105'
+        expected: 'Ben Zvi, <span>“Inclusion in and Exclusion from Israel as Conveyed by the Use of the Term
+          <span>‘Israel’</span> in Post-Monarchic Biblical Texts,”</span> 105.'
+      bibliography:
+        expected: 'Ben Zvi, Ehud. <span>“Inclusion in and Exclusion from Israel as Conveyed by the Use of the Term
+          <span>‘Israel’</span> in Post-Monarchic Biblical Texts.”</span> Pages 95–149 in *The Pitcher Is Broken:
+          Memorial Essays for Gösta W. Ahlström*. Edited by Steven W. Holloway and Lowell K. Handy. JSOTSup 190.
+          Sheffield Academic, 1995.'
+  notes: 'Chapter with collection-title-short (JSOTSup) + collection-number on the chapter itself. Subsequent note uses
+    the full title (no title-short), matching gold fn261. Matches gold modulo place suppression
+    (gold: "(Sheffield: Sheffield Academic, 1995)"). The title''s "Israel" uses straight quotes (the monograph source
+    has curly “Israel”) deliberately: citeproc flip-flops straight quotes to locale-correct nesting, which is the
+    behaviour this case locks; curly quotes pass through verbatim.'
+
+- id: mono-journal-article-with-issue
+  description: A Journal Article with Volume and Issue Number
+  sblhs_section: 6.2.26
+  entry_id: Arie2020
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: 18-19
+        expected: 'Eran Arie, Baruch Rosen, and Dvory Namdar, “Cannabis and frankincense at the judahite shrine of
+          arad,” *TA* 47.1 (2020): 18–19.'
+      subsequent_note:
+        locator: '17'
+        expected: 'Arie, Rosen, and Namdar, “Cannabis and frankincense at the judahite shrine of arad,” 17.'
+      bibliography:
+        expected: 'Arie, Eran, Baruch Rosen, and Dvory Namdar. “Cannabis and frankincense at the judahite shrine of
+          arad.” *Tel Aviv* 47.1 (2020): 5–28.'
+  notes: 'Volume + issue rendered as 47.1. Harness note shows the container-title-short (TA); the gold build (with
+    --citation-abbreviations) shows the full *Tel Aviv* in notes — abbreviation-domain difference only.'
+
+- id: mono-archived-manuscript
+  description: An Archived Manuscript (archive + archive-place)
+  sblhs_section: '6.2'
+  entry_id: Eruera1997
+  expectations:
+    sbl-fullnote:
+      first_note:
+        expected: 'Rima Eruera [Edwards], “Submission on Pre-Treaty Transactions,” 1990–1992, Wai 45 record of
+          documents, doc F23, Waitangi Tribunal, Wellington.'
+      subsequent_note:
+        expected: 'Eruera [Edwards], “Submission on Pre-Treaty Transactions.”'
+      bibliography:
+        expected: 'Eruera [Edwards], Rima. “Submission on Pre-Treaty Transactions,” 1990–1992. Wai 45 record of
+          documents, doc F23. Waitangi Tribunal, Wellington.'
+  notes: 'Manuscript with archive and archive-place and an issued date range. No direct SBLHS section for tribunal
+    archive documents; matches gold fn528/fn530 exactly (modulo quote locale).'
+
+- id: mono-thesis-with-genre
+  description: An Unpublished Dissertation or Thesis with Genre
+  sblhs_section: 6.2.30
+  entry_id: Dearman1981
+  expectations:
+    sbl-fullnote:
+      first_note:
+        expected: 'J. Andrew Dearman, “Property Rights in the Eighth-Century Prophets: The Conflict and Its Background”
+          (PhD thesis, Emory University, 1981).'
+      subsequent_note:
+        expected: 'Dearman, “Property Rights in the Eighth-Century Prophets.”'
+      bibliography:
+        expected: 'Dearman, J. Andrew. “Property Rights in the Eighth-Century Prophets: The Conflict and Its
+          Background.” PhD thesis, Emory University, 1981.'
+  notes: 'Thesis with genre "PhD thesis" (verbatim from the monograph entry). Matches gold fn238 exactly; both suppress
+    publisher-place (Ann Arbor, MI) in the note.'
+
+- id: mono-report-with-genre
+  description: An Institutional Report with Genre
+  sblhs_section: '6.2'
+  entry_id: Waitangi1997
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: 50-51
+        expected: 'Waitangi Tribunal, *Muriwhenua Land Report*, Wai 45 (GP Publications, 1997), 50–51.'
+      subsequent_note:
+        locator: 304-6
+        expected: 'Waitangi Tribunal, *Muriwhenua Land Report*, 304–6.'
+      bibliography:
+        expected: 'Waitangi Tribunal. *Muriwhenua Land Report*. Wai 45. GP Publications, 1997.'
+  notes: 'Report with a literal (corporate) author and genre rendered after the italic title. No direct SBLHS section;
+    matches gold fn528 (modulo place: gold shows "(Wellington: GP Publications, 1997)"). Subsequent note repeats the
+    full corporate author, matching gold.'
+
+- id: mono-german-journal-article
+  description: A German-Language Journal Article with Issue Number
+  sblhs_section: 6.2.26
+  entry_id: Fischer1910
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: 136-42
+        expected: 'Leopold FIscher, “Die Urkunden in Jer 32 11–14 nach den Ausgrabungen und dem Talmud,” *ZAW* 30.2
+          (1910): 136–42.'
+      subsequent_note:
+        locator: '140'
+        expected: 'FIscher, “Die Urkunden in Jer 32 11–14 nach den Ausgrabungen und dem Talmud,” 140.'
+      bibliography:
+        expected: 'FIscher, Leopold. “Die Urkunden in Jer 32 11–14 nach den Ausgrabungen und dem Talmud.” *Zeitschrift
+          für die alttestamentliche Wissenschaft* 30.2 (1910): 136–42.'
+  notes: 'language: de entry; German title passes through untouched (no title-casing applied). Harness note shows ZAW
+    where the gold (abbreviation-mapped) build shows the full journal title — abbreviation-domain difference only.
+    "FIscher" capitalisation is verbatim from the monograph data.'
+
+- id: mono-article-with-doi
+  description: A Journal Article with DOI
+  sblhs_section: 6.2.35
+  entry_id: VanderhooftLipschits2007
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: 12-37
+        expected: 'David Vanderhooft and Oded Lipschits, “A New Typology of the Yehud Stamp Impressions,” *Tel Aviv*
+          34.1 (2007): 12–37, https://doi.org/10.1179/tav.2007.2007.1.12.'
+      subsequent_note:
+        locator: '20'
+        expected: 'Vanderhooft and Lipschits, “A New Typology of the Yehud Stamp Impressions,” 20.'
+      bibliography:
+        expected: 'Vanderhooft, David, and Oded Lipschits. “A New Typology of the Yehud Stamp Impressions.” *Tel Aviv*
+          34.1 (2007): 12–37. https://doi.org/10.1179/tav.2007.2007.1.12.'
+  notes: 'DOI appended to the first note and bibliography (rendered as a link; the normaliser strips anchors).
+    Matches gold fn71 and its bibliography entry.'
+
+- id: mono-hebrew-language-book
+  description: A Hebrew-Language Book in an Unnumbered Series
+  sblhs_section: 6.2.24
+  entry_id: Avigad2000
+  expectations:
+    sbl-fullnote:
+      first_note:
+        locator: '30'
+        expected: 'Nahman Avigad, *Ḥotamot shemiyim Maʿaraviyim: Ha-MeʼOT ha-sheminit - ha-shishit li-fsh.n = West
+          Semitic Seals : Eighth-Sixth Centuries BCE*, Osef Muzeʼon Reʼuven ṿe-ʿidit hekhṭ (Universiṭat Ḥefah, 2000),
+          30.'
+      subsequent_note:
+        locator: 26, 50, 57
+        expected: 'Avigad, *Ḥotamot shemiyim Maʿaraviyim*, 26, 50, 57.'
+      bibliography:
+        expected: 'Avigad, Nahman. *Ḥotamot shemiyim Maʿaraviyim: Ha-MeʼOT ha-sheminit - ha-shishit li-fsh.n = West
+          Semitic Seals : Eighth-Sixth Centuries BCE*. Osef Muzeʼon Reʼuven ṿe-ʿidit hekhṭ. Universiṭat Ḥefah, 2000.'
+  notes: 'language: he entry with romanised Hebrew title and unnumbered collection-title. Matches gold fn355/fn356
+    (modulo place: gold shows "(Ḥefah: Universiṭat Ḥefah, 2000)").'
+
+- id: mono-cos-chain-text
+  description: A Text in a Multivolume Ancient Collection (COS chain via volume xref)
+  sblhs_section: 6.2.36
+  entry_id: COS2.27
+  expectations:
+    sbl-fullnote:
+      first_note:
+        expected: '“The Deir ʿAlla Plaster Inscriptions (The Book of Balaam, Son of Beor)” (*COS* 2.27:140–45).'
+      subsequent_note:
+        expected: '‘Deir ʿAlla Plaster Inscriptions’, *COS* 2.27:140–45.'
+      bibliography:
+        expected: ''
+  notes: 'inancientcollection text with skipbib, annote (first note bypass), subsequent_annote, and xref to the COS2
+    volume entry, which itself xrefs the COS root. First note matches gold fn78 exactly. The subsequent_annote (UK
+    quote style) is verbatim from the monograph data; gold cites this text only once, so the subsequent form is
+    harness-derived.'
+
+- id: mono-cos-chain-volume
+  description: A Titled Volume of a Multivolume Ancient Collection (skipbiblist + shorthand)
+  sblhs_section: 6.2.36
+  entry_id: COS1
+  expectations:
+    sbl-fullnote:
+      first_note:
+        expected: COS.
+      subsequent_note:
+        expected: COS.
+      bibliography:
+        expected: 'COS<br/> Hallo, William W., and K. Lawson Younger, eds. <em>Canonical Compositions from the
+          Biblical World</em>. Vol. 1 of <em>The Context of Scripture</em>. Brill, 1997.'
+  notes: 'Volume entry with maintitle + volume-title + shorthand COS + xref to the COS root + skipbiblist. Direct
+    citations collapse to the bare shorthand, so the first/subsequent notes cannot exercise the volume-title
+    rendering — the bibliography expectation is where it is locked. The gold monograph never cites a COS volume
+    directly (its abbreviation list carries only the root COS entry), so these forms are harness-derived,
+    consistent with the existing hallo:1997 case. Per SBLHS 6.4.1/6.2.21, the volume''s own title (Canonical
+    Compositions from the Biblical World) is now the main italic title, followed by "Vol. 1 of" + the italic
+    multivolume title (The Context of Scripture).'

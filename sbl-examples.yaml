@@ -2873,3 +2873,217 @@ references:
       abbreviation_type: sigla
       definition: ablative
       skipbib: true
+
+# =============================================================================
+# SECTION 6.5: ADDITIONAL SHAPES MINED FROM A REAL MONOGRAPH
+# =============================================================================
+
+- id: Abraham2001
+  type: chapter
+  author:
+  - family: Abraham
+    given: Kathleen
+  title: The Middle Assyrian Period
+  container-title: Security for Debt in Ancient Near Eastern Law
+  editor:
+  - family: Westbrook
+    given: Raymond
+  - family: Jasnow
+    given: Richard Lewis
+  collection-title: Culture and History of the Ancient Near East
+  collection-number: "9"
+  publisher: Brill
+  publisher-place: Leiden Boston
+  page: 161-197
+  issued:
+    date-parts:
+    - - 2001
+
+- id: BenZvi1995
+  type: chapter
+  author:
+  - family: Ben Zvi
+    given: Ehud
+  # Deliberate deviation from the monograph source, which has curly “Israel”:
+  # straight quotes are the canonical CSL data form — citeproc flip-flops them
+  # to locale-correct nested quotes, curly ones it leaves verbatim.
+  title: Inclusion in and Exclusion from Israel as Conveyed by the Use of the Term "Israel" in Post-Monarchic Biblical Texts
+  container-title: 'The Pitcher Is Broken: Memorial Essays for Gösta W. Ahlström'
+  editor:
+  - family: Holloway
+    given: Steven W.
+  - family: Handy
+    given: Lowell K.
+  collection-title: Journal for the Study of the Old Testament Supplement Series
+  collection-title-short: JSOTSup
+  collection-number: "190"
+  publisher: Sheffield Academic
+  publisher-place: Sheffield
+  page: 95-149
+  issued:
+    date-parts:
+    - - 1995
+
+- id: Arie2020
+  type: article-journal
+  author:
+  - family: Arie
+    given: Eran
+  - family: Rosen
+    given: Baruch
+  - family: Namdar
+    given: Dvory
+  title: Cannabis and frankincense at the judahite shrine of arad
+  container-title: Tel Aviv
+  container-title-short: TA
+  volume: "47"
+  issue: "1"
+  page: 5-28
+  issued:
+    date-parts:
+    - - 2020
+
+- id: Eruera1997
+  type: manuscript
+  author:
+  - family: Eruera [Edwards]
+    given: Rima
+  title: Submission on Pre-Treaty Transactions
+  archive: Wai 45 record of documents, doc F23
+  archive-place: Waitangi Tribunal, Wellington
+  issued:
+    date-parts:
+    - - 1990
+    - - 1992
+
+- id: Dearman1981
+  type: thesis
+  author:
+  - family: Dearman
+    given: J. Andrew
+  title: 'Property Rights in the Eighth-Century Prophets: The Conflict and Its Background'
+  title-short: Property Rights in the Eighth-Century Prophets
+  genre: PhD thesis
+  publisher: Emory University
+  publisher-place: Ann Arbor, MI
+  issued:
+    date-parts:
+    - - 1981
+
+- id: Waitangi1997
+  type: report
+  author:
+  - literal: Waitangi Tribunal
+  title: Muriwhenua Land Report
+  genre: Wai 45
+  publisher: GP Publications
+  publisher-place: Wellington
+  issued:
+    date-parts:
+    - - 1997
+
+- id: Fischer1910
+  type: article-journal
+  author:
+  - family: FIscher
+    given: Leopold
+  title: Die Urkunden in Jer 32 11–14 nach den Ausgrabungen und dem Talmud
+  container-title: Zeitschrift für die alttestamentliche Wissenschaft
+  container-title-short: ZAW
+  volume: "30"
+  issue: "2"
+  page: 136-142
+  language: de
+  issued:
+    date-parts:
+    - - 1910
+
+- id: VanderhooftLipschits2007
+  type: article-journal
+  author:
+  - family: Vanderhooft
+    given: David
+  - family: Lipschits
+    given: Oded
+  title: A New Typology of the Yehud Stamp Impressions
+  container-title: Tel Aviv
+  volume: "34"
+  issue: "1"
+  page: 12-37
+  DOI: 10.1179/tav.2007.2007.1.12
+  issued:
+    date-parts:
+    - - 2007
+
+- id: Avigad2000
+  type: book
+  author:
+  - family: Avigad
+    given: Nahman
+  title: "Ḥotamot shemiyim Maʿaraviyim: Ha-MeʼOT ha-sheminit - ha-shishit li-fsh.n = West Semitic Seals : Eighth-Sixth Centuries BCE"
+  title-short: Ḥotamot shemiyim Maʿaraviyim
+  collection-title: "Osef Muzeʼon Reʼuven ṿe-ʿidit hekhṭ"
+  publisher: "Universiṭat Ḥefah"
+  publisher-place: "Ḥefah"
+  language: he
+  issued:
+    date-parts:
+    - - 2000
+
+- id: COS1
+  type: book
+  editor:
+  - family: Hallo
+    given: William W.
+  - family: Younger
+    given: K. Lawson
+  title: The Context of Scripture
+  volume: "1"
+  volume-title: Canonical Compositions from the Biblical World
+  publisher: Brill
+  publisher-place: Leiden
+  issued:
+    date-parts:
+    - - 1997
+  note: |
+    sbl:
+      maintitle: 'The Context of Scripture'
+      shorthand: COS
+      xref: COS
+      options: [skipbiblist]
+
+- id: COS2.27
+  type: document
+  title: The Deir ʿAlla Plaster Inscriptions (The Book of Balaam, Son of Beor)
+  title-short: The Deir ʿAlla Plaster Inscriptions
+  section: "27"
+  page: 140-145
+  annote: '"The Deir ʿAlla Plaster Inscriptions (The Book of Balaam, Son of Beor)" (<i>COS</i> 2.27:140–45)'
+  note: |
+    sbl:
+      skipbib: true
+      entrysubtype: inancientcollection
+      xref: COS2
+      subsequent_annote: '‘Deir ʿAlla Plaster Inscriptions’, <i>COS</i> 2.27:140–45'
+
+- id: COS2
+  type: book
+  editor:
+  - family: Hallo
+    given: William W.
+  - family: Younger
+    given: K. Lawson
+  title: The Context of Scripture
+  volume: "2"
+  volume-title: Monumental Inscriptions from the Biblical World
+  publisher: Brill
+  publisher-place: Leiden
+  issued:
+    date-parts:
+    - - 2000
+  note: |
+    sbl:
+      maintitle: 'The Context of Scripture'
+      shorthand: COS
+      xref: COS
+      options: [skipbiblist]
